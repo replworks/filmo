@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Resources\YoutubeChannels\YoutubeChannelResource;
 use BackedEnum;
 use Cable8mm\Youtube\Imports\YoutubeChannelsImport;
 use Filament\Actions\Action;
@@ -47,6 +48,16 @@ class ChannelImport extends Page
     public function mount(): void
     {
         $this->form->fill();
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('channels')
+                ->label('Channel List')
+                ->icon('heroicon-o-list-bullet')
+                ->url(YoutubeChannelResource::getUrl()),
+        ];
     }
 
     public function form(Schema $schema): Schema
