@@ -5,6 +5,7 @@ namespace App\Models;
 use Cable8mm\Youtube\Models\YoutubeVideo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FilmographyCandidate extends Model
 {
@@ -59,5 +60,13 @@ class FilmographyCandidate extends Model
     public function video(): BelongsTo
     {
         return $this->belongsTo(YoutubeVideo::class, 'youtube_video_id');
+    }
+
+    /**
+     * @return HasMany<CandidateSource, $this>
+     */
+    public function candidateSources(): HasMany
+    {
+        return $this->hasMany(CandidateSource::class);
     }
 }

@@ -105,18 +105,19 @@ class NaverPersonInformationTest extends TestCase
         Http::assertNothingSent();
     }
 
-    public function test_a_naver_url_is_required(): void
+    public function test_candidate_values_can_be_saved_without_a_source_url(): void
     {
-        $candidate = ActorCandidate::create(['name' => 'Protected Name']);
+        $candidate = ActorCandidate::create(['name' => 'Old Name']);
         $this->actingAs(User::factory()->create());
 
         Livewire::test(ViewActorCandidate::class, ['record' => $candidate->getRouteKey()])
             ->set('naverData.name', 'Changed Name')
             ->set('naverData.url', '')
             ->call('saveNaver')
-            ->assertHasErrors('naverData.url');
+            ->assertHasNoErrors()
+            ->assertNotified('Actor Candidate saved');
 
-        $this->assertSame('Protected Name', $candidate->refresh()->name);
+        $this->assertSame('Changed Name', $candidate->refresh()->name);
         $this->assertSame(0, CandidateSource::count());
     }
 

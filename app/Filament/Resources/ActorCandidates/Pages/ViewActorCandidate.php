@@ -16,6 +16,7 @@ use Filament\Schemas\Components\Form;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class ViewActorCandidate extends ViewRecord
@@ -76,8 +77,7 @@ class ViewActorCandidate extends ViewRecord
                     ->label('Naver Person Information URL')
                     ->helperText('An https://...naver.com page the Operator opens for manual research.')
                     ->url()
-                    ->live()
-                    ->required(),
+                    ->live(),
             ])
             ->statePath('naverData');
     }
@@ -87,22 +87,36 @@ class ViewActorCandidate extends ViewRecord
         $data = $this->naverForm->getState();
         $url = trim((string) ($data['url'] ?? ''));
 
-        if (! $this->isNaverUrl($url)) {
+        if ($url !== '' && ! $this->isNaverUrl($url)) {
             $this->addError('naverData.url', 'Enter a Naver person information URL.');
 
             return;
         }
 
-        $this->record->update([
-            'activity_name' => $this->nullIfBlank($data['activity_name'] ?? null),
-            'name' => $this->nullIfBlank($data['name'] ?? null),
-            'related_link' => $this->nullIfBlank($data['related_link'] ?? null),
-        ]);
+        try {
+            DB::transaction(function () use ($data, $url): void {
+                $this->record->update([
+                    'activity_name' => $this->nullIfBlank($data['activity_name'] ?? null),
+                    'name' => $this->nullIfBlank($data['name'] ?? null),
+                    'related_link' => $this->nullIfBlank($data['related_link'] ?? null),
+                ]);
 
-        $this->record->candidateSources()->firstOrCreate([
-            'kind' => CandidateSource::KIND_NAVER,
-            'url' => $url,
-        ]);
+                if ($url !== '') {
+                    $this->record->candidateSources()->firstOrCreate([
+                        'kind' => CandidateSource::KIND_NAVER,
+                        'url' => $url,
+                    ]);
+                }
+            });
+        } catch (Throwable $e) {
+            Notification::make()
+                ->danger()
+                ->title('Actor Candidate save failed')
+                ->body($e->getMessage())
+                ->send();
+
+            return;
+        }
 
         $this->record->refresh();
 

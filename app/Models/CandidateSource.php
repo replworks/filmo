@@ -11,6 +11,8 @@ class CandidateSource extends Model
 
     public const KIND_NAVER = 'naver';
 
+    public const KIND_MANUAL = 'manual';
+
     protected $fillable = [
         'actor_candidate_id',
         'filmography_candidate_id',
