@@ -15,7 +15,7 @@
     - The probe records live Video page data, pagination behavior, returned metadata, and observable failure responses needed by Channel registration and collection. The quota-exhaustion response MAY be recorded from the documented YouTube Data API error specification when exhausting the daily quota is not acceptable.
     - Pass: at least one supported reference resolves to the intended Channel and a live response provides an available Video page; each required failure response, including the documented quota-exhaustion response, is distinguishable from success. Fail: a required response cannot be observed or documented, or cannot be distinguished from success.
 
-- [ ] T-003 Verify Gemini candidate extraction responses
+- [x] T-003 Verify Gemini candidate extraction responses
   - Satisfies: PRODUCT_SPEC.md §§External Systems, Functional Requirements FR-014–FR-016, FR-037, FR-042
   - External boundary: yes
   - Acceptance criteria:
