@@ -10,9 +10,9 @@
 - Channel: a registered source of YouTube Videos.
 - Video: a YouTube video associated with one Channel.
 - Channel Import Row: one Channel reference read from an Operator-supplied spreadsheet.
-- Actor: a person who appears in one or more Videos. An Actor has a required Name and optional Activity Name, Actor URL, and Profile Fields.
-- Profile Field: an optional named Actor value, stored without a fixed set of columns so fields can be added or removed as data is collected.
-- Actor URL: a NamuWiki, Naver, or other reference URL stored for an Actor and opened by the Operator.
+- Actor: a person who appears in one or more Videos. An Actor has a required Name and optional Activity Name, Birth Date, Birthplace, Education, Debut, Agency, Nationality, Actor Reference URLs, and Profile Fields.
+- Profile Field: an optional named Actor value for information outside the fixed Actor fields, such as an Instagram handle or a YouTube channel. Fixed Actor fields are stored as Actor columns.
+- Actor Reference URL: a NamuWiki, Naver, or other reference URL stored as a separate actor_reference_urls record for an Actor. An Actor may have none or many.
 - Actor Video Appearance: the association between one Actor and one Video.
 - Collection Attempt: one processing attempt to collect the available Videos for a Channel.
 - Gemini Actor Extraction: one Operator-started analysis of a selected Video that associates extracted Actors with that Video.
@@ -31,7 +31,7 @@
 - The Operator selects a collected Video and starts Gemini Actor Extraction manually.
 - The Actor Extraction Coordinator submits the selected Video information to the Gemini Connector.
 - A successful extraction associates the extracted Actors with the selected Video.
-- The Operator edits Actor fields and Profile Fields, opens a supplied Actor URL, adds or removes Video associations, and merges duplicate Actors.
+- The Operator edits Actor fields and Profile Fields, opens supplied Actor Reference URLs, adds or removes Video associations, and merges duplicate Actors.
 - A merged Actor is hidden and its Video associations move to the surviving Actor.
 
 ## 4. Components
@@ -39,7 +39,7 @@
 - C-01 Operator Interface
 - C-02 Spreadsheet Import Coordinator
 - C-03 Channel Registry
-- C-04 Channel and Video Catalog
+- C-04 Channel, Video, and Sync Error Catalog
 - C-05 Channel Collection Coordinator
 - C-06 YouTube Connector
 - C-07 Actor Extraction Coordinator
@@ -51,7 +51,7 @@
 
 ### C-01 Operator Interface
 
-- Responsibilities: display Channel, Video, Actor, and appearance records; accept spreadsheet imports, manual extraction commands, Actor edits, Video link changes, and merge commands; show operation results.
+- Responsibilities: display Channel, Video, Sync Error, Actor, and appearance records; accept spreadsheet imports, manual extraction commands, package record edits and deletes, Actor edits, Video link changes, and merge commands; show operation results.
 - Inputs: Operator actions and results from C-02, C-03, C-05, C-07, C-09, and C-10.
 - Outputs: commands to the responsible coordinator or registry; rendered operation results.
 - Ownership boundary: owns interaction state only; owns no catalog, Actor, appearance, external request, or business rule.
@@ -70,12 +70,12 @@
 - Outputs: Channel changes to C-04; initial collection requests to C-05; registration results to C-02.
 - Ownership boundary: owns Channel identity resolution and registration rules; C-04 owns the persisted Channel record.
 
-### C-04 Channel and Video Catalog
+### C-04 Channel, Video, and Sync Error Catalog
 
-- Responsibilities: retain Channel and Video records, their association, availability state, collection status, and returned data; provide reads to Operator-facing components.
-- Inputs: Channel upserts from C-03; Video and collection-state upserts from C-05.
-- Outputs: persisted catalog records and read results to C-01, C-03, C-05, and C-07.
-- Ownership boundary: is the sole owner and writer of persisted Channel and Video data.
+- Responsibilities: retain Channel, Video, and Sync Error records, their associations, availability state, collection status, and returned data; accept explicit Operator creates and edits for Channels and Videos and deletes for Channels, Videos, and Sync Errors; provide reads to Operator-facing components.
+- Inputs: Channel upserts from C-03; Video and collection-state upserts from C-05; Sync Error records from C-05; Operator create, edit, and delete commands from C-01.
+- Outputs: persisted package records and read results to C-01, C-03, C-05, and C-07.
+- Ownership boundary: is the sole owner and writer of persisted Channel, Video, Sync Error, and package data. It deletes dependent Videos and Actor-Video associations when a Channel is deleted, and dependent Actor-Video associations when a Video is deleted. It does not edit extraction state, extraction error, or extraction time.
 
 ### C-05 Channel Collection Coordinator
 
@@ -107,10 +107,10 @@
 
 ### C-09 Actor Registry
 
-- Responsibilities: retain Actors, Profile Fields, Actor URLs, and Actor-Video appearances; provide Actor reads and writes; retain records across sessions.
-- Inputs: Actor and appearance commands from C-07; Actor field and Video link commands from C-01; merge commands from C-10.
+- Responsibilities: retain Actors, Profile Fields, Actor Reference URLs, and Actor-Video appearances; accept explicit Operator Actor creates, deletes, and Video appearances from either the Actor or Video detail screen; provide Actor reads and writes; retain records across sessions.
+- Inputs: Actor and appearance commands from C-07; Actor create, edit, delete, and Video link commands from C-01; merge commands from C-10.
 - Outputs: persisted Actor and appearance state and read results to C-01, C-07, and C-10.
-- Ownership boundary: is the sole owner and writer of persistent Actor, Profile Field, URL, and appearance data.
+- Ownership boundary: is the sole owner and writer of persistent Actor, Profile Field, Actor Reference URL, and appearance data.
 
 ### C-10 Actor Merge Manager
 
@@ -125,14 +125,19 @@
 - C-02 owns spreadsheet row processing; C-03 owns Channel registration semantics; C-04 owns persistent Channel and Video data.
 - C-05 owns initial and recurring collection; C-06 owns the YouTube external boundary.
 - C-07 owns manually initiated Actor extraction; C-08 owns the Gemini external boundary.
-- C-09 owns Actor, Profile Field, URL, and appearance data; C-10 owns explicit Actor merging.
-- C-04 is the only writer of Channel and Video records; C-09 is the only writer of Actor and appearance records.
+- C-09 owns Actor, Profile Field, Actor Reference URL, and appearance data; C-10 owns explicit Actor merging.
+- C-04 is the only writer of Channel, Video, and Sync Error records; C-09 is the only writer of Actor and appearance records.
+- C-04 accepts package creates and edits for Channels and Videos and deletes for Channels, Videos, and Sync Errors only from explicit Operator commands; Sync Errors are never created or edited in the Operator interface; a Video created from a Channel detail belongs to that Channel; package sync may overwrite edited values.
+- Creating a Channel starts its initial Video collection.
+- Creating a Video does not start Gemini Actor Extraction.
 - There is no separate Actor Candidate, Actor Identity, Filmography Candidate, Candidate Source, or Review Status record.
-- NamuWiki and Naver references are stored as an Actor URL and opened by the Operator; no connector retrieves or parses them.
+- NamuWiki and Naver references are stored as Actor Reference URL records and opened by the Operator; no connector retrieves or parses them.
 
 ## 7. Data Flow
 
 - Channel import: C-01 -> C-02 -> C-03 -> C-06 for reference resolution -> C-04 for Channel upsert -> C-05 for initial collection -> C-06 for Video pages -> C-04 for each successful Video page.
+- Package data edit or delete: C-01 -> C-04; a Channel delete also removes its Videos and Actor-Video associations; a Video delete removes its Actor-Video associations.
+- Sync Error collection: C-05 -> C-04 for each recorded Sync Error.
 - Recurring Video collection: cycle trigger -> C-05 -> C-06 -> C-04; C-01 reads Channel status and Videos from C-04.
 - Actor extraction: C-01 selected-Video command -> C-07 -> C-04 Video read -> C-08 -> C-07 -> C-09 for Actors and appearances -> C-01 extraction result.
 - Actor editing: C-01 field values -> C-09.
@@ -145,12 +150,17 @@
 - Channel registration is an upsert; repeated references never delete associated Videos or reset collection state.
 - Video collection persists each successful page as it arrives; a later failure does not roll back successful Video upserts.
 - Channel collection starts for a newly registered Channel and recurs for registered Channels.
+- Package records may be edited and deleted only from the explicit package data screens; a later YouTube collection may overwrite edits.
+- Deleting a Channel deletes its Videos and their Actor-Video associations.
+- Deleting a Video deletes its Actor-Video associations.
+- Extraction state, extraction error, and extraction time are read-only in package data screens.
 - Gemini Actor Extraction starts only from an explicit Operator command for a selected Video.
 - Extraction associates Actors with the selected Video; it does not create a separate filmography or review record.
 - A repeated extraction does not duplicate an existing Actor-Video appearance.
-- An Actor has a required Name; Activity Name, Actor URL, and Profile Fields are optional.
-- Profile Fields are stored as flexible name/value data so fields can be added or removed without changing the Actor identity.
-- An Actor URL is stored and opened only; it is never retrieved or parsed by the product.
+- An Actor has a required Name; Activity Name, Birth Date, Birthplace, Education, Debut, Agency, Nationality, Actor Reference URLs, and Profile Fields are optional.
+- Birth Date, Birthplace, Education, Debut, Agency, and Nationality are stored as Actor columns, not as Profile Fields.
+- Profile Fields store only additional information outside the fixed Actor fields.
+- Actor Reference URLs are stored and opened only; they are never retrieved or parsed by the product.
 - Actor-Video appearances are added and removed explicitly by the Operator.
 - Actors are merged only after explicit Operator confirmation; name matching alone never merges Actors.
 - Merged Actors are hidden; their appearances move to the surviving Actor.
@@ -189,8 +199,16 @@
 - INV-08: Actors are merged only through explicit Operator confirmation; matching names alone never merge Actors.
 - INV-09: All optional Actor values may be absent without removing the Actor's identity or appearances.
 - INV-10: C-04 is the sole writer of Channel and Video records.
-- INV-11: C-09 is the sole writer of Actor, Profile Field, Actor URL, and appearance records.
+- INV-11: C-09 is the sole writer of Actor, Profile Field, Actor Reference URL, and appearance records.
 - INV-12: There is no separate review state; an appearance exists or it does not.
+- INV-13: Deleting a Channel deletes its Videos and their Actor-Video associations.
+- INV-14: Deleting a Video deletes its Actor-Video associations.
+- INV-15: Package data screens do not edit extraction state, extraction error, or extraction time.
+- INV-16: Creating a Channel starts its initial Video collection; creating a Video does not start Gemini Actor Extraction.
+- INV-17: Deleting an Actor deletes its Actor-Video associations.
+- INV-19: A Video created from a Channel detail is associated with that Channel.
+- INV-20: A Video-Actor association can be added or removed from the Video detail screen and appears on the Actor detail screen.
+- INV-18: Birth Date, Birthplace, Education, Debut, Agency, and Nationality are Actor columns; Profile Fields store only additional information.
 
 ## 12. Resolved Decisions
 
@@ -200,7 +218,10 @@
 - D-04 Channel collection trigger: start collection for newly registered Channels and continue recurring collection independently of Actor extraction; confirmed by the Operator.
 - D-05 Actor extraction trigger: require an explicit Operator command for each selected Video; newly registered or collected Videos do not trigger extraction automatically; confirmed by the Operator.
 - D-06 Actor-Video appearance: extraction associates Actors with the selected Video without creating separate filmography or review records; confirmed by the Operator.
-- D-07 Actor profile: keep Name required and store additional fields as flexible Profile Fields, because the useful field set is unknown until data is collected; confirmed by the Operator.
-- D-08 Actor URL: store one NamuWiki, Naver, or other reference URL and open it without automated retrieval; confirmed by the Operator.
+- D-07 Actor profile: keep Name required, store Birth Date, Birthplace, Education, Debut, Agency, and Nationality as fixed Actor columns, and use Profile Fields only for additional information outside that set; confirmed by the Operator.
+- D-08 Actor Reference URLs: store zero or more NamuWiki, Naver, or other reference URLs as separate actor_reference_urls records, move them during Actor merges, and open them without automated retrieval; confirmed by the Operator.
 - D-09 Actor merge: require explicit Operator confirmation and move appearances to a surviving Actor; matching names alone never merge Actors; confirmed by the Operator.
 - D-10 No review workflow: remove separate candidate, identity, filmography, source, and review records to keep the Operator workflow simple; confirmed by the Operator.
+- D-11 Package data administration: expose Channels and Videos with explicit create, edit, and delete controls, and Sync Errors with list, view, and delete controls only; protect extraction fields and show cascade-confirmation messages; confirmed by the Operator.
+- D-12 Actor administration: allow explicit Actor creation and deletion, with appearance deletion and no automatic name matching; confirmed by the Operator.
+- D-13 Detail-screen associations: allow Video creation from a Channel detail and Actor association from a Video detail; confirmed by the Operator.

@@ -17,7 +17,6 @@ class ActorFactory extends Factory
         return [
             'name' => fake()->name(),
             'activity_name' => null,
-            'url' => null,
             'profile' => null,
         ];
     }

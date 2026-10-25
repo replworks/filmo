@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Actors;
 
+use App\Filament\Resources\Actors\Pages\CreateActor;
 use App\Filament\Resources\Actors\Pages\EditActor;
 use App\Filament\Resources\Actors\Pages\ListActors;
 use App\Filament\Resources\Actors\RelationManagers\ActorVideosRelationManager;
@@ -54,6 +55,7 @@ class ActorResource extends Resource
     {
         return [
             'index' => ListActors::route('/'),
+            'create' => CreateActor::route('/create'),
             'edit' => EditActor::route('/{record}/edit'),
         ];
     }

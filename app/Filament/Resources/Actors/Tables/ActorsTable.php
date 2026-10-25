@@ -7,6 +7,7 @@ use App\Models\Actor;
 use App\Services\Actor\MergeManager;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
@@ -32,11 +33,20 @@ class ActorsTable
                     ->placeholder('—')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('url')
-                    ->label('배우 URL')
+                TextColumn::make('birth_date')
+                    ->label('생년월일')
+                    ->date()
                     ->placeholder('—')
-                    ->limit(45)
-                    ->url(fn (Actor $actor): ?string => $actor->url, shouldOpenInNewTab: true),
+                    ->sortable(),
+                TextColumn::make('agency')
+                    ->label('소속사')
+                    ->placeholder('—')
+                    ->searchable(),
+                TextColumn::make('reference_urls_count')
+                    ->label('URL')
+                    ->counts('referenceUrls')
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('videos_count')
                     ->label('출연 영상')
                     ->counts('videos')
@@ -48,6 +58,8 @@ class ActorsTable
             ->recordUrl(fn (Actor $actor): string => static::editUrl($actor))
             ->recordActions([
                 EditAction::make(),
+                DeleteAction::make()
+                    ->modalDescription('이 배우와 배우-영상 연결이 함께 삭제됩니다.'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
