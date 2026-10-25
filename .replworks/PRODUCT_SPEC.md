@@ -76,14 +76,14 @@ Terms:
 - Offline behavior: None stated.
 - Data retention: Channel, Video, Actor Candidate, Actor Identity, Filmography Candidate, Candidate Source, and review records persist across Operator sessions.
 
-## External Systems [UNVERIFIED]
+## External Systems
 
 - YouTube Data API: the product obtains Channel information and available Video information for registered Channels.
 - Gemini: the product submits collected Video information for Actor Candidate and Filmography Candidate extraction.
 - NamuWiki: the product obtains page content for a NamuWiki URL supplied by an Operator and extracts Actor Candidate information from that content. NamuWiki content does not create or update Actor-Video relationships.
 - Naver person information: the Operator opens a Naver Person Information URL and manually records relevant information as candidate data. The product does not automatically collect or process Naver search results.
 
-## User Interface [UNVERIFIED]
+## User Interface
 
 ### SCR-001 Channel Import
 
