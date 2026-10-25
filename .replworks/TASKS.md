@@ -56,7 +56,7 @@
     - Video items show the specified title, published date, availability state, and YouTube URL; Channel and Video lists expose their specified empty, populated, loading, and error states.
     - Automated tests pass for list contents, Channel-to-Video association, and the defined states.
 
-- [ ] T-008 Manually extract candidates from a selected Video
+- [x] T-008 Manually extract candidates from a selected Video
   - Satisfies: PRODUCT_SPEC.md §§SCR-002, Functional Requirements FR-014–FR-016, FR-037–FR-038, FR-042, Error Condition ERR-005, Acceptance Criteria AC-007, AC-015, AC-017
   - External boundary: yes
   - Acceptance criteria:
