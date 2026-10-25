@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\File;
 use PHPUnit\Framework\Attributes\Group;
 use Tests\Support\TestableChannelImport;
@@ -18,6 +19,8 @@ class ChannelImportLiveTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        Bus::fake();
 
         if (! env('RUN_LIVE_TESTS', false)) {
             $this->markTestSkipped('Set RUN_LIVE_TESTS=true to run live boundary tests.');

@@ -38,7 +38,7 @@
     - An unsupported row reports its row-level failure while other rows continue; a spreadsheet-processing failure retains row results already produced.
     - Live end-to-end tests pass for successful registration and Channel-resolution failure; automated unit tests pass where applicable.
 
-- [ ] T-006 Collect and retain registered Channel Videos
+- [x] T-006 Collect and retain registered Channel Videos
   - Satisfies: PRODUCT_SPEC.md §§SCR-002, Functional Requirements FR-005–FR-013, FR-043, Error Conditions ERR-003–ERR-004, Acceptance Criteria AC-003–AC-006, AC-018
   - External boundary: yes
   - Acceptance criteria:

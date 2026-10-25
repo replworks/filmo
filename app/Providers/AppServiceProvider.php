@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Jobs\CollectChannelVideos;
+use Cable8mm\Youtube\Models\YoutubeChannel;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        YoutubeChannel::created(function (YoutubeChannel $channel): void {
+            CollectChannelVideos::dispatch($channel->id);
+        });
     }
 }
