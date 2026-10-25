@@ -48,7 +48,7 @@ Terms:
 
 ## Inputs
 
-- YouTube Channel Spreadsheet: an Excel file with a `channel` column. Each value is a Channel ID, an `@handle`, or a URL whose path begins with `/channel/`, `/@`, or `/user/`.
+- YouTube Channel Spreadsheet: an Excel file with extension `.xlsx`, `.xls`, or `.csv` and a `channel` column. Each value is a Channel ID, an `@handle`, or a URL whose path begins with `/channel/`, `/@`, or `/user/`.
 - Video source: a Video collected from a registered Channel.
 - NamuWiki URL: a URL supplied as a source of Actor Candidate information.
 - Naver Person Information URL: a URL supplied by an Operator as a manual research source.
@@ -212,7 +212,7 @@ Terms:
 
 Channel registration and video collection
 
-- FR-001: SCR-001 MUST accept an Excel file containing a `channel` column.
+- FR-001: SCR-001 MUST accept an Excel file with extension `.xlsx`, `.xls`, or `.csv` containing a `channel` column.
 - FR-002: The `channel` column MUST accept a Channel ID, an `@handle`, or a URL with a path beginning `/channel/`, `/@`, or `/user/`.
 - FR-003: Importing a spreadsheet MUST report a result for each processed row.
 - FR-004: Importing a Channel that is already registered or appears more than once in a spreadsheet MUST upsert its Channel record and MUST retain its existing Videos and synchronization state.
@@ -261,6 +261,9 @@ Candidate review
 - FR-041: Extracting Actor Candidate information from a NamuWiki URL MUST NOT overwrite existing Actor Candidate values.
 - FR-042: Each Gemini Candidate Extraction run MUST create new candidate records and MUST NOT automatically merge with or replace candidates from another run.
 - FR-043: Videos successfully collected before a later collection failure MUST remain recorded.
+- FR-044: A review decision MUST be final: an Approved Filmography Candidate MUST NOT become Pending or Rejected, and a Rejected Filmography Candidate MUST NOT become Pending or Approved.
+- FR-045: EL-007 MUST list the Videos of the selected Channel in descending order of published date, 50 Videos per page.
+- FR-046: EL-019 MUST list Pending Filmography Candidates in descending order of the Video published date, 50 candidates per page.
 
 ## User Flows
 
@@ -328,6 +331,8 @@ UF-006 Confirm Actor Identity
 - Automatic association of Actor Candidates based only on matching names.
 - Automatic collection or processing of Naver search results or Naver person information.
 - Displaying Pending or Rejected Filmography Candidates to Viewers.
+- A screen that lists or edits Actor Identities.
+- A screen that lists Approved Entries outside the Pending review list.
 
 ## Acceptance Criteria
 
