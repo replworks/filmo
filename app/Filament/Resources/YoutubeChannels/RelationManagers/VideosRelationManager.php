@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\YoutubeChannels\RelationManagers;
 
 use App\Filament\Resources\YoutubeChannels\YoutubeChannelResource;
-use App\Jobs\ExtractVideoCandidates;
+use App\Jobs\ExtractVideoActors;
 use Cable8mm\Youtube\Models\YoutubeVideo;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
@@ -58,26 +58,26 @@ class VideosRelationManager extends RelationManager
             ->defaultPaginationPageOption(50)
             ->recordActions([
                 Action::make('extract')
-                    ->label('Extract Candidates')
+                    ->label('Extract Actors')
                     ->icon('heroicon-o-sparkles')
                     ->requiresConfirmation()
-                    ->modalHeading('Extract Actor and Filmography Candidates')
-                    ->modalDescription('Start a new Gemini Candidate Extraction for this Video. Candidates from earlier runs remain unchanged.')
+                    ->modalHeading('Extract Actors')
+                    ->modalDescription('Start a new Gemini Actor Extraction for this Video. Existing Actors and Video associations remain unchanged.')
                     ->action(function (YoutubeVideo $video): void {
-                        ExtractVideoCandidates::dispatchSync($video->id);
+                        ExtractVideoActors::dispatchSync($video->id);
 
                         $video->refresh();
 
-                        if ($video->extraction_status === ExtractVideoCandidates::STATUS_FAILED) {
+                        if ($video->extraction_status === ExtractVideoActors::STATUS_FAILED) {
                             Notification::make()
                                 ->danger()
-                                ->title('Gemini Candidate Extraction failed')
+                                ->title('Gemini Actor Extraction failed')
                                 ->body($video->extraction_error)
                                 ->send();
                         } else {
                             Notification::make()
                                 ->success()
-                                ->title('Gemini Candidate Extraction completed')
+                                ->title('Gemini Actor Extraction completed')
                                 ->send();
                         }
 
@@ -91,9 +91,9 @@ class VideosRelationManager extends RelationManager
     protected function extractionState(YoutubeVideo $video): string
     {
         return match ($video->extraction_status) {
-            ExtractVideoCandidates::STATUS_IN_PROGRESS => 'In progress',
-            ExtractVideoCandidates::STATUS_COMPLETED => 'Completed',
-            ExtractVideoCandidates::STATUS_FAILED => 'Failed',
+            ExtractVideoActors::STATUS_IN_PROGRESS => 'In progress',
+            ExtractVideoActors::STATUS_COMPLETED => 'Completed',
+            ExtractVideoActors::STATUS_FAILED => 'Failed',
             default => 'Not started',
         };
     }
@@ -101,9 +101,9 @@ class VideosRelationManager extends RelationManager
     protected function extractionColor(YoutubeVideo $video): string
     {
         return match ($video->extraction_status) {
-            ExtractVideoCandidates::STATUS_IN_PROGRESS => 'info',
-            ExtractVideoCandidates::STATUS_COMPLETED => 'success',
-            ExtractVideoCandidates::STATUS_FAILED => 'danger',
+            ExtractVideoActors::STATUS_IN_PROGRESS => 'info',
+            ExtractVideoActors::STATUS_COMPLETED => 'success',
+            ExtractVideoActors::STATUS_FAILED => 'danger',
             default => 'gray',
         };
     }
