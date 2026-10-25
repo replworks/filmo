@@ -1,6 +1,6 @@
 # TASKS.md
 
-- [ ] T-001 Establish the project foundation
+- [x] T-001 Establish the project foundation
   - Satisfies: TECH_STACK.md §§1–7
   - External boundary: no
   - Acceptance criteria:
