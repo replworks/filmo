@@ -65,7 +65,7 @@
     - A live Gemini failure is shown and creates no candidates for that failed attempt; the source Video and earlier candidates remain unchanged.
     - Live end-to-end tests pass for successful extraction and an observed extraction failure; automated unit tests pass where applicable.
 
-- [ ] T-009 Suggest Actor Candidate information from NamuWiki
+- [x] T-009 Suggest Actor Candidate information from NamuWiki
   - Satisfies: PRODUCT_SPEC.md §§SCR-003, Functional Requirements FR-017–FR-018, FR-022, FR-036, FR-041, Error Condition ERR-006, Acceptance Criterion AC-008
   - External boundary: yes
   - Acceptance criteria:
