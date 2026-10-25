@@ -82,7 +82,7 @@
     - A live end-to-end test confirms the supplied URL opens as a manual research source and the saved values and URL are retained.
     - Automated unit tests pass where applicable, and no automated Naver search-result or person-information collection occurs.
 
-- [ ] T-011 Edit and save optional candidate fields and sources
+- [x] T-011 Edit and save optional candidate fields and sources
   - Satisfies: PRODUCT_SPEC.md §§SCR-003–SCR-004, Functional Requirements FR-022–FR-025, Error Condition ERR-007, Acceptance Criterion AC-010
   - External boundary: no
   - Acceptance criteria:
