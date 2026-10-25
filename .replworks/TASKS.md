@@ -74,7 +74,7 @@
     - A live retrieval or extraction failure is shown while the supplied URL and prior candidate information remain available.
     - Live end-to-end tests pass for a successful page and an observed retrieval or processing failure; automated unit tests pass where applicable.
 
-- [ ] T-010 Record Naver person information as a manual source
+- [x] T-010 Record Naver person information as a manual source
   - Satisfies: PRODUCT_SPEC.md §§SCR-003, User Flows UF-004, Functional Requirements FR-019–FR-022, Acceptance Criterion AC-009
   - External boundary: yes
   - Acceptance criteria:

@@ -19,9 +19,9 @@ class CandidateExtractor
 
     public const TIMEOUT_SECONDS = 120;
 
-    public const RETRY_ATTEMPTS = 3;
+    public const RETRY_ATTEMPTS = 5;
 
-    public const RETRY_DELAY_MS = 2000;
+    public const RETRY_DELAY_MS = 3000;
 
     protected string $key;
 
