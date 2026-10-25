@@ -23,4 +23,12 @@ class ActorCandidate extends Model
     {
         return $this->hasMany(FilmographyCandidate::class);
     }
+
+    /**
+     * @return HasMany<CandidateSource, $this>
+     */
+    public function candidateSources(): HasMany
+    {
+        return $this->hasMany(CandidateSource::class);
+    }
 }
