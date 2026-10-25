@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Cable8mm\Youtube\Models\YoutubeVideo;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -44,6 +45,20 @@ class FilmographyCandidate extends Model
             'confidence' => 'float',
             'reviewed_at' => 'datetime',
         ];
+    }
+
+    public function isEligibleForPublicDisplay(): bool
+    {
+        return $this->review_status === self::REVIEW_STATUS_APPROVED;
+    }
+
+    /**
+     * @param  Builder<FilmographyCandidate>  $query
+     * @return Builder<FilmographyCandidate>
+     */
+    public function scopeEligibleForPublicDisplay(Builder $query): Builder
+    {
+        return $query->where('review_status', self::REVIEW_STATUS_APPROVED);
     }
 
     /**

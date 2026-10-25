@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\FilmographyCandidates\Tables;
 
+use App\Filament\Resources\FilmographyCandidates\FilmographyCandidateResource;
 use App\Models\FilmographyCandidate;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class FilmographyCandidatesTable
 {
@@ -24,6 +26,11 @@ class FilmographyCandidatesTable
                     ->label('Video')
                     ->placeholder('—')
                     ->limit(50)
+                    ->searchable(),
+                TextColumn::make('channel_name')
+                    ->label('Channel')
+                    ->placeholder('—')
+                    ->limit(30)
                     ->searchable(),
                 TextColumn::make('review_status')
                     ->label('Review Status')
@@ -44,7 +51,9 @@ class FilmographyCandidatesTable
                     ->placeholder('—')
                     ->sortable(),
             ])
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('review_status', FilmographyCandidate::REVIEW_STATUS_PENDING))
             ->defaultSort('published_date', 'desc')
+            ->recordUrl(fn (FilmographyCandidate $candidate): string => FilmographyCandidateResource::getUrl('edit', ['record' => $candidate]))
             ->paginated([50])
             ->defaultPaginationPageOption(50)
             ->recordActions([

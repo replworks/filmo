@@ -2,10 +2,13 @@
 
 namespace App\Filament\Resources\FilmographyCandidates\Schemas;
 
+use App\Models\FilmographyCandidate;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\HtmlString;
 
 class FilmographyCandidateForm
 {
@@ -45,6 +48,24 @@ class FilmographyCandidateForm
                     TextInput::make('candidate_source_url')
                         ->label('Candidate Source URL')
                         ->url(),
+                    Placeholder::make('candidate_sources')
+                        ->label('Candidate Sources')
+                        ->columnSpanFull()
+                        ->content(function (?FilmographyCandidate $record): HtmlString {
+                            if ($record === null) {
+                                return new HtmlString('—');
+                            }
+
+                            $urls = $record->candidateSources()->pluck('url');
+
+                            if ($urls->isEmpty()) {
+                                return new HtmlString('No Candidate Sources.');
+                            }
+
+                            return new HtmlString($urls->map(
+                                fn (string $url): string => '<a href="'.e($url).'" target="_blank" rel="noopener noreferrer">'.e($url).'</a>'
+                            )->implode('<br>'));
+                        }),
                 ]),
             ]);
     }
