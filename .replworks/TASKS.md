@@ -48,7 +48,7 @@
     - Successful pages remain retained when a later request fails; the failure is recorded and shown. Quota exhaustion is recorded and shown as paused collection.
     - Live end-to-end tests pass for successful multi-page collection and the observed failure and quota-exhaustion behavior; automated unit tests pass where applicable.
 
-- [ ] T-007 Show Channels, Videos, and collection state to the Operator
+- [x] T-007 Show Channels, Videos, and collection state to the Operator
   - Satisfies: PRODUCT_SPEC.md §§SCR-002, User Flows UF-001, Acceptance Criteria AC-004–AC-006
   - External boundary: no
   - Acceptance criteria:
