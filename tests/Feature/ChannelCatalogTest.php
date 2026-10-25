@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\Actors\ActorResource;
 use App\Filament\Resources\YoutubeChannels\Pages\ListYoutubeChannels;
 use App\Filament\Resources\YoutubeChannels\Pages\ViewYoutubeChannel;
 use App\Filament\Resources\YoutubeChannels\RelationManagers\VideosRelationManager;
@@ -54,6 +55,8 @@ class ChannelCatalogTest extends TestCase
         $this->actingAs(User::factory()->create());
 
         Livewire::test(ListYoutubeChannels::class)
+            ->assertActionExists('actors')
+            ->assertActionHasUrl('actors', ActorResource::getUrl())
             ->assertCanSeeTableRecords([$healthy, $failed, $paused])
             ->assertTableColumnStateSet('title', 'Healthy Channel', $healthy)
             ->assertTableColumnStateSet('handle', '@healthy', $healthy)

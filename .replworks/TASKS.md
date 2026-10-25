@@ -106,3 +106,13 @@
     - The Operator can edit candidate fields, approve or reject a Pending candidate, and supply an optional review note; the decision, reviewer, and review time are retained.
     - Approved candidates become eligible for public display; Pending and Rejected candidates remain ineligible. No public Viewer screen is added.
     - A failed review save is shown and leaves the candidate Pending; automated tests pass for display eligibility, successful decisions, and failure handling.
+
+- [x] T-014 Simplify to the Actor and Actor-Video catalog
+  - Satisfies: PRODUCT_SPEC.md §§SCR-002–SCR-003, Functional Requirements FR-014–FR-025, Acceptance Criteria AC-007–AC-014
+  - External boundary: no
+  - Supersedes: T-008–T-013
+  - Acceptance criteria:
+    - Actor and Actor-Video appearance records replace separate Actor Candidate, Actor Identity, Filmography Candidate, Candidate Source, and Review Status records.
+    - A successful Gemini Actor Extraction associates extracted Actors with the selected Video; a repeated extraction does not duplicate that association.
+    - The Operator can edit Actor Name, Activity Name, Actor URL, and flexible Profile Fields, add or remove an Actor-Video association, and merge Actors; merged Actors are hidden and their associations move to the survivor.
+    - No review or approval screen, source table, or name-only automatic merge remains; all tests pass.
