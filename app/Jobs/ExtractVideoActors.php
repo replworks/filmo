@@ -89,8 +89,11 @@ class ExtractVideoActors implements ShouldQueue
                 $actor = Actor::create([
                     'name' => $name,
                     'activity_name' => $activityName,
-                    'profile' => $relatedLink === null ? null : ['related_link' => $relatedLink],
                 ]);
+            }
+
+            if ($relatedLink !== null) {
+                $actor->referenceUrls()->firstOrCreate(['url' => $relatedLink]);
             }
 
             $actor->videos()->syncWithoutDetaching([$video->id]);

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\Actors\Pages\CreateActor;
 use App\Filament\Resources\Actors\Pages\EditActor;
 use App\Filament\Resources\Actors\Pages\ListActors;
 use App\Filament\Resources\Actors\RelationManagers\ActorVideosRelationManager;
@@ -40,6 +41,7 @@ class ActorCatalogTest extends TestCase
         $this->actingAs(User::factory()->create());
 
         Livewire::test(ListActors::class)
+            ->assertActionExists('create')
             ->assertActionExists('channels')
             ->assertActionHasUrl('channels', YoutubeChannelResource::getUrl())
             ->assertCanSeeTableRecords([$active])
@@ -60,7 +62,6 @@ class ActorCatalogTest extends TestCase
         $actor = Actor::factory()->create([
             'name' => 'Old Name',
             'activity_name' => null,
-            'url' => null,
             'profile' => null,
         ]);
 
@@ -71,11 +72,17 @@ class ActorCatalogTest extends TestCase
             ->fillForm([
                 'name' => 'New Name',
                 'activity_name' => 'New Activity',
-                'url' => 'https://namu.wiki/w/actor',
-                'profile' => [
-                    'birth_date' => '1981-11-22',
-                    'school' => 'Example University',
+                'birth_date' => '1981-11-22',
+                'birth_place' => 'Seoul',
+                'education' => 'Example University',
+                'debut' => '1996',
+                'agency' => 'Example Agency',
+                'nationality' => 'Korean',
+                'referenceUrls' => [
+                    ['url' => 'https://namu.wiki/w/actor'],
+                    ['url' => 'https://search.naver.com/actor'],
                 ],
+                'profile' => ['instagram' => 'https://instagram.com/actor'],
             ])
             ->call('save')
             ->assertHasNoErrors();
@@ -84,14 +91,65 @@ class ActorCatalogTest extends TestCase
 
         $this->assertSame('New Name', $actor->name);
         $this->assertSame('New Activity', $actor->activity_name);
-        $this->assertSame('https://namu.wiki/w/actor', $actor->url);
-        $this->assertSame('1981-11-22', $actor->profile['birth_date']);
-        $this->assertSame('Example University', $actor->profile['school']);
+        $this->assertSame(
+            ['https://namu.wiki/w/actor', 'https://search.naver.com/actor'],
+            $actor->referenceUrls()->orderBy('id')->pluck('url')->all(),
+        );
+        $this->assertSame('1981-11-22', $actor->birth_date->toDateString());
+        $this->assertSame('Seoul', $actor->birth_place);
+        $this->assertSame('Example University', $actor->education);
+        $this->assertSame('1996', $actor->debut);
+        $this->assertSame('Example Agency', $actor->agency);
+        $this->assertSame('Korean', $actor->nationality);
+        $this->assertSame('https://instagram.com/actor', $actor->profile['instagram']);
     }
 
-    public function test_the_actor_page_has_an_open_url_action_when_a_url_is_saved(): void
+    public function test_the_operator_can_create_and_delete_an_actor(): void
     {
-        $actor = Actor::factory()->create(['url' => 'https://namu.wiki/w/actor']);
+        $this->actingAs(User::factory()->create());
+
+        Livewire::test(CreateActor::class)
+            ->fillForm([
+                'name' => 'Created Actor',
+                'activity_name' => 'Created Activity',
+                'birth_date' => '1990-01-01',
+                'education' => 'Created University',
+                'referenceUrls' => [
+                    ['url' => 'https://namu.wiki/w/created'],
+                ],
+                'profile' => ['instagram' => 'https://instagram.com/created'],
+            ])
+            ->call('create')
+            ->assertHasNoErrors();
+
+        $actor = Actor::where('name', 'Created Actor')->firstOrFail();
+
+        $this->assertSame('Created Activity', $actor->activity_name);
+        $this->assertSame(
+            ['https://namu.wiki/w/created'],
+            $actor->referenceUrls()->pluck('url')->all(),
+        );
+        $this->assertSame('1990-01-01', $actor->birth_date->toDateString());
+        $this->assertSame('Created University', $actor->education);
+        $this->assertSame('https://instagram.com/created', $actor->profile['instagram']);
+
+        $video = $this->video('created-actor-video');
+        $actor->videos()->attach($video->id);
+
+        Livewire::test(ListActors::class)
+            ->callTableAction('delete', $actor);
+
+        $this->assertDatabaseMissing('actors', ['id' => $actor->id]);
+        $this->assertDatabaseMissing('actor_video', [
+            'actor_id' => $actor->id,
+            'youtube_video_id' => $video->id,
+        ]);
+    }
+
+    public function test_the_actor_page_has_an_open_url_action_when_a_reference_url_is_saved(): void
+    {
+        $actor = Actor::factory()->create();
+        $actor->referenceUrls()->create(['url' => 'https://namu.wiki/w/actor']);
 
         $this->actingAs(User::factory()->create());
 
@@ -160,9 +218,15 @@ class ActorCatalogTest extends TestCase
         $actor = Actor::factory()->create([
             'name' => 'Old Name',
             'activity_name' => 'Old Activity',
-            'url' => 'https://old.example',
-            'profile' => ['school' => 'Old School'],
+            'birth_date' => '1980-01-01',
+            'birth_place' => 'Busan',
+            'education' => 'Old School',
+            'debut' => '1990',
+            'agency' => 'Old Agency',
+            'nationality' => 'Korean',
+            'profile' => ['instagram' => 'https://instagram.com/old'],
         ]);
+        $actor->referenceUrls()->create(['url' => 'https://old.example']);
 
         $this->actingAs(User::factory()->create());
 
@@ -171,7 +235,13 @@ class ActorCatalogTest extends TestCase
             ->fillForm([
                 'name' => 'Only Name',
                 'activity_name' => null,
-                'url' => null,
+                'birth_date' => null,
+                'birth_place' => null,
+                'education' => null,
+                'debut' => null,
+                'agency' => null,
+                'nationality' => null,
+                'referenceUrls' => [],
                 'profile' => null,
             ])
             ->call('save')
@@ -181,7 +251,13 @@ class ActorCatalogTest extends TestCase
 
         $this->assertSame('Only Name', $actor->name);
         $this->assertNull($actor->activity_name);
-        $this->assertNull($actor->url);
+        $this->assertNull($actor->birth_date);
+        $this->assertNull($actor->birth_place);
+        $this->assertNull($actor->education);
+        $this->assertNull($actor->debut);
+        $this->assertNull($actor->agency);
+        $this->assertNull($actor->nationality);
+        $this->assertSame(0, $actor->referenceUrls()->count());
         $this->assertSame([], $actor->profile);
     }
 

@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources\YoutubeChannels;
 
+use App\Filament\Resources\YoutubeChannels\Pages\CreateYoutubeChannel;
+use App\Filament\Resources\YoutubeChannels\Pages\EditYoutubeChannel;
 use App\Filament\Resources\YoutubeChannels\Pages\ListYoutubeChannels;
 use App\Filament\Resources\YoutubeChannels\Pages\ViewYoutubeChannel;
 use App\Filament\Resources\YoutubeChannels\RelationManagers\VideosRelationManager;
+use App\Filament\Resources\YoutubeChannels\Schemas\YoutubeChannelForm;
 use App\Filament\Resources\YoutubeChannels\Schemas\YoutubeChannelInfolist;
 use App\Filament\Resources\YoutubeChannels\Tables\YoutubeChannelsTable;
 use BackedEnum;
@@ -34,6 +37,11 @@ class YoutubeChannelResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedVideoCamera;
 
+    public static function form(Schema $schema): Schema
+    {
+        return YoutubeChannelForm::configure($schema);
+    }
+
     public static function infolist(Schema $schema): Schema
     {
         return YoutubeChannelInfolist::configure($schema);
@@ -55,7 +63,9 @@ class YoutubeChannelResource extends Resource
     {
         return [
             'index' => ListYoutubeChannels::route('/'),
+            'create' => CreateYoutubeChannel::route('/create'),
             'view' => ViewYoutubeChannel::route('/{record}'),
+            'edit' => EditYoutubeChannel::route('/{record}/edit'),
         ];
     }
 

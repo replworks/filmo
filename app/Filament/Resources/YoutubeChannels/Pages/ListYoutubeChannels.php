@@ -6,6 +6,7 @@ use App\Filament\Pages\ChannelImport;
 use App\Filament\Resources\Actors\ActorResource;
 use App\Filament\Resources\YoutubeChannels\YoutubeChannelResource;
 use Filament\Actions\Action;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListYoutubeChannels extends ListRecords
@@ -15,6 +16,7 @@ class ListYoutubeChannels extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            CreateAction::make()->label('New Channel'),
             Action::make('import')
                 ->label('Import Channels')
                 ->icon('heroicon-o-arrow-up-tray')

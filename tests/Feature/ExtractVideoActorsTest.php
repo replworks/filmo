@@ -6,6 +6,7 @@ use App\Filament\Resources\YoutubeChannels\Pages\ViewYoutubeChannel;
 use App\Filament\Resources\YoutubeChannels\RelationManagers\VideosRelationManager;
 use App\Jobs\ExtractVideoActors;
 use App\Models\Actor;
+use App\Models\ActorReferenceUrl;
 use App\Models\User;
 use Cable8mm\Youtube\Models\YoutubeChannel;
 use Cable8mm\Youtube\Models\YoutubeVideo;
@@ -46,15 +47,16 @@ class ExtractVideoActorsTest extends TestCase
         $this->assertNotNull($video->extracted_at);
         $this->assertSame(3, Actor::count());
         $this->assertSame(3, $this->actorCount($video));
+        $this->assertSame(3, ActorReferenceUrl::count());
         $this->assertSame(
             ['고은빈', '라현서', '홍연우'],
             Actor::orderBy('name')->pluck('name')->all(),
         );
         $this->assertSame(
             'https://www.instagram.com/rara__0228/',
-            Actor::where('name', '라현서')->firstOrFail()->profile['related_link'],
+            Actor::where('name', '라현서')->firstOrFail()->referenceUrls()->value('url'),
         );
-        $this->assertNull(Actor::where('name', '라현서')->firstOrFail()->url);
+        $this->assertNull(Actor::where('name', '라현서')->firstOrFail()->profile);
     }
 
     public function test_repeated_extraction_does_not_duplicate_actors_or_links(): void
@@ -68,6 +70,7 @@ class ExtractVideoActorsTest extends TestCase
 
         $this->assertSame(3, Actor::count());
         $this->assertSame(3, $this->actorCount($video));
+        $this->assertSame(3, ActorReferenceUrl::count());
     }
 
     public function test_the_same_actor_name_on_a_different_video_is_not_automatically_merged(): void

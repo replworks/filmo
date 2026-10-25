@@ -27,16 +27,23 @@ class ActorMergeTest extends TestCase
     {
         $survivor = Actor::create([
             'name' => 'Survivor',
-            'profile' => ['birth_date' => '1981-11-22'],
+            'birth_date' => '1981-11-22',
+            'profile' => ['instagram' => 'https://instagram.com/survivor'],
         ]);
         $other = Actor::create([
             'name' => 'Other',
-            'url' => 'https://namu.wiki/w/other',
-            'profile' => ['school' => 'Example University', 'birth_date' => 'ignored'],
+            'birth_place' => 'Seoul',
+            'education' => 'Example University',
+            'agency' => 'Example Agency',
+            'nationality' => 'Korean',
+            'profile' => ['youtube' => 'https://youtube.com/@other'],
         ]);
 
         $firstVideo = $this->video('video-1');
         $secondVideo = $this->video('video-2');
+
+        $survivor->referenceUrls()->create(['url' => 'https://namu.wiki/w/survivor']);
+        $other->referenceUrls()->create(['url' => 'https://namu.wiki/w/other']);
 
         $survivor->videos()->attach($firstVideo->id);
         $other->videos()->attach([$firstVideo->id, $secondVideo->id]);
@@ -50,9 +57,18 @@ class ActorMergeTest extends TestCase
         );
         $this->assertSame(0, $other->videos()->count());
         $this->assertSame($survivor->id, $other->refresh()->merged_into_actor_id);
-        $this->assertSame('1981-11-22', $merged->profile['birth_date']);
-        $this->assertSame('Example University', $merged->profile['school']);
-        $this->assertSame('https://namu.wiki/w/other', $merged->url);
+        $this->assertSame('1981-11-22', $merged->birth_date->toDateString());
+        $this->assertSame('Seoul', $merged->birth_place);
+        $this->assertSame('Example University', $merged->education);
+        $this->assertSame('Example Agency', $merged->agency);
+        $this->assertSame('Korean', $merged->nationality);
+        $this->assertSame('https://instagram.com/survivor', $merged->profile['instagram']);
+        $this->assertSame('https://youtube.com/@other', $merged->profile['youtube']);
+        $this->assertSame(
+            ['https://namu.wiki/w/survivor', 'https://namu.wiki/w/other'],
+            $merged->referenceUrls()->orderBy('id')->pluck('url')->all(),
+        );
+        $this->assertSame(0, $other->referenceUrls()->count());
     }
 
     public function test_merged_actors_are_hidden_from_the_active_scope(): void

@@ -55,12 +55,19 @@ class MergeManager
 
                 DB::table('actor_video')->where('actor_id', $actor->id)->delete();
 
-                if ($survivor->url === null && $actor->url !== null) {
-                    $survivor->url = $actor->url;
+                foreach ($actor->referenceUrls()->get() as $referenceUrl) {
+                    $survivor->referenceUrls()->firstOrCreate(['url' => $referenceUrl->url]);
+                    $referenceUrl->delete();
                 }
 
                 if ($survivor->activity_name === null && $actor->activity_name !== null) {
                     $survivor->activity_name = $actor->activity_name;
+                }
+
+                foreach (Actor::PROFILE_COLUMNS as $column) {
+                    if ($survivor->{$column} === null && $actor->{$column} !== null) {
+                        $survivor->{$column} = $actor->{$column};
+                    }
                 }
 
                 foreach ($actor->profile ?? [] as $key => $value) {

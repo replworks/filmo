@@ -14,10 +14,24 @@ class Actor extends Model
 {
     use HasFactory;
 
+    public const PROFILE_COLUMNS = [
+        'birth_date',
+        'birth_place',
+        'education',
+        'debut',
+        'agency',
+        'nationality',
+    ];
+
     protected $fillable = [
         'name',
         'activity_name',
-        'url',
+        'birth_date',
+        'birth_place',
+        'education',
+        'debut',
+        'agency',
+        'nationality',
         'profile',
         'merged_into_actor_id',
     ];
@@ -25,6 +39,7 @@ class Actor extends Model
     protected function casts(): array
     {
         return [
+            'birth_date' => 'date',
             'profile' => 'array',
         ];
     }
@@ -35,6 +50,14 @@ class Actor extends Model
     public function videos(): BelongsToMany
     {
         return $this->belongsToMany(YoutubeVideo::class, 'actor_video', 'actor_id', 'youtube_video_id');
+    }
+
+    /**
+     * @return HasMany<ActorReferenceUrl, $this>
+     */
+    public function referenceUrls(): HasMany
+    {
+        return $this->hasMany(ActorReferenceUrl::class);
     }
 
     /**

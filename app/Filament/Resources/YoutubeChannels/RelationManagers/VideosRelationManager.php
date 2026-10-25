@@ -6,6 +6,9 @@ use App\Filament\Resources\YoutubeChannels\YoutubeChannelResource;
 use App\Jobs\ExtractVideoActors;
 use Cable8mm\Youtube\Models\YoutubeVideo;
 use Filament\Actions\Action;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
@@ -54,6 +57,51 @@ class VideosRelationManager extends RelationManager
                     ->toggleable(),
             ])
             ->defaultSort('published_at', 'desc')
+            ->headerActions([
+                Action::make('addVideo')
+                    ->label('영상 추가')
+                    ->icon('heroicon-o-plus')
+                    ->schema([
+                        TextInput::make('video_id')
+                            ->label('Video ID')
+                            ->required()
+                            ->unique('youtube_videos', 'video_id'),
+                        TextInput::make('title')
+                            ->label('Title')
+                            ->required(),
+                        DateTimePicker::make('published_at')
+                            ->label('Published at')
+                            ->required(),
+                        Textarea::make('description')
+                            ->label('Description')
+                            ->rows(3)
+                            ->columnSpanFull(),
+                        TextInput::make('duration')
+                            ->label('Duration'),
+                        TextInput::make('thumbnail_url')
+                            ->label('Thumbnail URL')
+                            ->url(),
+                        TextInput::make('view_count')
+                            ->label('View count')
+                            ->numeric(),
+                        TextInput::make('like_count')
+                            ->label('Like count')
+                            ->numeric(),
+                        TextInput::make('comment_count')
+                            ->label('Comment count')
+                            ->numeric(),
+                    ])
+                    ->action(function (array $data): void {
+                        $this->getOwnerRecord()->videos()->create($data);
+
+                        Notification::make()
+                            ->success()
+                            ->title('영상을 추가했습니다')
+                            ->send();
+
+                        $this->resetTable();
+                    }),
+            ])
             ->paginated([50])
             ->defaultPaginationPageOption(50)
             ->recordActions([

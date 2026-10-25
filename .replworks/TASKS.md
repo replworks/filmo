@@ -116,3 +116,44 @@
     - A successful Gemini Actor Extraction associates extracted Actors with the selected Video; a repeated extraction does not duplicate that association.
     - The Operator can edit Actor Name, Activity Name, Actor URL, and flexible Profile Fields, add or remove an Actor-Video association, and merge Actors; merged Actors are hidden and their associations move to the survivor.
     - No review or approval screen, source table, or name-only automatic merge remains; all tests pass.
+
+- [x] T-015 Expose and manage package tables in admin
+  - Satisfies: PRODUCT_SPEC.md §§SCR-002, SCR-004, Functional Requirements FR-026–FR-034, Acceptance Criteria AC-015–AC-020
+  - External boundary: no
+  - Acceptance criteria:
+    - SCR-004 lists Videos across Channels and Sync Errors with their package fields.
+    - The Operator can create, edit, and delete Videos; deleting a Video removes its Actor-Video associations. Sync Errors are list/view/delete only.
+    - The Operator can create, edit, and delete Channels; creating a Channel starts its initial collection; deleting a Channel removes its Videos and their Actor-Video associations.
+    - Video extraction state, extraction error, and extraction time are visible but read-only; package-overwrite and delete-cascade effects are shown; tests pass.
+
+- [x] T-016 Add Actor create and delete
+  - Satisfies: PRODUCT_SPEC.md §SCR-003, Functional Requirements FR-038, Acceptance Criteria AC-024
+  - External boundary: no
+  - Acceptance criteria:
+    - The Operator can create an Actor from the Actor form.
+    - The Operator can delete an Actor; its Actor-Video associations are removed and the Actor no longer appears.
+    - Actor creation and deletion are explicit; matching names alone do not merge Actors; tests pass.
+
+- [x] T-017 Promote core Actor profile fields to columns
+  - Satisfies: PRODUCT_SPEC.md §SCR-003, Functional Requirements FR-018–FR-019, Acceptance Criteria AC-008
+  - External boundary: no
+  - Acceptance criteria:
+    - `actors` stores Birth Date, Birthplace, Education, Debut, Agency, and Nationality as columns.
+    - The Actor form edits those columns; Profile Fields remain for additional information only.
+    - Existing profile JSON values are migrated into the new columns, and Actor merges fill missing column values; tests pass.
+
+- [x] T-018 Move Actor URLs to actor_reference_urls
+  - Satisfies: PRODUCT_SPEC.md §SCR-003, Functional Requirement FR-020, Acceptance Criterion AC-009
+  - External boundary: no
+  - Acceptance criteria:
+    - Actor reference URLs are stored in `actor_reference_urls` with an actor foreign key, URL, and uniqueness per Actor.
+    - The Actor form can add, edit, and remove multiple reference URLs.
+    - Existing `actors.url` values are migrated into the new table; Actor merges move reference URLs to the survivor; tests pass.
+
+- [x] T-019 Add Channel Video and Video Actor controls
+  - Satisfies: PRODUCT_SPEC.md §§SCR-002, SCR-004, Functional Requirements FR-039–FR-040, Acceptance Criteria AC-025–AC-026
+  - External boundary: no
+  - Acceptance criteria:
+    - A Channel detail screen can create a Video associated with that Channel.
+    - A Video detail screen can associate and dissociate an existing Actor.
+    - Associations appear on both the Actor and Video detail screens; tests pass.
