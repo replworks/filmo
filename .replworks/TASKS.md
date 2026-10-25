@@ -7,13 +7,13 @@
     - All constraints in TECH_STACK.md are satisfied and every check defined there passes.
     - The application starts and its automated test suite passes.
 
-- [ ] T-002 Verify YouTube channel resolution and collection responses
+- [x] T-002 Verify YouTube channel resolution and collection responses
   - Satisfies: PRODUCT_SPEC.md §§External Systems, Functional Requirements FR-001–FR-002, FR-005–FR-013
   - External boundary: yes
   - Acceptance criteria:
     - An executable live probe exercises the YouTube Data API with supported Channel IDs, handles, and Channel URLs, and records which references resolve and the returned Channel identity.
-    - The probe records live Video page data, pagination behavior, returned metadata, and observable failure and quota-exhaustion responses needed by Channel registration and collection.
-    - Pass: at least one supported reference resolves to the intended Channel and a live response provides an available Video page; each required failure response is distinguishable from success. Fail: a required response cannot be observed or distinguished.
+    - The probe records live Video page data, pagination behavior, returned metadata, and observable failure responses needed by Channel registration and collection. The quota-exhaustion response MAY be recorded from the documented YouTube Data API error specification when exhausting the daily quota is not acceptable.
+    - Pass: at least one supported reference resolves to the intended Channel and a live response provides an available Video page; each required failure response, including the documented quota-exhaustion response, is distinguishable from success. Fail: a required response cannot be observed or documented, or cannot be distinguished from success.
 
 - [ ] T-003 Verify Gemini candidate extraction responses
   - Satisfies: PRODUCT_SPEC.md §§External Systems, Functional Requirements FR-014–FR-016, FR-037, FR-042

@@ -1,0 +1,1224 @@
+{
+    "probe": "filmo:probe-youtube",
+    "ran_at": "2026-10-25T17:43:21+00:00",
+    "environment": {
+        "php": "8.4.27",
+        "laravel": "13.38.0",
+        "youtube_package": "v6.0.0",
+        "api_key_fingerprint": "AIza…(39 chars)"
+    },
+    "page_size": 50,
+    "references": [
+        {
+            "input": "UCBR8-60-B28hp2BmDPdntcQ",
+            "lookup": {
+                "method": "getChannelById",
+                "value": "UCBR8-60-B28hp2BmDPdntcQ"
+            },
+            "outcome": "resolved",
+            "channel": {
+                "id": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube",
+                "custom_url": "@youtube",
+                "published_at": "1970-01-01T00:00:00Z",
+                "uploads_playlist_id": "UUBR8-60-B28hp2BmDPdntcQ",
+                "subscriber_count": null,
+                "hidden_subscriber_count": null,
+                "video_count": null,
+                "view_count": null
+            },
+            "failure": null
+        },
+        {
+            "input": "@YouTube",
+            "lookup": {
+                "method": "getChannelByHandle",
+                "value": "@YouTube"
+            },
+            "outcome": "resolved",
+            "channel": {
+                "id": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube",
+                "custom_url": "@youtube",
+                "published_at": "1970-01-01T00:00:00Z",
+                "uploads_playlist_id": "UUBR8-60-B28hp2BmDPdntcQ",
+                "subscriber_count": null,
+                "hidden_subscriber_count": null,
+                "video_count": null,
+                "view_count": null
+            },
+            "failure": null
+        },
+        {
+            "input": "https://www.youtube.com/@YouTube",
+            "lookup": {
+                "method": "getChannelByHandle",
+                "value": "@YouTube"
+            },
+            "outcome": "resolved",
+            "channel": {
+                "id": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube",
+                "custom_url": "@youtube",
+                "published_at": "1970-01-01T00:00:00Z",
+                "uploads_playlist_id": "UUBR8-60-B28hp2BmDPdntcQ",
+                "subscriber_count": null,
+                "hidden_subscriber_count": null,
+                "video_count": null,
+                "view_count": null
+            },
+            "failure": null
+        },
+        {
+            "input": "https://www.youtube.com/channel/UCBR8-60-B28hp2BmDPdntcQ",
+            "lookup": {
+                "method": "getChannelById",
+                "value": "UCBR8-60-B28hp2BmDPdntcQ"
+            },
+            "outcome": "resolved",
+            "channel": {
+                "id": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube",
+                "custom_url": "@youtube",
+                "published_at": "1970-01-01T00:00:00Z",
+                "uploads_playlist_id": "UUBR8-60-B28hp2BmDPdntcQ",
+                "subscriber_count": null,
+                "hidden_subscriber_count": null,
+                "video_count": null,
+                "view_count": null
+            },
+            "failure": null
+        },
+        {
+            "input": "https://www.youtube.com/user/YouTube",
+            "lookup": {
+                "method": "getChannelByName",
+                "value": "YouTube"
+            },
+            "outcome": "resolved",
+            "channel": {
+                "id": "UCBR8-60-B28hp2BmDPdntcQ",
+                "title": "YouTube",
+                "custom_url": "@youtube",
+                "published_at": "1970-01-01T00:00:00Z",
+                "uploads_playlist_id": "UUBR8-60-B28hp2BmDPdntcQ",
+                "subscriber_count": null,
+                "hidden_subscriber_count": null,
+                "video_count": null,
+                "view_count": null
+            },
+            "failure": null
+        }
+    ],
+    "pages": [
+        {
+            "playlist_id": "UUBR8-60-B28hp2BmDPdntcQ",
+            "page": 1,
+            "requested_page_token": null,
+            "outcome": "ok",
+            "item_count": 50,
+            "total_results": 1667,
+            "next_page_token": "EAAaHlBUOkNESWlFRVF3TWpJME1rVTJSRGRHT0VVd1JVVQ",
+            "items": [
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLm1vYURmLTNBQXlZ",
+                    "video_id": "moaDf-3AAyY",
+                    "title": "ahhhhhh! @JazzyGuns",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-25T14:00:38Z",
+                    "video_published_at": "2026-10-25T14:00:38Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/moaDf-3AAyY/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkI1VDRaQ2Z4cDFZ",
+                    "video_id": "B5T4ZCfxp1Y",
+                    "title": "american high? almost friday? who’s next? find out tomorrow 👻 | #DontLookBehindTheCamera Pt. 2",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-24T19:00:15Z",
+                    "video_published_at": "2026-10-24T19:00:15Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/B5T4ZCfxp1Y/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlh5YjdtZS1RcGNJ",
+                    "video_id": "Xyb7me-QpcI",
+                    "title": "when a book is this good, words aren't enough.",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-24T16:00:31Z",
+                    "video_published_at": "2026-10-24T16:00:31Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/Xyb7me-QpcI/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnRZLUNSNUtpLU9Z",
+                    "video_id": "tY-CR5Ki-OY",
+                    "title": "some girlfriends have the magic touch",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-23T20:56:56Z",
+                    "video_published_at": "2026-10-23T20:56:56Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/tY-CR5Ki-OY/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmlkcUF6M29tRGk0",
+                    "video_id": "idqAz3omDi4",
+                    "title": "something spooky is connecting your favorite YouTube worlds. who’s along for the ride?",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-23T18:00:50Z",
+                    "video_published_at": "2026-10-23T18:00:50Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/idqAz3omDi4/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmNyNlhidWpidVg0",
+                    "video_id": "cr6XbujbuX4",
+                    "title": "impossible baseball pitch?? challenge accepted @dudeperfect ⚾️",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-23T13:00:43Z",
+                    "video_published_at": "2026-10-23T13:00:43Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/cr6XbujbuX4/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjZ5WDl0SU56WWYw",
+                    "video_id": "6yX9tINzYf0",
+                    "title": "so that’s what ladybugs look like @aaronyooz",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-22T14:00:18Z",
+                    "video_published_at": "2026-10-22T14:00:18Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/6yX9tINzYf0/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjBIQUVUZzdMMTVv",
+                    "video_id": "0HAETg7L15o",
+                    "title": "if dress rehearsal is any indication, this will be a great (and slightly chaotic) episode",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-21T19:00:58Z",
+                    "video_published_at": "2026-10-21T19:00:58Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/0HAETg7L15o/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlhUOC1pWUxZQ2c4",
+                    "video_id": "XT8-iYLYCg8",
+                    "title": "lights, camera, @ldshadowlady",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-21T16:00:24Z",
+                    "video_published_at": "2026-10-21T16:00:24Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/XT8-iYLYCg8/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLndYU2JBVzBCMkZR",
+                    "video_id": "wXSbAW0B2FQ",
+                    "title": "the watch history reveal we needed 👀 #VSFashionShow",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-20T22:00:36Z",
+                    "video_published_at": "2026-10-20T22:00:36Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/wXSbAW0B2FQ/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmlsX01NSTJNT1lN",
+                    "video_id": "il_MMI2MOYM",
+                    "title": "all great bags hold something wild",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-20T19:49:34Z",
+                    "video_published_at": "2026-10-20T19:49:34Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/il_MMI2MOYM/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlM4WW4yT3MwYldj",
+                    "video_id": "S8Yn2Os0bWc",
+                    "title": "can we all agree a smokey eye never misses 🩷 which one are you picking #VSFashionShow",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-20T16:00:24Z",
+                    "video_published_at": "2026-10-20T16:00:24Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/S8Yn2Os0bWc/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkJpbnFwck11cDdr",
+                    "video_id": "BinqprMup7k",
+                    "title": "most likely to make you cry? lose sleep? cancel plans?",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-20T13:00:28Z",
+                    "video_published_at": "2026-10-20T13:00:28Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/BinqprMup7k/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmpqVjcxbXZNTTJv",
+                    "video_id": "jjV71mvMM2o",
+                    "title": "what song would you strut to?? #VSFashionShow",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-20T01:00:27Z",
+                    "video_published_at": "2026-10-20T01:00:27Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/jjV71mvMM2o/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnlqSHZrTWVWeksw",
+                    "video_id": "yjHvkMeVzK0",
+                    "title": "@ldshadowlady created Shadowcraft as a teen. 15 years later, she's a Minecraft legend.",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-19T16:00:26Z",
+                    "video_published_at": "2026-10-19T16:00:26Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/yjHvkMeVzK0/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLk82T1hRQ2ZQQ2ln",
+                    "video_id": "O6OXQCfPCig",
+                    "title": "going behind the screen with @ldshadowlady",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-19T16:00:20Z",
+                    "video_published_at": "2026-10-19T16:00:20Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/O6OXQCfPCig/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlROd0I3YlgwcHln",
+                    "video_id": "TNwB7bX0pyg",
+                    "title": "what’s Gigi Hadid watching? science and animal videos 🩷 #VSFashionShow",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-19T13:00:32Z",
+                    "video_published_at": "2026-10-19T13:00:32Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/TNwB7bX0pyg/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnppbllxY203MHpr",
+                    "video_id": "zinYqcm70zk",
+                    "title": "the baddest artists are in LA tonight 🩷#VSFashionShow",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-19T04:08:18Z",
+                    "video_published_at": "2026-10-19T04:08:18Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/zinYqcm70zk/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjE5SVg4elNFSlhn",
+                    "video_id": "19IX8zSEJXg",
+                    "title": "dreams come true on the VS runway 💗 #VSFashionShow",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-19T01:40:29Z",
+                    "video_published_at": "2026-10-19T01:40:29Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/19IX8zSEJXg/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnhJNlBvYlV1bjNj",
+                    "video_id": "xI6PobUun3c",
+                    "title": "6-inch heels or 10-foot wings? the angels have spoken ✨ #VSFashionShow",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-19T00:30:24Z",
+                    "video_published_at": "2026-10-19T00:30:24Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/xI6PobUun3c/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlFYWGNmMnA1STVV",
+                    "video_id": "QXXcf2p5I5U",
+                    "title": "dream deserted island vibes 💖 #VSFashionShow",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-18T22:43:20Z",
+                    "video_published_at": "2026-10-18T22:43:20Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/QXXcf2p5I5U/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjNuS05xMUhVN3Zz",
+                    "video_id": "3nKNq1HU7vs",
+                    "title": "so this is what a sleep paralysis demon looks like @valeriyaeros",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-18T14:00:31Z",
+                    "video_published_at": "2026-10-18T14:00:31Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/3nKNq1HU7vs/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlhpVzRzTk5MRkJZ",
+                    "video_id": "XiW4sNNLFBY",
+                    "title": "walk walk fashion baby, the world is our runway",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-17T19:00:28Z",
+                    "video_published_at": "2026-10-17T19:00:28Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/XiW4sNNLFBY/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkxPYlVOZ09HMWFv",
+                    "video_id": "LObUNgOG1ao",
+                    "title": "october 22nd can't come soon enough!",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-17T16:00:35Z",
+                    "video_published_at": "2026-10-17T16:00:35Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/LObUNgOG1ao/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkFPVmYxSm1FZVM4",
+                    "video_id": "AOVf1JmEeS8",
+                    "title": "the ICONIC Victoria's Secret angel wings... but make it rug version",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-16T22:00:58Z",
+                    "video_published_at": "2026-10-16T22:00:58Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/AOVf1JmEeS8/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkF3TXkxMVIzYXUw",
+                    "video_id": "AwMy11R3au0",
+                    "title": "the badge still works! watch more on @LillySingh's YouTube channel now",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-16T19:00:30Z",
+                    "video_published_at": "2026-10-16T19:00:30Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/AwMy11R3au0/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnEzZ3pZcEs4MlpN",
+                    "video_id": "q3gzYpK82ZM",
+                    "title": "bugha is the blueprint ✍️ drop your top 3 esports streaming moments below @valkyrae @scarra",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-15T16:00:31Z",
+                    "video_published_at": "2026-10-15T16:00:31Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/q3gzYpK82ZM/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlBZSW9WQ1hwX2RZ",
+                    "video_id": "PYIoVCXp_dY",
+                    "title": "choose your fighter! catch Street Fighter in theaters this Friday.",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-14T22:19:40Z",
+                    "video_published_at": "2026-10-14T22:19:40Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/PYIoVCXp_dY/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlFfQkM4WmhpWm9V",
+                    "video_id": "Q_BC8ZhiZoU",
+                    "title": "carrying the pots and pans is a rite of passage @andrewtrs",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-13T21:00:25Z",
+                    "video_published_at": "2026-10-13T21:00:25Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/Q_BC8ZhiZoU/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmRXdVBuVzBFSEtN",
+                    "video_id": "dWuPnW0EHKM",
+                    "title": "*cries in micro bang*",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-12T17:00:19Z",
+                    "video_published_at": "2026-10-12T17:00:19Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/dWuPnW0EHKM/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnE0LXJWYnlFbXJj",
+                    "video_id": "q4-rVbyEmrc",
+                    "title": "one year married and 5 full-length episodes, exclusively on YouTube on @DorothyWang's channel 💍",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-11T20:00:27Z",
+                    "video_published_at": "2026-10-11T20:00:27Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/q4-rVbyEmrc/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjlISnJvc3NtVzFj",
+                    "video_id": "9HJrossmW1c",
+                    "title": "no dish like abuela’s ❤️ @AbueAngieRecetas",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-09T21:00:28Z",
+                    "video_published_at": "2026-10-09T21:00:28Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/9HJrossmW1c/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLm9rS0p0NlZQaExj",
+                    "video_id": "okKJt6VPhLc",
+                    "title": "melatonin was a layup, but crash out got us too @tinashenow",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-09T01:00:36Z",
+                    "video_published_at": "2026-10-09T01:00:36Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/okKJt6VPhLc/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLm9zVjI5WjhLUTZB",
+                    "video_id": "osV29Z8KQ6A",
+                    "title": "legendary. iconic. a miracle. yet to be outdone. @Valkyrae @scarra",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-08T16:00:30Z",
+                    "video_published_at": "2026-10-08T16:00:30Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/osV29Z8KQ6A/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjcxeWFfSkNfSWJN",
+                    "video_id": "71ya_JC_IbM",
+                    "title": "20 years of esports history explained",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-08T15:58:09Z",
+                    "video_published_at": "2026-10-08T15:58:09Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/71ya_JC_IbM/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlkzd0YxY3psOUdZ",
+                    "video_id": "Y3wF1czl9GY",
+                    "title": "trickshots are their own sport tbh",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-06T21:00:32Z",
+                    "video_published_at": "2026-10-06T21:00:32Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/Y3wF1czl9GY/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlNMVW96MTg3b1NB",
+                    "video_id": "SLUoz187oSA",
+                    "title": "from #Adele to #CalvinHarris, @thefutureutopia has helped shape a lot of records you know",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-05T20:00:29Z",
+                    "video_published_at": "2026-10-05T20:00:29Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/SLUoz187oSA/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjF5ZkNCWWRqTEhV",
+                    "video_id": "1yfCBYdjLHU",
+                    "title": "it’s the little wins that get you through the day",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-05T14:55:21Z",
+                    "video_published_at": "2026-10-05T14:55:21Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/1yfCBYdjLHU/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjJfZEYwY21ON0I0",
+                    "video_id": "2_dF0cmN7B4",
+                    "title": "ME AT THE ZOO JUMP SCARE!!!",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-04T15:02:37Z",
+                    "video_published_at": "2026-10-04T15:02:37Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/2_dF0cmN7B4/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmxtaWNqdlVMcWZ3",
+                    "video_id": "lmicjvULqfw",
+                    "title": "the rap game comes for us all…",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-03T21:00:11Z",
+                    "video_published_at": "2026-10-03T21:00:11Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/lmicjvULqfw/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlZUMEJxOUhEZVUw",
+                    "video_id": "VT0Bq9HDeU0",
+                    "title": "we're giving you the keys to your youtube homepage 🔑",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-02T19:30:26Z",
+                    "video_published_at": "2026-10-02T19:30:26Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/VT0Bq9HDeU0/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLk5fVmdLaUpxUklN",
+                    "video_id": "N_VgKiJqRIM",
+                    "title": "with Ask YouTube, search for exactly what you want, in your own words 🔎 @gremlita #MadeOnYouTube",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-02T16:25:26Z",
+                    "video_published_at": "2026-10-02T16:25:26Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/N_VgKiJqRIM/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLl93b2dtaXdZa25Z",
+                    "video_id": "_wogmiwYknY",
+                    "title": "refusing to lose to the blue creeper, wbu? #YouTubePartner",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-01T19:00:23Z",
+                    "video_published_at": "2026-10-01T19:00:23Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/_wogmiwYknY/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLk5lb2hDOXUtWXgw",
+                    "video_id": "NeohC9u-Yx0",
+                    "title": "and so it begins watch @NBCBrooklyn99 on @peacock with YouTube Primetime Channels",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-10-01T04:00:27Z",
+                    "video_published_at": "2026-10-01T04:00:27Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/NeohC9u-Yx0/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLk1Ob0V0UVhla0JN",
+                    "video_id": "MNoEtQXekBM",
+                    "title": "can we beat the Blue Creeper?",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-30T22:00:44Z",
+                    "video_published_at": "2026-09-30T22:00:44Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/MNoEtQXekBM/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnNTVWNkTHUzUjg0",
+                    "video_id": "sSUcdLu3R84",
+                    "title": "what should we name our new monster logo? 👻 @WickedMakers",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-30T16:00:43Z",
+                    "video_published_at": "2026-09-30T16:00:43Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/sSUcdLu3R84/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnBScm1RVW02WnZn",
+                    "video_id": "pRrmQUm6Zvg",
+                    "title": "Turning the YouTube Logo Into a Monster",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-30T16:00:26Z",
+                    "video_published_at": "2026-09-30T16:00:26Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/pRrmQUm6Zvg/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmJRbTFpVTNSNnBn",
+                    "video_id": "bQm1iU3R6pg",
+                    "title": "a real life blue Creeper took over in Japan!",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-30T01:01:28Z",
+                    "video_published_at": "2026-09-30T01:01:28Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/bQm1iU3R6pg/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkstVHZBSXBuMmVV",
+                    "video_id": "K-TvAIpn2eU",
+                    "title": "say hello to Custom Feeds 👋 @gremlita has already made herself right at home ✨ #MadeOnYouTube",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-29T22:30:38Z",
+                    "video_published_at": "2026-09-29T22:30:38Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/K-TvAIpn2eU/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLksyeGZ3YU96TXVZ",
+                    "video_id": "K2xfwaOzMuY",
+                    "title": "and look at @kittyasmrxo now 🥹",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-28T20:00:32Z",
+                    "video_published_at": "2026-09-28T20:00:32Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/K2xfwaOzMuY/hqdefault.jpg"
+                }
+            ],
+            "failure": null
+        },
+        {
+            "playlist_id": "UUBR8-60-B28hp2BmDPdntcQ",
+            "page": 2,
+            "requested_page_token": "EAAaHlBUOkNESWlFRVF3TWpJME1rVTJSRGRHT0VVd1JVVQ",
+            "outcome": "ok",
+            "item_count": 50,
+            "total_results": 1667,
+            "next_page_token": "EAAaHlBUOkNHUWlFRFUxUVRJeU5qWkZRa0V4TUVZNVF6VQ",
+            "items": [
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnllYmlhT2RxejM0",
+                    "video_id": "yebiaOdqz34",
+                    "title": "basically an athlete 🤣 @franqitom",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-28T14:00:32Z",
+                    "video_published_at": "2026-09-28T14:00:32Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/yebiaOdqz34/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjcwOGp0SHUwT3BR",
+                    "video_id": "708jtHu0OpQ",
+                    "title": "Dream Track turns your chores into scores 🎵",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-27T22:04:48Z",
+                    "video_published_at": "2026-09-27T22:04:48Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/708jtHu0OpQ/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmdMWW5BUVhId1M4",
+                    "video_id": "gLYnAQXHwS8",
+                    "title": "pulled up to the lab with #khrisriddicktynes for a look at the process behind his craft",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-26T22:01:19Z",
+                    "video_published_at": "2026-09-26T22:01:19Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/gLYnAQXHwS8/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLk1yOEV6RlZhV0E0",
+                    "video_id": "Mr8EzFVaWA4",
+                    "title": "hopecore is the \"forgotten island\" red carpet",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-26T17:00:31Z",
+                    "video_published_at": "2026-09-26T17:00:31Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/Mr8EzFVaWA4/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlNKWlEtcXZqaWJr",
+                    "video_id": "SJZQ-qvjibk",
+                    "title": "@kenzbrooksbets brought out the whiteboard, study up",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-26T14:01:00Z",
+                    "video_published_at": "2026-09-26T14:01:00Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/SJZQ-qvjibk/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLndCQTgzelhhWWNj",
+                    "video_id": "wBA83zXaYcc",
+                    "title": "spooky szn is here! tell us who you got⬇️ Watch @AmericanHorrorStory with @FXNetworks  on YouTube TV",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-24T18:00:22Z",
+                    "video_published_at": "2026-09-24T18:00:22Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/wBA83zXaYcc/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLngzOGp2Z2VmVXRJ",
+                    "video_id": "x38jvgefUtI",
+                    "title": "use the Minecraft Creeper Battle effect to beat my high score #YouTubePartner #Minecraft #DungeonsII",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-22T19:09:05Z",
+                    "video_published_at": "2026-09-22T19:09:05Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/x38jvgefUtI/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkdjNGR0RXAyZmN3",
+                    "video_id": "Gc4dtEp2fcw",
+                    "title": "making it easy to be in the moment 😍 #YouTubePartner create videos as you go, using Edit with AI ✨",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-21T14:49:02Z",
+                    "video_published_at": "2026-09-21T14:49:02Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/Gc4dtEp2fcw/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlkxMXVpRnEyYVNZ",
+                    "video_id": "Y11uiFq2aSY",
+                    "title": "we’ll take 3, thank you very much @SoyAnitaSan",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-20T17:00:38Z",
+                    "video_published_at": "2026-09-20T17:00:38Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/Y11uiFq2aSY/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjJKUXVRMC05MkVJ",
+                    "video_id": "2JQuQ0-92EI",
+                    "title": "what he said: NFL Sunday Ticket & YouTube TV",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-19T16:00:27Z",
+                    "video_published_at": "2026-09-19T16:00:27Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/2JQuQ0-92EI/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmNCQW9OV2FDTFJN",
+                    "video_id": "cBAoNWaCLRM",
+                    "title": "cat looking right at us 😻 @thefunkycakeart",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-18T14:00:25Z",
+                    "video_published_at": "2026-09-18T14:00:25Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/cBAoNWaCLRM/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlJxMzNQSnNYSTVz",
+                    "video_id": "Rq33PJsXI5s",
+                    "title": "ah the great outdoors @StudioWrong​",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-17T15:00:22Z",
+                    "video_published_at": "2026-09-17T15:00:22Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/Rq33PJsXI5s/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkM0ZXhiZGw1SC1z",
+                    "video_id": "C4exbdl5H-s",
+                    "title": "@murdabeatz lets us into the lab for a look at the setup, gear, and details that makes hits❤️‍🔥",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-16T21:00:46Z",
+                    "video_published_at": "2026-09-16T21:00:46Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/C4exbdl5H-s/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLi05YXdCLTJxWDhv",
+                    "video_id": "-9awB-2qX8o",
+                    "title": "creators at the emmys, we love to see it",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-16T18:45:33Z",
+                    "video_published_at": "2026-09-16T18:45:33Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/-9awB-2qX8o/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlhoN0k1SjhlRFFZ",
+                    "video_id": "Xh7I5J8eDQY",
+                    "title": "we gave out our own special award on the emmys carpet",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-16T01:00:47Z",
+                    "video_published_at": "2026-09-16T01:00:47Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/Xh7I5J8eDQY/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjd5RzNsVFJvcXhj",
+                    "video_id": "7yG3lTRoqxc",
+                    "title": "tv royalty 🤝 movie royalty — this is what the emmys are all about 📺:NBC/Televison Academy",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-15T04:31:22Z",
+                    "video_published_at": "2026-09-15T04:31:22Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/7yG3lTRoqxc/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmRmRldpM3FGeEc0",
+                    "video_id": "dfFWi3qFxG4",
+                    "title": "we don’t pick favorites, but paloma diamond has our vote. check out more emmys content on youtube.",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-14T17:00:36Z",
+                    "video_published_at": "2026-09-14T17:00:36Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/dfFWi3qFxG4/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlZtLUVpWnE2Qmpn",
+                    "video_id": "Vm-EiZq6Bjg",
+                    "title": "one inaugural Creator Festival, two iconic premieres from @MarkVins and @ziwe at TIFF 🎬",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-13T15:00:41Z",
+                    "video_published_at": "2026-09-13T15:00:41Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/Vm-EiZq6Bjg/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnJiLU02a0UxMGpr",
+                    "video_id": "rb-M6kE10jk",
+                    "title": "and the award for best emmy themed cookie goes to..... @Hanamade.Cookies",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-12T19:00:41Z",
+                    "video_published_at": "2026-09-12T19:00:41Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/rb-M6kE10jk/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjQ1cEJBajU2NWhR",
+                    "video_id": "45pBAj565hQ",
+                    "title": "saving the best plays for BTS.",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-12T16:00:57Z",
+                    "video_published_at": "2026-09-12T16:00:57Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/45pBAj565hQ/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkRmRUNqVUw5WnZV",
+                    "video_id": "DfECjUL9ZvU",
+                    "title": "a creator award almost as beautiful as your art @artistomg! #diamond #creatoraward #creator",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-10T20:00:18Z",
+                    "video_published_at": "2026-09-10T20:00:18Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/DfECjUL9ZvU/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjJUeFJrR2NQTC1v",
+                    "video_id": "2TxRkGcPL-o",
+                    "title": "edit less, sleep more 😴",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-09T14:58:08Z",
+                    "video_published_at": "2026-09-09T14:58:08Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/2TxRkGcPL-o/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLkNHTW1BOUI0VFpF",
+                    "video_id": "CGMmA9B4TZE",
+                    "title": "from Thailand to the world stage, this is her story. #LISA @wearelloud",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-09T14:04:33Z",
+                    "video_published_at": "2026-09-09T14:04:33Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/CGMmA9B4TZE/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmcxaVExQ2tNZ2Qw",
+                    "video_id": "g1iQ1CkMgd0",
+                    "title": "@The_AvantGarde takes NFL game day seriously",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-08T23:00:18Z",
+                    "video_published_at": "2026-09-08T23:00:18Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/g1iQ1CkMgd0/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmo2aWxnaW1mX21z",
+                    "video_id": "j6ilgimf_ms",
+                    "title": "saving the best pool party for last this labor day ☀️ which one are you? @TheJohnsonBrothers",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-07T15:00:36Z",
+                    "video_published_at": "2026-09-07T15:00:36Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/j6ilgimf_ms/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlJVZFhuS3FnaVJF",
+                    "video_id": "RUdXnKqgiRE",
+                    "title": "somebody tell them they can watch all 4 at the same time with multiview",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-06T20:00:47Z",
+                    "video_published_at": "2026-09-06T20:00:47Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/RUdXnKqgiRE/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmF0UjhZYVFYeGpR",
+                    "video_id": "atR8YaQXxjQ",
+                    "title": "hiiiiii practical magic 2 cast 👋 the Owen sisters return everywhere September 10",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-05T18:00:30Z",
+                    "video_published_at": "2026-09-05T18:00:30Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/atR8YaQXxjQ/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlpFWm9PNW9YYXF3",
+                    "video_id": "ZEZoO5oXaqw",
+                    "title": "$5 says he forgot the chips. not NFL Sunday Ticket & YouTube TV.",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-05T15:00:46Z",
+                    "video_published_at": "2026-09-05T15:00:46Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/ZEZoO5oXaqw/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLktwNUhUY0dac3gw",
+                    "video_id": "Kp5HTcGZsx0",
+                    "title": "is the rent miniature too?",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-05T14:03:01Z",
+                    "video_published_at": "2026-09-05T14:03:01Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/Kp5HTcGZsx0/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlhuM3RybFpJUk1V",
+                    "video_id": "Xn3trlZIRMU",
+                    "title": "she's just being miley. MILEY - Bass Persuades (Official Video) is live on YouTube",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-04T21:00:21Z",
+                    "video_published_at": "2026-09-04T21:00:21Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/Xn3trlZIRMU/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmpFdHoyZmJxV0Z3",
+                    "video_id": "jEtz2fbqWFw",
+                    "title": "aaaannnddd now we’re hungry @iamtabithabrown #YouTubePartner",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-04T18:00:35Z",
+                    "video_published_at": "2026-09-04T18:00:35Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/jEtz2fbqWFw/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjRrUEtyR2VHQ1hj",
+                    "video_id": "4kPKrGeGCXc",
+                    "title": "from Thailand to the world  🌎 #LISA @wearelloud",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-04T00:22:29Z",
+                    "video_published_at": "2026-09-04T00:22:29Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/4kPKrGeGCXc/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmpfa2k0cGRycWE0",
+                    "video_id": "j_ki4pdrqa4",
+                    "title": "4 out of 5 is pretty good !! sean knows his guests 🔥 @FirstWeFeast #YouTubePartner",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-03T17:00:31Z",
+                    "video_published_at": "2026-09-03T17:00:31Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/j_ki4pdrqa4/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlp3eU9id0FoUlNN",
+                    "video_id": "ZwyObwAhRSM",
+                    "title": "bday edits made easy 🎂 #YouTubePartner",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-02T19:05:33Z",
+                    "video_published_at": "2026-09-02T19:05:33Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/ZwyObwAhRSM/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLndUb2VOVXdSYl9r",
+                    "video_id": "wToeNUwRb_k",
+                    "title": "see @Ssay_lunch's meal prep in our new channel art 🥝",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-02T14:00:28Z",
+                    "video_published_at": "2026-09-02T14:00:28Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/wToeNUwRb_k/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnVqeXBhMU5kOEJ3",
+                    "video_id": "ujypa1Nd8Bw",
+                    "title": "@haleyybaylee is so [youtube] premium #YouTubePartner",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-09-01T17:00:33Z",
+                    "video_published_at": "2026-09-01T17:00:33Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/ujypa1Nd8Bw/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmt5UVdhQnhVODgw",
+                    "video_id": "kyQWaBxU880",
+                    "title": "mark your calendars and let your frog flag fly",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-31T20:02:33Z",
+                    "video_published_at": "2026-08-31T20:02:33Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/kyQWaBxU880/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLlk1ZDhtVTFtTTBz",
+                    "video_id": "Y5d8mU1mM0s",
+                    "title": "thank you @ScottYuJan for keeping our new channel art organized 🖍️",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-31T14:00:59Z",
+                    "video_published_at": "2026-08-31T14:00:59Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/Y5d8mU1mM0s/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLnpWNHVCSDlTMUtJ",
+                    "video_id": "zV4uBH9S1KI",
+                    "title": "now that’s a beautiful mind",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-30T20:00:17Z",
+                    "video_published_at": "2026-08-30T20:00:17Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/zV4uBH9S1KI/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmZGU2NHcXBrdGg4",
+                    "video_id": "fFScGqpkth8",
+                    "title": "don’t talk to us til we’ve had our pumpkin spice latte",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-29T20:04:22Z",
+                    "video_published_at": "2026-08-29T20:04:22Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/fFScGqpkth8/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmVuZ1Fqei1MbTU0",
+                    "video_id": "engQjz-Lm54",
+                    "title": "cozy morning coffee with @HannahAdkins made it onto our new channel art ☕",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-28T19:00:37Z",
+                    "video_published_at": "2026-08-28T19:00:37Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/engQjz-Lm54/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjViaFZpYlN3MG5V",
+                    "video_id": "5bhVibSw0nU",
+                    "title": "shoes on, hat tipped, you tubed #YouTubePartner",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-28T16:01:15Z",
+                    "video_published_at": "2026-08-28T16:01:15Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/5bhVibSw0nU/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLm1uQWt6S1VGZlJB",
+                    "video_id": "mnAkzKUFfRA",
+                    "title": "GTAVI.The Extended Look is out now. Watch on YouTube.",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-28T01:12:18Z",
+                    "video_published_at": "2026-08-28T01:12:18Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/mnAkzKUFfRA/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLm1ldkpydTdzalUw",
+                    "video_id": "mevJru7sjU0",
+                    "title": "everybody starts somewhere 💪 #YouTubePartner",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-27T19:04:52Z",
+                    "video_published_at": "2026-08-27T19:04:52Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/mevJru7sjU0/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLk1OZ3JLWmdmUzJN",
+                    "video_id": "MNgrKZgfS2M",
+                    "title": "just wanted an excuse to rewatch all these tbh @BabythisisKekePalmer",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-27T00:00:32Z",
+                    "video_published_at": "2026-08-27T00:00:32Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/MNgrKZgfS2M/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjlDblMtN3lPTjV3",
+                    "video_id": "9CnS-7yON5w",
+                    "title": "Cheers to 10 incredible years with @BLACKPINK and the amazing BLINKs!",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-26T20:45:34Z",
+                    "video_published_at": "2026-08-26T20:45:34Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/9CnS-7yON5w/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLndHQTI3ekpFbmFV",
+                    "video_id": "wGA27zJEnaU",
+                    "title": "Keira Riff reacts to her Watch History",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-26T16:00:06Z",
+                    "video_published_at": "2026-08-26T16:00:06Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/wGA27zJEnaU/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLmJOUU9RY21md2Fz",
+                    "video_id": "bNQOQcmfwas",
+                    "title": "freeeeeeee  @hotregards",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-26T14:00:20Z",
+                    "video_published_at": "2026-08-26T14:00:20Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/bNQOQcmfwas/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLjZWT1dKZllmYU5N",
+                    "video_id": "6VOWJfYfaNM",
+                    "title": "somebody cooked here",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-25T19:03:31Z",
+                    "video_published_at": "2026-08-25T19:03:31Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/6VOWJfYfaNM/hqdefault.jpg"
+                },
+                {
+                    "playlist_item_id": "VVVCUjgtNjAtQjI4aHAyQm1EUGRudGNRLm1US1lQZEtIOHkw",
+                    "video_id": "mTKYPdKH8y0",
+                    "title": "our phones are safe thanks to @Keira.R",
+                    "channel_title": "YouTube",
+                    "playlist_published_at": "2026-08-25T14:00:39Z",
+                    "video_published_at": "2026-08-25T14:00:39Z",
+                    "privacy_status": "public",
+                    "thumbnail_url": "https://i.ytimg.com/vi/mTKYPdKH8y0/hqdefault.jpg"
+                }
+            ],
+            "failure": null
+        }
+    ],
+    "videos": [
+        {
+            "requested_ids": [
+                "moaDf-3AAyY",
+                "B5T4ZCfxp1Y",
+                "Xyb7me-QpcI"
+            ],
+            "outcome": "ok",
+            "failure": null,
+            "id": "moaDf-3AAyY",
+            "title": "ahhhhhh! @JazzyGuns",
+            "description_length": 0,
+            "published_at": "2026-10-25T14:00:38Z",
+            "duration": "PT24S",
+            "definition": "hd",
+            "caption": "false",
+            "licensed_content": false,
+            "view_count": "2387",
+            "like_count": "79",
+            "comment_count": "84",
+            "privacy_status": "public",
+            "upload_status": "processed",
+            "embeddable": true,
+            "made_for_kids": false,
+            "thumbnail_url": "https://i.ytimg.com/vi/moaDf-3AAyY/hqdefault.jpg"
+        },
+        {
+            "requested_ids": [
+                "moaDf-3AAyY",
+                "B5T4ZCfxp1Y",
+                "Xyb7me-QpcI"
+            ],
+            "outcome": "ok",
+            "failure": null,
+            "id": "B5T4ZCfxp1Y",
+            "title": "american high? almost friday? who’s next? find out tomorrow 👻 | #DontLookBehindTheCamera Pt. 2",
+            "description_length": 0,
+            "published_at": "2026-10-24T19:00:15Z",
+            "duration": "PT1M21S",
+            "definition": "hd",
+            "caption": "false",
+            "licensed_content": true,
+            "view_count": "27162",
+            "like_count": "1254",
+            "comment_count": "277",
+            "privacy_status": "public",
+            "upload_status": "processed",
+            "embeddable": true,
+            "made_for_kids": false,
+            "thumbnail_url": "https://i.ytimg.com/vi/B5T4ZCfxp1Y/hqdefault.jpg"
+        },
+        {
+            "requested_ids": [
+                "moaDf-3AAyY",
+                "B5T4ZCfxp1Y",
+                "Xyb7me-QpcI"
+            ],
+            "outcome": "ok",
+            "failure": null,
+            "id": "Xyb7me-QpcI",
+            "title": "when a book is this good, words aren't enough.",
+            "description_length": 79,
+            "published_at": "2026-10-24T16:00:31Z",
+            "duration": "PT18S",
+            "definition": "hd",
+            "caption": "false",
+            "licensed_content": false,
+            "view_count": "19188",
+            "like_count": "387",
+            "comment_count": "123",
+            "privacy_status": "public",
+            "upload_status": "processed",
+            "embeddable": true,
+            "made_for_kids": false,
+            "thumbnail_url": "https://i.ytimg.com/vi/Xyb7me-QpcI/hqdefault.jpg"
+        }
+    ],
+    "missing_video": {
+        "requested_ids": [
+            "AAAAAAAAAAA"
+        ],
+        "returned_count": 0,
+        "returned_ids": [],
+        "failure": null
+    }
+}
