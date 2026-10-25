@@ -1,0 +1,31 @@
+{
+    "probe": "filmo:probe-youtube",
+    "ran_at": "2026-10-25T17:43:46+00:00",
+    "environment": {
+        "php": "8.4.27",
+        "laravel": "13.38.0",
+        "youtube_package": "v6.0.0",
+        "api_key_fingerprint": "AIza…(39 chars)"
+    },
+    "page_size": 50,
+    "references": [
+        {
+            "input": "@YouTube",
+            "lookup": {
+                "method": "getChannelByHandle",
+                "value": "@YouTube"
+            },
+            "outcome": "error",
+            "channel": null,
+            "failure": {
+                "reason": "transport",
+                "exception": "Cable8mm\\Youtube\\Exceptions\\YoutubeApiException",
+                "http_code": null,
+                "message": "Curl Error : Failed to connect to www.googleapis.com:443 over proxy 127.0.0.1 after 0 ms: Could not connect to server"
+            }
+        }
+    ],
+    "pages": [],
+    "videos": [],
+    "missing_video": null
+}

@@ -1,0 +1,43 @@
+{
+    "probe": "filmo:probe-youtube",
+    "ran_at": "2026-10-25T17:43:40+00:00",
+    "environment": {
+        "php": "8.4.27",
+        "laravel": "13.38.0",
+        "youtube_package": "v6.0.0",
+        "api_key_fingerprint": "AIza…(39 chars)"
+    },
+    "page_size": 50,
+    "references": [
+        {
+            "input": "UCaaaaaaaaaaaaaaaaaaaaaa",
+            "lookup": {
+                "method": "getChannelById",
+                "value": "UCaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "outcome": "not_found",
+            "channel": null,
+            "failure": null
+        },
+        {
+            "input": "not a channel",
+            "lookup": null,
+            "outcome": "unsupported",
+            "channel": null,
+            "failure": null
+        },
+        {
+            "input": "https://www.youtube.com/user/thisusernamedoesnotexist12345",
+            "lookup": {
+                "method": "getChannelByName",
+                "value": "thisusernamedoesnotexist12345"
+            },
+            "outcome": "not_found",
+            "channel": null,
+            "failure": null
+        }
+    ],
+    "pages": [],
+    "videos": [],
+    "missing_video": null
+}

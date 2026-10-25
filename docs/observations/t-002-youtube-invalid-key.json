@@ -1,0 +1,31 @@
+{
+    "probe": "filmo:probe-youtube",
+    "ran_at": "2026-10-25T17:43:43+00:00",
+    "environment": {
+        "php": "8.4.27",
+        "laravel": "13.38.0",
+        "youtube_package": "v6.0.0",
+        "api_key_fingerprint": "AIza…(37 chars)"
+    },
+    "page_size": 50,
+    "references": [
+        {
+            "input": "@YouTube",
+            "lookup": {
+                "method": "getChannelByHandle",
+                "value": "@YouTube"
+            },
+            "outcome": "error",
+            "channel": null,
+            "failure": {
+                "reason": "invalid_key",
+                "exception": "Cable8mm\\Youtube\\Exceptions\\YoutubeApiException",
+                "http_code": 400,
+                "message": "Error 400 API key not valid. Please pass a valid API key. : badRequest"
+            }
+        }
+    ],
+    "pages": [],
+    "videos": [],
+    "missing_video": null
+}
