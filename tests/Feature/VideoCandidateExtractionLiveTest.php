@@ -42,11 +42,27 @@ class VideoCandidateExtractionLiveTest extends TestCase
 
         $video = $this->video($channel, 'G6A-ONXm9D8', $this->description());
 
-        (new ExtractVideoCandidates($video->id))->handle();
+        $attempts = 0;
 
-        $video->refresh();
+        do {
+            (new ExtractVideoCandidates($video->id))->handle();
+            $video->refresh();
+            $attempts++;
 
-        $this->assertSame(ExtractVideoCandidates::STATUS_COMPLETED, $video->extraction_status);
+            if ($video->extraction_status !== ExtractVideoCandidates::STATUS_COMPLETED
+                && $attempts < 3
+                && $this->isTransient($video->extraction_error)) {
+                sleep(3);
+            } else {
+                break;
+            }
+        } while (true);
+
+        $this->assertSame(
+            ExtractVideoCandidates::STATUS_COMPLETED,
+            $video->extraction_status,
+            'Extraction error: '.($video->extraction_error ?? 'none'),
+        );
         $this->assertNull($video->extraction_error);
         $this->assertNotNull($video->extracted_at);
         $this->assertGreaterThanOrEqual(1, ActorCandidate::count());
@@ -88,6 +104,21 @@ class VideoCandidateExtractionLiveTest extends TestCase
         $this->assertSame($actorIds, ActorCandidate::pluck('id')->all());
         $this->assertSame($filmographyIds, FilmographyCandidate::pluck('id')->all());
         $this->assertSame(0, FilmographyCandidate::where('youtube_video_id', $failing->id)->count());
+    }
+
+    private function isTransient(?string $error): bool
+    {
+        if ($error === null) {
+            return false;
+        }
+
+        foreach (['HTTP 503', 'HTTP 429', 'UNAVAILABLE', 'high demand'] as $needle) {
+            if (str_contains($error, $needle)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function video(YoutubeChannel $channel, string $videoId, string $description): YoutubeVideo
