@@ -8,13 +8,15 @@
 - `cable8mm/youtube` MUST use version constraint `^6.0`.
 - `maatwebsite/excel` MUST be used through the dependency constraint supplied by `cable8mm/youtube`.
 - Composer MUST manage PHP dependencies and MUST use `composer.lock` for reproducible installs.
-- MySQL MUST use major version 8.
+- Production database MUST use MySQL major version 8.
+- Local development and tests MUST use SQLite with the Laravel default configuration.
 - Redis MUST use version `7.4+` (verify).
 - Laravel Eloquent MUST be used for relational database access.
 - Laravel Queue and Scheduler MUST be used for scheduled and queued work.
+- Recurring Channel collection MUST run once per day at 04:00 KST.
 - Laravel HTTP Client MUST be used for Gemini API and web page HTTP requests.
 - Node.js MUST use version constraint `^24.0` (verify).
-- npm MUST use version constraint `^11.0` (verify).
+- npm MUST use version constraint `^12.0` (verify).
 - Vite MUST use version constraint `^7.0` (verify) for frontend asset builds.
 - Tailwind CSS MUST use version constraint `^4.1`.
 - PHPUnit MUST use version constraint `^12.0`.
@@ -45,7 +47,7 @@
 
 - PHPUnit MUST run the PHP test suite.
 - PHPUnit test files MUST use the `*Test.php` suffix.
-- Tests MUST run against MySQL 8.
+- Tests MUST run against SQLite.
 - Line coverage MUST be at least 50%.
 
 ## 5. Configuration rules
@@ -54,7 +56,7 @@
 - `.env` MUST NOT be committed to source control or included in the Docker image.
 - Production secrets MUST be supplied through Coolify environment variables.
 - `APP_KEY`, `APP_ENV`, `APP_DEBUG`, and `APP_URL` MUST be configurable through environment variables.
-- `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD` MUST configure MySQL access.
+- `DB_CONNECTION` MUST select the database driver. Local development and tests MUST use SQLite; production MUST use MySQL through `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD`.
 - `QUEUE_CONNECTION`, `REDIS_HOST`, `REDIS_PORT`, and `REDIS_PASSWORD` MUST configure Redis queues.
 - `YOUTUBE_API_KEY` MUST provide the YouTube Data API credential.
 - `GEMINI_API_KEY` MUST provide the Gemini API credential.
