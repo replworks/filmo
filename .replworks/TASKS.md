@@ -98,7 +98,7 @@
     - Matching names alone never associate candidates; failed association leaves prior associations unchanged and reports failure.
     - Automated tests pass for explicit association, insufficient selection, same-name unassociated candidates, and failure handling.
 
-- [ ] T-013 Review Filmography Candidates
+- [x] T-013 Review Filmography Candidates
   - Satisfies: PRODUCT_SPEC.md §§SCR-004, Functional Requirements FR-023–FR-025, FR-026–FR-035, Error Condition ERR-008, Acceptance Criteria AC-011–AC-013
   - External boundary: no
   - Acceptance criteria:
