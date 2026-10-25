@@ -22,7 +22,7 @@
     - An executable live probe submits collected Video information to Gemini and records the returned Actor Candidate and Filmography Candidate values, including absent values, and the observed failure response.
     - Pass: a successful live response can be represented as candidate values tied to the selected Video, and a failed response can be distinguished without treating it as a successful extraction. Fail otherwise.
 
-- [ ] T-004 Verify NamuWiki page retrieval and information extraction
+- [x] T-004 Verify NamuWiki page retrieval and information extraction
   - Satisfies: PRODUCT_SPEC.md §§External Systems, Functional Requirements FR-017–FR-018, FR-036, FR-041
   - External boundary: yes
   - Acceptance criteria:

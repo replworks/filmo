@@ -1,0 +1,148 @@
+{
+    "probe": "filmo:probe-namuwiki",
+    "ran_at": "2026-10-25T18:17:55+00:00",
+    "environment": {
+        "php": "8.4.27",
+        "laravel": "13.38.0",
+        "user_agent": "FilmoBot/1.0 (+https://github.com/replworks/filmo)",
+        "timeout_seconds": 30
+    },
+    "page": {
+        "outcome": "success",
+        "requested_url": "https://namu.wiki/w/송혜교",
+        "effective_url": "https://namu.wiki/w/%EC%86%A1%ED%98%9C%EA%B5%90",
+        "redirected": false,
+        "redirect_count": 0,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "body_length": 875381,
+        "body_sha256": "fce132a30d9f0d3e2dc9ad863286f29e01077780b1149555acc35d8209fccc4a",
+        "page": {
+            "title": "송혜교",
+            "description": "대한민국 의 배우 이자 방송인 . 데뷔 전 대구광역시 에서 무남독녀 외딸로 태어났다. 유년 시절 달서구 에서",
+            "profile_found": true,
+            "profile_rows": [
+                {
+                    "label": "출생",
+                    "value": "1981년 11월 22일[1] (44세)",
+                    "links": []
+                },
+                {
+                    "label": "출신",
+                    "value": "서울특별시 강남구 개포동",
+                    "links": []
+                },
+                {
+                    "label": "국적",
+                    "value": "대한민국",
+                    "links": []
+                },
+                {
+                    "label": "본관",
+                    "value": "여산 송씨 (礪山 宋氏)",
+                    "links": []
+                },
+                {
+                    "label": "신체",
+                    "value": "161cm｜45kg｜A형",
+                    "links": []
+                },
+                {
+                    "label": "가족",
+                    "value": "아버지 송대섭[2], 어머니[3]",
+                    "links": []
+                },
+                {
+                    "label": "학력",
+                    "value": "서울대도국민학교 (졸업)숙명여자중학교 (졸업)은광여자고등학교 (졸업)세종대학교 예체능대학 (영화예술학 / 중퇴)",
+                    "links": []
+                },
+                {
+                    "label": "종교",
+                    "value": "무종교",
+                    "links": []
+                },
+                {
+                    "label": "소속사",
+                    "value": "STAND[5] (2026. 10. 23. ~ )",
+                    "links": []
+                },
+                {
+                    "label": "데뷔",
+                    "value": "1996년 선경 스마트 모델 선발대회 대상(데뷔일로부터 +11064일, 30주년)",
+                    "links": []
+                },
+                {
+                    "label": "MBTI",
+                    "value": "INFJ[8]",
+                    "links": []
+                },
+                {
+                    "label": "서명",
+                    "value": null,
+                    "links": []
+                },
+                {
+                    "label": "링크",
+                    "value": "｜｜",
+                    "links": [
+                        "https://www.instagram.com/kyo1122",
+                        "https://www.threads.com/kyo1122",
+                        "https://m.cafe.daum.net/hyekyoandhyebaragi/_rec"
+                    ]
+                }
+            ],
+            "suggestions": {
+                "activity_name": null,
+                "name": "송혜교",
+                "related_link": "https://www.instagram.com/kyo1122",
+                "source_url": "https://namu.wiki/w/송혜교"
+            }
+        },
+        "failure": null
+    },
+    "unprocessable": {
+        "outcome": "failed",
+        "requested_url": "https://namu.wiki/w/나무위키",
+        "effective_url": "https://namu.wiki/w/%EB%82%98%EB%AC%B4%EC%9C%84%ED%82%A4",
+        "redirected": false,
+        "redirect_count": 0,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "body_length": 249905,
+        "body_sha256": "a40b1408c00e92a35a9e828567481b880fee42ab74a47dd6b1e11326336d3bdd",
+        "page": {
+            "title": "나무위키",
+            "description": "나무위키, 여러분이 가꾸어 나가는 지식의 나무 공식 슬로건 나무위키는 umanle S.R.L. 이 운영 중인",
+            "profile_found": false,
+            "profile_rows": [],
+            "suggestions": null
+        },
+        "failure": {
+            "reason": "unprocessable_page",
+            "message": "The page has no actor profile table to extract candidate information from."
+        }
+    },
+    "unavailable": {
+        "outcome": "failed",
+        "requested_url": "https://namu.wiki/w/FilmoProbeMissingPage-2026-10-26",
+        "effective_url": "https://namu.wiki/w/FilmoProbeMissingPage-2026-10-26",
+        "redirected": false,
+        "redirect_count": 0,
+        "http_status": 404,
+        "content_type": "text/html; charset=utf-8",
+        "body_length": 32980,
+        "body_sha256": "2572b4729756f9f848908cd4eccad370dca9af6ea242bb0e78a10e11fd95b26a",
+        "page": {
+            "title": "FilmoProbeMissingPage-2026-10-26",
+            "description": null,
+            "profile_found": false,
+            "profile_rows": [],
+            "suggestions": null
+        },
+        "failure": {
+            "reason": "http_404",
+            "message": "NamuWiki returned HTTP 404."
+        }
+    }
+}
