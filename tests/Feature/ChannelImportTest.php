@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Filament\Pages\ChannelImport;
+use App\Jobs\CollectChannelVideos;
 use App\Models\User;
 use Cable8mm\Youtube\Models\YoutubeChannel;
 use Cable8mm\Youtube\Models\YoutubeVideo;
@@ -10,6 +11,7 @@ use Cable8mm\Youtube\Sync\ChannelInputResolver;
 use Cable8mm\Youtube\Youtube;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\File;
 use Livewire\Livewire;
 use Mockery\MockInterface;
@@ -28,6 +30,13 @@ class ChannelImportTest extends TestCase
      * @var array<int, string>
      */
     private array $files = [];
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Bus::fake();
+    }
 
     protected function tearDown(): void
     {
@@ -97,6 +106,10 @@ class ChannelImportTest extends TestCase
             'title' => 'YouTube',
             'uploads_playlist_id' => 'UUBR8-60-B28hp2BmDPdntcQ',
         ]);
+
+        $channel = YoutubeChannel::where('channel_id', 'UCBR8-60-B28hp2BmDPdntcQ')->firstOrFail();
+
+        Bus::assertDispatched(CollectChannelVideos::class, fn (CollectChannelVideos $job): bool => $job->channelId === $channel->id);
     }
 
     public function test_importing_an_existing_channel_preserves_its_videos_and_sync_state(): void
