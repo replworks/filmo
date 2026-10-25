@@ -29,7 +29,7 @@
     - An executable live probe retrieves an Operator-supplied NamuWiki page and records the page content behavior, extracted Actor Candidate information, and retrieval or processing failure behavior.
     - Pass: a live page produces values that can be presented as suggestions for an Actor Candidate, and an unavailable or unprocessable page produces a distinguishable failure. Fail otherwise.
 
-- [ ] T-005 Import Channel spreadsheets with row-level results
+- [x] T-005 Import Channel spreadsheets with row-level results
   - Satisfies: PRODUCT_SPEC.md §§SCR-001, Functional Requirements FR-001–FR-004, Error Conditions ERR-001–ERR-002, Acceptance Criteria AC-001–AC-002, AC-014
   - External boundary: yes
   - Acceptance criteria:
