@@ -17,10 +17,11 @@
 - Laravel HTTP Client MUST be used for Gemini API and web page HTTP requests.
 - Node.js MUST use version constraint `^24.0` (verify).
 - npm MUST use version constraint `^12.0` (verify).
-- Vite MUST use version constraint `^7.0` (verify) for frontend asset builds.
+- Vite MUST use version constraint `^8.0` (verify) for frontend asset builds.
 - Tailwind CSS MUST use version constraint `^4.1`.
 - PHPUnit MUST use version constraint `^12.0`.
 - Laravel Pint MUST use version constraint `^1.0` for PHP linting and formatting.
+- Laravel Boost MUST be installed as a development dependency for AI agent guidelines.
 - Docker MUST build the application image.
 - GitHub Actions MUST build the Docker image.
 - Coolify MUST deploy the Docker image.
