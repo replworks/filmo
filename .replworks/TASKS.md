@@ -90,7 +90,7 @@
     - All proposed candidate and evidence fields can be empty and the candidate can still be saved.
     - A save failure is shown and preserves the Operator's entered values; automated tests pass for successful saves, empty values, and failure handling.
 
-- [ ] T-012 Confirm Actor Identity associations
+- [x] T-012 Confirm Actor Identity associations
   - Satisfies: PRODUCT_SPEC.md §§SCR-003, User Flow UF-006, Functional Requirements FR-039–FR-040, Acceptance Criterion AC-016
   - External boundary: no
   - Acceptance criteria:
