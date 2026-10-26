@@ -118,7 +118,7 @@ class ExtractVideoActorsTest extends TestCase
 
         Http::fake(['*' => Http::response($this->fixture('extraction-success.json'), 200)]);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(VideosRelationManager::class, [
             'ownerRecord' => $channel,
@@ -140,7 +140,7 @@ class ExtractVideoActorsTest extends TestCase
 
         Http::fake(['*' => Http::response($this->fixture('api-key-invalid.json'), 400)]);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(VideosRelationManager::class, [
             'ownerRecord' => $channel,

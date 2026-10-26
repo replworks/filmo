@@ -20,9 +20,10 @@ class AdminUserSeederTest extends TestCase
         $admin = User::where('email', 'cable8mm@gmail.com')->firstOrFail();
 
         $this->assertSame('Filmo Admin', $admin->name);
+        $this->assertTrue($admin->is_admin);
         $this->assertTrue(Hash::check('1234', $admin->password));
         $this->assertTrue($admin->canAccessPanel(Filament::getPanel('admin')));
-        $this->assertDatabaseHas('users', ['email' => 'test@example.com']);
+        $this->assertDatabaseHas('users', ['email' => 'test@example.com', 'is_admin' => false]);
     }
 
     public function test_reseeding_the_admin_does_not_duplicate_it(): void

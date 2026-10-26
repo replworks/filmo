@@ -54,7 +54,7 @@ class ChannelImportTest extends TestCase
 
     public function test_the_import_page_is_rendered_for_an_operator(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
 
         $this->actingAs($user)
             ->get('/admin/channel-import')

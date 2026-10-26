@@ -47,7 +47,7 @@ class YoutubePackageAdminTest extends TestCase
         $firstVideo = $this->video($firstChannel, 'video-1', '2026-10-05T00:00:00Z');
         $secondVideo = $this->video($secondChannel, 'video-2', '2026-10-06T00:00:00Z', unavailable: true);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(ListYoutubeVideos::class)
             ->assertActionExists('create')
@@ -63,7 +63,7 @@ class YoutubePackageAdminTest extends TestCase
 
     public function test_the_operator_can_create_a_channel_and_initial_collection_starts(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(CreateYoutubeChannel::class)
             ->fillForm([
@@ -86,7 +86,7 @@ class YoutubePackageAdminTest extends TestCase
     {
         $channel = $this->channel();
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(VideosRelationManager::class, [
             'ownerRecord' => $channel,
@@ -112,7 +112,7 @@ class YoutubePackageAdminTest extends TestCase
         $video = Video::find($this->video($this->channel(), 'video-1', '2026-10-05T00:00:00Z')->id);
         $actor = Actor::create(['name' => 'Added Actor', 'profile' => null]);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(VideoActorsRelationManager::class, [
             'ownerRecord' => $video,
@@ -143,7 +143,7 @@ class YoutubePackageAdminTest extends TestCase
     {
         $channel = $this->channel();
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(CreateYoutubeVideo::class)
             ->fillForm([
@@ -166,7 +166,7 @@ class YoutubePackageAdminTest extends TestCase
     {
         $error = $this->syncError($this->channel(), 'quota_exceeded', 403, 'Quota exhausted.');
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         $this->get('/admin/youtube-sync-errors/create')->assertNotFound();
         $this->get('/admin/youtube-sync-errors/'.$error->id.'/edit')->assertNotFound();
@@ -182,7 +182,7 @@ class YoutubePackageAdminTest extends TestCase
             'extracted_at' => Carbon::parse('2026-10-06T00:00:00Z'),
         ])->save();
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(EditYoutubeVideo::class, ['record' => $video->id])
             ->assertFormFieldDoesNotExist('extraction_status')
@@ -213,7 +213,7 @@ class YoutubePackageAdminTest extends TestCase
         $actor = Actor::create(['name' => 'Actor', 'profile' => null]);
         $actor->videos()->attach($video->id);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(ListYoutubeVideos::class)
             ->callTableAction('delete', $video);
@@ -231,7 +231,7 @@ class YoutubePackageAdminTest extends TestCase
         $channel = $this->channel();
         $error = $this->syncError($channel, 'quota_exceeded', 403, 'Quota exhausted.');
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(ListYoutubeSyncErrors::class)
             ->assertCanSeeTableRecords([$error]);
@@ -250,7 +250,7 @@ class YoutubePackageAdminTest extends TestCase
     {
         $channel = $this->channel('Original Channel');
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(EditYoutubeChannel::class, ['record' => $channel->id])
             ->fillForm([
@@ -277,7 +277,7 @@ class YoutubePackageAdminTest extends TestCase
         $actor = Actor::create(['name' => 'Actor', 'profile' => null]);
         $actor->videos()->attach([$video->id, $otherVideo->id]);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(ListYoutubeChannels::class)
             ->assertActionExists('create')
@@ -302,7 +302,7 @@ class YoutubePackageAdminTest extends TestCase
         $video = $this->video($channel, 'video-1', '2026-10-05T00:00:00Z');
         $video->forceFill(['extraction_status' => ExtractVideoActors::STATUS_COMPLETED])->save();
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(ViewYoutubeVideo::class, ['record' => $video->id])
             ->assertSee('Completed')

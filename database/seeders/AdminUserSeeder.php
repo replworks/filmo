@@ -23,6 +23,7 @@ class AdminUserSeeder extends Seeder
             [
                 'name' => 'Filmo Admin',
                 'password' => '1234',
+                'is_admin' => true,
             ],
         );
     }

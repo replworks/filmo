@@ -157,3 +157,19 @@
     - A Channel detail screen can create a Video associated with that Channel.
     - A Video detail screen can associate and dissociate an existing Actor.
     - Associations appear on both the Actor and Video detail screens; tests pass.
+
+- [x] T-020 Restrict the Operator interface to administrators
+  - Satisfies: PRODUCT_SPEC.md §Users, Functional Requirement FR-041, Acceptance Criterion AC-027
+  - External boundary: no
+  - Acceptance criteria:
+    - Users have an administrator flag, defaulting to false.
+    - Only administrator Users can authenticate to and access the Operator interface.
+    - The local administrator seeder sets the flag for the seeded administrator; non-administrator Users are denied; tests pass.
+
+- [x] T-021 Provide an administrator provisioning command
+  - Satisfies: PRODUCT_SPEC.md §Users, Functional Requirement FR-042, Acceptance Criterion AC-028
+  - External boundary: no
+  - Acceptance criteria:
+    - `filmo:create-admin` creates a new administrator with a name, email, and password of at least eight characters.
+    - The command promotes an existing User, optionally updating the name and password, and rejects invalid input.
+    - The local administrator seeder remains local/testing-only; tests pass.
