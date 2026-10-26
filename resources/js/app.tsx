@@ -1,5 +1,6 @@
 import { createInertiaApp } from '@inertiajs/react';
 import AuthLayout from '@/layouts/auth-layout';
+import PublicLayout from '@/layouts/public-layout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Filmo';
 
@@ -9,6 +10,10 @@ void createInertiaApp({
         switch (true) {
             case name.startsWith('auth/'):
                 return AuthLayout;
+            case name === 'welcome':
+            case name.startsWith('catalog/'):
+            case name === 'contributor/index':
+                return PublicLayout;
             default:
                 return null;
         }

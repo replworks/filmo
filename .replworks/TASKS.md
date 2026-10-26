@@ -182,7 +182,7 @@
     - Fortify provides registration, login, and password reset; email verification, two-factor authentication, passkeys, and password confirmation are disabled.
     - Existing Filament administration, the existing test suite, and the starter kit authentication tests pass.
 
-- [ ] T-023 Present the public landing and catalog
+- [x] T-023 Present the public landing and catalog
   - Satisfies: PRODUCT_SPEC.md §§SCR-005, SCR-006, Functional Requirements FR-043, FR-052–FR-054, Acceptance Criteria AC-029, AC-037
   - External boundary: no
   - Acceptance criteria:
