@@ -3,8 +3,9 @@
 FROM php:8.4-cli AS assets
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends libicu-dev libonig-dev libzip-dev unzip \
-    && docker-php-ext-install intl mbstring zip \
+    && apt-get install -y --no-install-recommends libfreetype6-dev libicu-dev libjpeg62-turbo-dev libonig-dev libpng-dev libzip-dev unzip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd intl mbstring zip \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=node:24-bookworm /usr/local/bin/node /usr/local/bin/node
