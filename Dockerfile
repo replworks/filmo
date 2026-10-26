@@ -1,16 +1,31 @@
 # syntax=docker/dockerfile:1
 
-FROM node:24-alpine AS assets
+FROM php:8.4-cli AS assets
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libfreetype6-dev libicu-dev libjpeg62-turbo-dev libonig-dev libpng-dev libzip-dev unzip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd intl mbstring zip \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=node:24-bookworm /usr/local/bin/node /usr/local/bin/node
+COPY --from=node:24-bookworm /usr/local/lib/node_modules /usr/local/lib/node_modules
+RUN ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+    && ln -sf /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-COPY package.json package-lock.json .npmrc ./
-RUN npm ci
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction --prefer-dist
 
-COPY vite.config.js ./
-COPY resources ./resources
-COPY public ./public
-RUN npm run build
+COPY . .
+
+RUN rm -f bootstrap/cache/*.php \
+    && composer dump-autoload --no-dev --optimize --no-scripts \
+    && php artisan package:discover --ansi \
+    && npm ci \
+    && npm run build
 
 
 FROM php:8.4-apache
