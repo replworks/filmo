@@ -12,7 +12,7 @@ void createInertiaApp({
                 return AuthLayout;
             case name === 'welcome':
             case name.startsWith('catalog/'):
-            case name === 'contributor/index':
+            case name.startsWith('contributor/'):
                 return PublicLayout;
             default:
                 return null;
