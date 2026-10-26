@@ -58,6 +58,8 @@
 - C-12 Public Interface
 - C-13 Contributor Interface
 - C-14 Account Access
+- C-15 Contribution Registry
+- C-16 Contribution Review
 
 ## 5. Component Responsibilities
 
@@ -159,12 +161,26 @@
 - Outputs: persisted non-administrator User records and session state to C-12 and C-13.
 - Ownership boundary: owns account registration and session authentication; grants no access to C-01; creates no catalog, Actor, or appearance records.
 
+### C-15 Contribution Registry
+
+- Responsibilities: accept Contributor Contribution commands; resolve the affected Channel, Video, Actor, or association; store a JSON payload and pending status; enforce at most one pending Contribution per Contributor and record; report conflicts; allow the Contributor to manage their pending Contribution.
+- Inputs: Contributor create/edit/association commands from C-13; resolved YouTube data from C-03 and C-06.
+- Outputs: pending Contribution records; conflict and operation results to C-13.
+- Ownership boundary: owns pending Contribution records; never mutates canonical Channels, Videos, Actors, or associations.
+
+### C-16 Contribution Review
+
+- Responsibilities: list pending Contributions for an Administrator; show the Contributor, affected record, and JSON payload; approve or reject with an optional note; apply an approved payload to the canonical record and publish it; start Channel collection on approval.
+- Inputs: pending Contributions from C-15; Administrator decisions from C-01.
+- Outputs: approved payload commands to C-04 and C-09; review state to C-15; review results to C-01.
+- Ownership boundary: owns review decisions; performs no Contributor submission and never starts Gemini Actor Extraction.
+
 ## 6. Responsibility Boundaries
 
 - C-01 owns interaction and command delivery, while coordinators and managers own operation rules.
 - The Operator interface is available only to Users with administrator access; non-administrator Users are denied before any Operator command is accepted.
-- The Public Interface is read-only and available without authentication.
-- The Contributor Interface is available to Contributors and Administrators; every Contributor write is authorized before it reaches C-04 or C-09.
+- The Public Interface is read-only and available without authentication; it exposes only Public Records with `is_public = true`.
+- The Contributor Interface is available to Contributors and Administrators; every Contributor write becomes a pending Contribution and is authorized before it reaches C-15.
 - Account Access creates only non-administrator Users and never grants access to C-01.
 - C-02 owns spreadsheet row processing; C-03 owns Channel registration semantics; C-04 owns persistent Channel and Video data.
 - C-05 owns initial and recurring collection; C-06 owns the YouTube external boundary.
@@ -173,9 +189,11 @@
 - C-04 is the only writer of Channel, Video, and Sync Error records; C-09 is the only writer of Actor and appearance records.
 - C-11 owns administrator provisioning; C-01 allows only Users with the administrator flag.
 - Assertion of the administrator flag grants C-01 access; the absence of the flag grants only C-13 access after C-14 authentication.
-- C-04 accepts package creates and edits for Channels and Videos from explicit Operator or Contributor commands and deletes for Channels, Videos, and Sync Errors only from explicit Operator commands; Sync Errors are never created or edited in the Operator interface; a Video created from a Channel detail belongs to that Channel; package sync may overwrite edited values.
-- Creating a Channel starts its initial Video collection.
-- Creating a Video does not start Gemini Actor Extraction.
+- C-04 accepts package creates and edits for Channels and Videos from explicit Operator commands and approved Contribution payloads from C-16; deletes for Channels, Videos, and Sync Errors only from explicit Operator commands; Sync Errors are never created or edited in the Operator interface; a Video created from a Channel detail belongs to that Channel; package sync may overwrite edited values.
+- Creating or approving a Channel starts its initial Video collection.
+- Creating or approving a Video does not start Gemini Actor Extraction.
+- Every Channel, Video, and Actor has an owner (`user_id`) and a public visibility flag (`is_public`).
+- A Contributor write creates a pending Contribution; canonical data changes only when C-16 approves it.
 - There is no separate Actor Candidate, Actor Identity, Filmography Candidate, Candidate Source, or Review Status record.
 - NamuWiki and Naver references are stored as Actor Reference URL records and opened by the Operator, a Contributor, or a Visitor; no connector retrieves or parses them.
 
@@ -301,6 +319,10 @@
 - D-13 Detail-screen associations: allow Video creation from a Channel detail and Actor association from a Video detail; confirmed by the Operator.
 - D-14 Administrator access: require an administrator flag on the User; non-administrator Users cannot authenticate to or access the Operator interface; confirmed by the Operator.
 - D-15 Administrator provisioning: provide an explicit command that creates or promotes an administrator, validates the email and password, and never grants access through self-service; confirmed by the Operator.
+- D-16 Ownership: records have an owner and are owned by an Administrator for now; Actor and agency ownership is deferred; confirmed by the Operator.
+- D-17 Contributions: Contributors submit JSON payloads through a polymorphic Contribution Registry; one pending Contribution per Contributor and record; confirmed by the Operator.
+- D-18 Approval: an Administrator-only Filament review page approves or rejects Contributions; approval publishes and applies the payload; rejection leaves canonical data unchanged; confirmed by the Operator.
+- D-19 Public visibility: only approved Public Records appear in the public catalog; Draft Records and pending Contributions are hidden; confirmed by the Operator.
 - D-16 Public catalog: present a public landing and a read-only Channel, Video, and Actor catalog without authentication; confirmed by the Operator.
 - D-17 Contributor access: allow self-registration as a non-administrator Contributor who may add and edit any Channel, Video, or Actor and manage Actor-Video associations, but may not delete, merge Actors, extract Actors, or manage Sync Errors; confirmed by the Operator.
 - D-18 Email verification: defer email verification; Contributor access does not require it until a separate decision; confirmed by the Operator.

@@ -89,6 +89,8 @@ class ExtractVideoActors implements ShouldQueue
                 $actor = Actor::create([
                     'name' => $name,
                     'activity_name' => $activityName,
+                    'user_id' => $video->user_id,
+                    'is_public' => $video->is_public,
                 ]);
             }
 
