@@ -190,7 +190,7 @@
     - The public catalog lists Channels, Videos, and Actors and shows detail for a selected record.
     - Merged Actors, Sync Errors, extraction errors, and Administrator controls do not appear; empty, loading, and error states are shown; tests pass.
 
-- [ ] T-024 Allow Contributor self-registration and access
+- [x] T-024 Allow Contributor self-registration and access
   - Satisfies: PRODUCT_SPEC.md §§SCR-007, Functional Requirements FR-044, FR-045, FR-051, FR-055, Acceptance Criteria AC-030, AC-036
   - External boundary: no
   - Acceptance criteria:
