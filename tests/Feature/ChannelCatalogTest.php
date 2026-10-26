@@ -52,7 +52,7 @@ class ChannelCatalogTest extends TestCase
         $this->video($healthy, 'video-1');
         $this->video($healthy, 'video-2');
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(ListYoutubeChannels::class)
             ->assertActionExists('actors')
@@ -69,7 +69,7 @@ class ChannelCatalogTest extends TestCase
 
     public function test_the_channel_list_has_an_empty_state(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         $this->get('/admin/youtube-channels')
             ->assertOk()
@@ -84,7 +84,7 @@ class ChannelCatalogTest extends TestCase
         $other = $this->channel('Other Channel', ['sync_status' => 'ok']);
         $otherVideo = $this->video($other, 'other-video', 'Other Video');
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         $this->get('/admin/youtube-channels/'.$channel->id)
             ->assertOk()
@@ -124,7 +124,7 @@ class ChannelCatalogTest extends TestCase
             );
         }
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(VideosRelationManager::class, [
             'ownerRecord' => $channel,
@@ -139,7 +139,7 @@ class ChannelCatalogTest extends TestCase
     {
         $channel = $this->channel('Empty Channel', ['sync_status' => 'ok']);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(VideosRelationManager::class, [
             'ownerRecord' => $channel,
@@ -151,7 +151,7 @@ class ChannelCatalogTest extends TestCase
 
     public function test_the_import_page_and_channel_list_link_to_each_other(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         $this->get('/admin/channel-import')
             ->assertOk()

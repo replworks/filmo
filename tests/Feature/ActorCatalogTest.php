@@ -38,7 +38,7 @@ class ActorCatalogTest extends TestCase
         $active->update(['merged_into_actor_id' => null]);
         $merged->update(['merged_into_actor_id' => $active->id]);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(ListActors::class)
             ->assertActionExists('create')
@@ -50,7 +50,7 @@ class ActorCatalogTest extends TestCase
 
     public function test_the_actor_list_has_an_empty_state(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         $this->get('/admin/actors')
             ->assertOk()
@@ -65,7 +65,7 @@ class ActorCatalogTest extends TestCase
             'profile' => null,
         ]);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(EditActor::class, ['record' => $actor->id])
             ->assertSeeLivewire(ActorVideosRelationManager::class)
@@ -106,7 +106,7 @@ class ActorCatalogTest extends TestCase
 
     public function test_the_operator_can_create_and_delete_an_actor(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(CreateActor::class)
             ->fillForm([
@@ -151,7 +151,7 @@ class ActorCatalogTest extends TestCase
         $actor = Actor::factory()->create();
         $actor->referenceUrls()->create(['url' => 'https://namu.wiki/w/actor']);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(EditActor::class, ['record' => $actor->id])
             ->assertActionVisible('openUrl')
@@ -166,7 +166,7 @@ class ActorCatalogTest extends TestCase
 
         $actor->videos()->attach($firstVideo->id);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(ActorVideosRelationManager::class, [
             'ownerRecord' => $actor,
@@ -189,7 +189,7 @@ class ActorCatalogTest extends TestCase
         $survivor->videos()->attach($video->id);
         $other->videos()->attach($video->id);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(ListActors::class)
             ->callTableBulkAction('merge', [$survivor, $other], ['survivor_id' => $survivor->id])
@@ -204,7 +204,7 @@ class ActorCatalogTest extends TestCase
         $first = Actor::factory()->create(['name' => 'Same Name']);
         $second = Actor::factory()->create(['name' => 'Same Name']);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(ListActors::class)
             ->assertCanSeeTableRecords([$first, $second]);
@@ -228,7 +228,7 @@ class ActorCatalogTest extends TestCase
         ]);
         $actor->referenceUrls()->create(['url' => 'https://old.example']);
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(EditActor::class, ['record' => $actor->id])
             ->assertSeeLivewire(ActorVideosRelationManager::class)
@@ -269,7 +269,7 @@ class ActorCatalogTest extends TestCase
             throw new \RuntimeException('The database rejected the save.');
         });
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(EditActor::class, ['record' => $actor->id])
             ->assertSeeLivewire(ActorVideosRelationManager::class)
@@ -294,7 +294,7 @@ class ActorCatalogTest extends TestCase
 
         $actor->videos()->attach(collect($videos)->pluck('id'));
 
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->admin()->create());
 
         Livewire::test(ActorVideosRelationManager::class, [
             'ownerRecord' => $actor,

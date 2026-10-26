@@ -8,7 +8,7 @@
 
 Terms:
 
-- Operator: a person who uses the product to collect and maintain the catalog.
+- Operator: an administrator who uses the product to collect and maintain the catalog.
 - Channel: a YouTube channel registered by an Operator.
 - Video: a YouTube video published by a Channel.
 - Actor: a person who appears in one or more Videos. An Actor has a Name, an optional Activity Name, Birth Date, Birthplace, Education, Debut, Agency, Nationality, zero or more Actor Reference URLs, and optional Profile Fields for other information.
@@ -36,7 +36,8 @@ Terms:
 
 ## Users
 
-- Operator: registers Channels, reviews collection results, edits Actors, links Videos, and merges duplicate Actors.
+- Administrator: a User with administrator access. Only Administrators may authenticate to the Operator interface. An Administrator can be created or promoted with the administrator provisioning command.
+- Operator: an Administrator who registers Channels, reviews collection results, edits Actors, links Videos, and merges duplicate Actors.
 - The current product has no Viewer interface.
 - The current product has no Requester interface.
 
@@ -264,6 +265,8 @@ Package data management
 - FR-038: The Operator MUST be able to create and delete Actors. Deleting an Actor MUST delete its Actor-Video associations.
 - FR-039: The Operator MUST be able to create a Video from a Channel's detail screen; the Video MUST be associated with that Channel.
 - FR-040: The Operator MUST be able to associate an existing Actor with a Video from the Video's detail screen and remove that association.
+- FR-041: Only Users with administrator access MUST be able to authenticate to and access the Operator interface. Non-administrator Users MUST be denied access.
+- FR-042: The product MUST provide a command-line administrator provisioning operation that creates a new administrator or grants administrator access to an existing User. A new administrator MUST have a name, a valid email address, and a password of at least eight characters.
 
 ## User Flows
 
@@ -368,3 +371,5 @@ UF-006 Edit or delete package data
 - AC-024: An Operator can create and delete an Actor; deleting it removes its Actor-Video associations (FR-038, SCR-003).
 - AC-025: An Operator can create a Video from a Channel's detail screen, and the Video is associated with that Channel (FR-039, SCR-002).
 - AC-026: An Operator can associate an existing Actor with a Video and remove the association from the Video's detail screen (FR-040, SCR-004).
+- AC-027: An Administrator can authenticate to and access the Operator interface; a non-administrator User is denied access (FR-041).
+- AC-028: The administrator provisioning command creates a new administrator and promotes an existing User; it rejects an invalid email or a password shorter than eight characters (FR-042).

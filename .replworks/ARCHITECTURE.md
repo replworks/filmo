@@ -46,6 +46,7 @@
 - C-08 Gemini Connector
 - C-09 Actor Registry
 - C-10 Actor Merge Manager
+- C-11 Administrator Provisioning
 
 ## 5. Component Responsibilities
 
@@ -119,14 +120,23 @@
 - Outputs: appearance and merge-state commands to C-09; merge results to C-01.
 - Ownership boundary: owns merge decisions; does not edit Actor fields, extract Actors, or merge by name.
 
+### C-11 Administrator Provisioning
+
+- Responsibilities: create a new administrator or grant administrator access to an existing User from an explicit command-line operation; validate the email, name, and password; set the administrator flag.
+- Inputs: an administrator email, optional name and password, and explicit command invocation.
+- Outputs: persisted User administrator state to the authentication boundary.
+- Ownership boundary: owns administrator provisioning; creates no Actors, Channels, Videos, or appearances; does not authenticate Users.
+
 ## 6. Responsibility Boundaries
 
 - C-01 owns interaction and command delivery, while coordinators and managers own operation rules.
+- The Operator interface is available only to Users with administrator access; non-administrator Users are denied before any Operator command is accepted.
 - C-02 owns spreadsheet row processing; C-03 owns Channel registration semantics; C-04 owns persistent Channel and Video data.
 - C-05 owns initial and recurring collection; C-06 owns the YouTube external boundary.
 - C-07 owns manually initiated Actor extraction; C-08 owns the Gemini external boundary.
 - C-09 owns Actor, Profile Field, Actor Reference URL, and appearance data; C-10 owns explicit Actor merging.
 - C-04 is the only writer of Channel, Video, and Sync Error records; C-09 is the only writer of Actor and appearance records.
+- C-11 owns administrator provisioning; C-01 allows only Users with the administrator flag.
 - C-04 accepts package creates and edits for Channels and Videos and deletes for Channels, Videos, and Sync Errors only from explicit Operator commands; Sync Errors are never created or edited in the Operator interface; a Video created from a Channel detail belongs to that Channel; package sync may overwrite edited values.
 - Creating a Channel starts its initial Video collection.
 - Creating a Video does not start Gemini Actor Extraction.
@@ -208,6 +218,8 @@
 - INV-17: Deleting an Actor deletes its Actor-Video associations.
 - INV-19: A Video created from a Channel detail is associated with that Channel.
 - INV-20: A Video-Actor association can be added or removed from the Video detail screen and appears on the Actor detail screen.
+- INV-21: Only Users with administrator access can authenticate to or access the Operator interface.
+- INV-22: An administrator can be provisioned only through the explicit provisioning command or the local administrator seeder.
 - INV-18: Birth Date, Birthplace, Education, Debut, Agency, and Nationality are Actor columns; Profile Fields store only additional information.
 
 ## 12. Resolved Decisions
@@ -225,3 +237,5 @@
 - D-11 Package data administration: expose Channels and Videos with explicit create, edit, and delete controls, and Sync Errors with list, view, and delete controls only; protect extraction fields and show cascade-confirmation messages; confirmed by the Operator.
 - D-12 Actor administration: allow explicit Actor creation and deletion, with appearance deletion and no automatic name matching; confirmed by the Operator.
 - D-13 Detail-screen associations: allow Video creation from a Channel detail and Actor association from a Video detail; confirmed by the Operator.
+- D-14 Administrator access: require an administrator flag on the User; non-administrator Users cannot authenticate to or access the Operator interface; confirmed by the Operator.
+- D-15 Administrator provisioning: provide an explicit command that creates or promotes an administrator, validates the email and password, and never grants access through self-service; confirmed by the Operator.
