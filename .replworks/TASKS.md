@@ -206,7 +206,7 @@
     - A Contributor enters a live YouTube video URL and the Video is created or updated and associated with its Channel; Gemini Actor Extraction does not start.
     - Live end-to-end tests pass for successful resolution and resolution failure; automated unit tests pass where applicable.
 
-- [ ] T-026 Edit catalog records from the Contributor workspace
+- [x] T-026 Edit catalog records from the Contributor workspace
   - Satisfies: PRODUCT_SPEC.md §§SCR-008, Functional Requirements FR-048–FR-050, Error Condition ERR-016, Acceptance Criteria AC-033–AC-035
   - External boundary: no
   - Acceptance criteria:
