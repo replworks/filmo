@@ -21,7 +21,8 @@ RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction --pr
 
 COPY . .
 
-RUN composer dump-autoload --no-dev --optimize --no-scripts \
+RUN rm -f bootstrap/cache/*.php \
+    && composer dump-autoload --no-dev --optimize --no-scripts \
     && php artisan package:discover --ansi \
     && npm ci \
     && npm run build
