@@ -21,6 +21,7 @@ Route::middleware('auth')->prefix('contributor')->name('contributor.')->group(fu
     Route::get('/videos/{video}/edit', [ContributorWorkspaceController::class, 'editVideo'])->name('videos.edit');
     Route::patch('/videos/{video}', [ContributorWorkspaceController::class, 'updateVideo'])->name('videos.update');
     Route::post('/actors', [ContributorWorkspaceController::class, 'storeActor'])->name('actors.store');
+    Route::delete('/contributions/{contribution}', [ContributorWorkspaceController::class, 'destroyContribution'])->name('contributions.destroy');
     Route::get('/actors/{actor}/edit', [ContributorWorkspaceController::class, 'editActor'])->name('actors.edit');
     Route::patch('/actors/{actor}', [ContributorWorkspaceController::class, 'updateActor'])->name('actors.update');
     Route::post('/actors/{actor}/videos', [ContributorWorkspaceController::class, 'attachVideo'])->name('actors.videos.store');

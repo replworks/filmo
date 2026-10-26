@@ -223,7 +223,7 @@
     - Public landing and catalog pages expose only public records and public associations.
     - Automated tests pass for owner fields, draft filtering, and contribution storage.
 
-- [ ] T-028 Submit Contributor contributions as pending changes
+- [x] T-028 Submit Contributor contributions as pending changes
   - Satisfies: PRODUCT_SPEC.md §SCR-008, Functional Requirements FR-058–FR-060, FR-063, Acceptance Criteria AC-040–AC-042
   - External boundary: yes
   - Acceptance criteria:
@@ -231,7 +231,7 @@
     - A Contributor can manage their pending contribution; a second pending for the same record shows a conflict instead of silently replacing it.
     - Contributor names are not shown publicly; live YouTube resolution remains covered.
 
-- [ ] T-029 Review and apply contributions in Filament
+- [x] T-029 Review and apply contributions in Filament
   - Satisfies: PRODUCT_SPEC.md §SCR-009, Functional Requirements FR-061–FR-062, Acceptance Criteria AC-043–AC-045
   - External boundary: no
   - Acceptance criteria:

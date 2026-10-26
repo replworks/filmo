@@ -1,43 +1,29 @@
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import type { Auth } from '@/types';
 
-type ChannelSummary = {
+type ContributionSummary = {
     id: number;
-    title: string;
-    handle: string | null;
-};
-
-type VideoSummary = {
-    id: number;
-    title: string;
-    channel: string | null;
-};
-
-type ActorSummary = {
-    id: number;
-    name: string;
-    activity_name: string | null;
-    videos_count: number;
+    status: string;
+    type: string;
+    record_id: number;
+    record_title: string;
+    payload: Record<string, unknown>;
+    created_at: string | null;
+    review_note: string | null;
 };
 
 type Props = {
     status?: string | null;
-    channels: ChannelSummary[];
-    videos: VideoSummary[];
-    actors: ActorSummary[];
+    contributions: ContributionSummary[];
 };
 
-export default function ContributorWorkspace({
-    status,
-    channels,
-    videos,
-    actors,
-}: Props) {
+export default function ContributorWorkspace({ status, contributions }: Props) {
     const { auth } = usePage<{ auth: Auth }>().props;
+    const { errors } = usePage<{ errors: { conflict?: string } }>().props;
     const user = auth.user;
 
     const channelForm = useForm({ channel: '' });
@@ -56,7 +42,8 @@ export default function ContributorWorkspace({
                     {user ? `${user.name}님` : '기여자 워크스페이스'}
                 </h1>
                 <p className="mt-4 text-muted-foreground">
-                    채널·영상·배우를 추가하고, 기존 기록을 편집할 수 있습니다.
+                    채널·영상·배우 정보를 기여할 수 있습니다. 운영자 승인 후
+                    카탈로그에 공개됩니다.
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-3">
@@ -71,11 +58,16 @@ export default function ContributorWorkspace({
                     </p>
                 )}
 
+                {errors.conflict && (
+                    <p className="mt-8 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                        {errors.conflict}
+                    </p>
+                )}
+
                 <section className="mt-10 rounded-xl border border-border/70 bg-card p-6">
-                    <h2 className="text-lg font-semibold">채널 추가</h2>
+                    <h2 className="text-lg font-semibold">채널 기여</h2>
                     <p className="mt-1 text-sm text-muted-foreground">
                         Channel ID, @handle, 또는 YouTube 채널 URL을 입력하세요.
-                        채널을 추가하면 초기 영상 수집이 시작됩니다.
                     </p>
 
                     <form
@@ -108,17 +100,17 @@ export default function ContributorWorkspace({
                             disabled={channelForm.processing}
                         >
                             {channelForm.processing
-                                ? '추가 중…'
-                                : '채널 추가'}
+                                ? '제출 중…'
+                                : '채널 기여'}
                         </Button>
                     </form>
                 </section>
 
                 <section className="mt-6 rounded-xl border border-border/70 bg-card p-6">
-                    <h2 className="text-lg font-semibold">영상 추가</h2>
+                    <h2 className="text-lg font-semibold">영상 기여</h2>
                     <p className="mt-1 text-sm text-muted-foreground">
                         YouTube 영상 URL을 입력하면 영상과 채널 정보를 가져와
-                        카탈로그에 연결합니다.
+                        기여로 제출합니다.
                     </p>
 
                     <form
@@ -150,16 +142,16 @@ export default function ContributorWorkspace({
                             type="submit"
                             disabled={videoForm.processing}
                         >
-                            {videoForm.processing ? '추가 중…' : '영상 추가'}
+                            {videoForm.processing ? '제출 중…' : '영상 기여'}
                         </Button>
                     </form>
                 </section>
 
                 <section className="mt-6 rounded-xl border border-border/70 bg-card p-6">
-                    <h2 className="text-lg font-semibold">배우 추가</h2>
+                    <h2 className="text-lg font-semibold">배우 기여</h2>
                     <p className="mt-1 text-sm text-muted-foreground">
-                        이름만으로 추가할 수 있습니다. 나머지 정보는 추가 후
-                        편집할 수 있습니다.
+                        이름만으로 제출할 수 있습니다. 나머지 정보는 운영자
+                        승인 후 수정 기여로 보완할 수 있습니다.
                     </p>
 
                     <form
@@ -203,105 +195,56 @@ export default function ContributorWorkspace({
                             type="submit"
                             disabled={actorForm.processing}
                         >
-                            {actorForm.processing ? '추가 중…' : '배우 추가'}
+                            {actorForm.processing ? '제출 중…' : '배우 기여'}
                         </Button>
                     </form>
                 </section>
 
                 <section className="mt-10">
-                    <h2 className="text-xl font-semibold">등록된 채널</h2>
-                    {channels.length === 0 ? (
-                        <p className="mt-3 text-sm text-muted-foreground">
-                            아직 등록된 채널이 없습니다.
-                        </p>
-                    ) : (
-                        <ul className="mt-3 divide-y rounded-lg border border-border/70 bg-card">
-                            {channels.map((channel) => (
-                                <li
-                                    key={channel.id}
-                                    className="flex items-center justify-between gap-4 px-4 py-3"
-                                >
-                                    <div>
-                                        <p className="font-medium">
-                                            {channel.title}
-                                        </p>
-                                        <p className="text-sm text-muted-foreground">
-                                            {channel.handle ?? '핸들 없음'}
-                                        </p>
-                                    </div>
-                                    <Link
-                                        href={`/contributor/channels/${channel.id}/edit`}
-                                        className="text-sm font-medium text-primary hover:underline"
-                                    >
-                                        편집
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </section>
+                    <h2 className="text-xl font-semibold">내 기여</h2>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                        승인 전에는 공개 카탈로그에 표시되지 않습니다.
+                    </p>
 
-                <section className="mt-8">
-                    <h2 className="text-xl font-semibold">등록된 영상</h2>
-                    {videos.length === 0 ? (
-                        <p className="mt-3 text-sm text-muted-foreground">
-                            아직 등록된 영상이 없습니다.
+                    {contributions.length === 0 ? (
+                        <p className="mt-4 rounded-lg border border-dashed border-border/80 bg-muted/30 p-6 text-sm text-muted-foreground">
+                            아직 제출한 기여가 없습니다.
                         </p>
                     ) : (
-                        <ul className="mt-3 divide-y rounded-lg border border-border/70 bg-card">
-                            {videos.map((video) => (
+                        <ul className="mt-4 divide-y rounded-lg border border-border/70 bg-card">
+                            {contributions.map((contribution) => (
                                 <li
-                                    key={video.id}
-                                    className="flex items-center justify-between gap-4 px-4 py-3"
+                                    key={contribution.id}
+                                    className="flex flex-col gap-2 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
                                 >
                                     <div>
                                         <p className="font-medium">
-                                            {video.title}
+                                            {contribution.type} ·{' '}
+                                            {contribution.record_title}
                                         </p>
-                                        <p className="text-sm text-muted-foreground">
-                                            {video.channel ?? '채널 정보 없음'}
+                                        <p className="mt-1 text-sm text-muted-foreground">
+                                            {statusLabel(contribution.status)}
+                                            {contribution.review_note
+                                                ? ` · ${contribution.review_note}`
+                                                : ''}
                                         </p>
                                     </div>
-                                    <Link
-                                        href={`/contributor/videos/${video.id}/edit`}
-                                        className="text-sm font-medium text-primary hover:underline"
-                                    >
-                                        편집
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </section>
 
-                <section className="mt-8">
-                    <h2 className="text-xl font-semibold">등록된 배우</h2>
-                    {actors.length === 0 ? (
-                        <p className="mt-3 text-sm text-muted-foreground">
-                            아직 등록된 배우가 없습니다.
-                        </p>
-                    ) : (
-                        <ul className="mt-3 divide-y rounded-lg border border-border/70 bg-card">
-                            {actors.map((actor) => (
-                                <li
-                                    key={actor.id}
-                                    className="flex items-center justify-between gap-4 px-4 py-3"
-                                >
-                                    <div>
-                                        <p className="font-medium">
-                                            {actor.name}
-                                        </p>
-                                        <p className="text-sm text-muted-foreground">
-                                            {actor.activity_name ?? '활동명 없음'}{' '}
-                                            · 출연 영상 {actor.videos_count}개
-                                        </p>
-                                    </div>
-                                    <Link
-                                        href={`/contributor/actors/${actor.id}/edit`}
-                                        className="text-sm font-medium text-primary hover:underline"
-                                    >
-                                        편집
-                                    </Link>
+                                    {contribution.status === 'pending' && (
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() =>
+                                                router.delete(
+                                                    `/contributor/contributions/${contribution.id}`,
+                                                    { preserveScroll: true },
+                                                )
+                                            }
+                                        >
+                                            기여 삭제
+                                        </Button>
+                                    )}
                                 </li>
                             ))}
                         </ul>
@@ -309,5 +252,15 @@ export default function ContributorWorkspace({
                 </section>
             </div>
         </>
+    );
+}
+
+function statusLabel(status: string): string {
+    return (
+        {
+            pending: '운영자 검토 대기',
+            approved: '승인됨',
+            rejected: '거절됨',
+        }[status] ?? status
     );
 }

@@ -22,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         YoutubeChannel::created(function (YoutubeChannel $channel): void {
+            if ($channel->is_public === false) {
+                return;
+            }
+
             CollectChannelVideos::dispatch($channel->id);
         });
     }

@@ -4,7 +4,9 @@ namespace Tests\Feature;
 
 use App\Jobs\CollectChannelVideos;
 use App\Jobs\ExtractVideoActors;
+use App\Models\Contribution;
 use App\Models\User;
+use App\Models\Video;
 use Cable8mm\Youtube\Models\YoutubeChannel;
 use Cable8mm\Youtube\Models\YoutubeVideo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -39,15 +41,23 @@ class ContributorAddRecordsLiveTest extends TestCase
         $contributor = User::factory()->create();
 
         $this->actingAs($contributor)
+            ->from('/contributor')
             ->post('/contributor/channels', ['channel' => '@YouTube'])
-            ->assertRedirect(route('contributor.index'))
+            ->assertRedirect('/contributor')
             ->assertSessionHas('status');
 
         $channel = YoutubeChannel::where('channel_id', 'UCBR8-60-B28hp2BmDPdntcQ')->firstOrFail();
 
         $this->assertSame('YouTube', $channel->title);
         $this->assertSame('UUBR8-60-B28hp2BmDPdntcQ', $channel->uploads_playlist_id);
-        Bus::assertDispatched(CollectChannelVideos::class, fn (CollectChannelVideos $job): bool => $job->channelId === $channel->id);
+        $this->assertFalse((bool) $channel->is_public);
+        Bus::assertNotDispatched(CollectChannelVideos::class);
+        $this->assertDatabaseHas('contributions', [
+            'user_id' => $contributor->id,
+            'contributable_type' => YoutubeChannel::class,
+            'contributable_id' => $channel->id,
+            'status' => Contribution::STATUS_PENDING,
+        ]);
 
         $this->actingAs($contributor)
             ->post('/contributor/channels', ['channel' => '@thisusernamedoesnotexist12345'])
@@ -61,18 +71,26 @@ class ContributorAddRecordsLiveTest extends TestCase
         $contributor = User::factory()->create();
 
         $this->actingAs($contributor)
+            ->from('/contributor')
             ->post('/contributor/videos', [
                 'url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
             ])
-            ->assertRedirect(route('contributor.index'))
+            ->assertRedirect('/contributor')
             ->assertSessionHas('status');
 
         $video = YoutubeVideo::where('video_id', 'dQw4w9WgXcQ')->firstOrFail();
 
         $this->assertNotSame('', $video->title);
         $this->assertNotNull($video->youtube_channel_id);
+        $this->assertFalse((bool) $video->is_public);
         $this->assertNull($video->extraction_status);
         Bus::assertNotDispatched(ExtractVideoActors::class);
+        $this->assertDatabaseHas('contributions', [
+            'user_id' => $contributor->id,
+            'contributable_type' => Video::class,
+            'contributable_id' => $video->id,
+            'status' => Contribution::STATUS_PENDING,
+        ]);
 
         $this->actingAs($contributor)
             ->post('/contributor/videos', [
