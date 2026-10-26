@@ -34,12 +34,15 @@ class Actor extends Model
         'nationality',
         'profile',
         'merged_into_actor_id',
+        'user_id',
+        'is_public',
     ];
 
     protected function casts(): array
     {
         return [
             'birth_date' => 'date',
+            'is_public' => 'boolean',
             'profile' => 'array',
         ];
     }
@@ -58,6 +61,23 @@ class Actor extends Model
     public function referenceUrls(): HasMany
     {
         return $this->hasMany(ActorReferenceUrl::class);
+    }
+
+    /**
+     * @return BelongsTo<User, $this>
+     */
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * @param  Builder<Actor>  $query
+     * @return Builder<Actor>
+     */
+    public function scopeVisible(Builder $query): Builder
+    {
+        return $query->where('is_public', true);
     }
 
     /**

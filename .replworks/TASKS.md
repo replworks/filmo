@@ -213,3 +213,28 @@
     - A Contributor can create an Actor with only a Name and edit any Channel, Video, or Actor record, including reference URLs and Profile Fields.
     - A Contributor can add and remove an Actor-Video association.
     - No delete, merge, extraction, or Sync Error control is offered, and failed saves retain entered values; tests pass.
+
+- [x] T-027 Add owner, public visibility, and contribution storage
+  - Satisfies: PRODUCT_SPEC.md §§SCR-005–SCR-006, SCR-008, Functional Requirements FR-056–FR-064, Acceptance Criteria AC-038–AC-045
+  - External boundary: no
+  - Acceptance criteria:
+    - Channels, Videos, and Actors have an owner and a public visibility flag; existing records are backfilled to the administrator and public.
+    - Contributions store a polymorphic contributor, JSON payload, review status, reviewer, review time, and review note.
+    - Public landing and catalog pages expose only public records and public associations.
+    - Automated tests pass for owner fields, draft filtering, and contribution storage.
+
+- [ ] T-028 Submit Contributor contributions as pending changes
+  - Satisfies: PRODUCT_SPEC.md §SCR-008, Functional Requirements FR-058–FR-060, FR-063, Acceptance Criteria AC-040–AC-042
+  - External boundary: yes
+  - Acceptance criteria:
+    - Contributor Channel/Video/Actor creates and edits create pending contributions and draft or unchanged canonical records.
+    - A Contributor can manage their pending contribution; a second pending for the same record shows a conflict instead of silently replacing it.
+    - Contributor names are not shown publicly; live YouTube resolution remains covered.
+
+- [ ] T-029 Review and apply contributions in Filament
+  - Satisfies: PRODUCT_SPEC.md §SCR-009, Functional Requirements FR-061–FR-062, Acceptance Criteria AC-043–AC-045
+  - External boundary: no
+  - Acceptance criteria:
+    - The Administrator can list pending contributions, inspect JSON payloads, and approve or reject them with an optional review note.
+    - Approving applies the payload to the canonical record and publishes it; rejecting leaves the canonical record unchanged.
+    - Channel initial collection starts only after approval; Video approval never starts Gemini Actor Extraction; tests pass.

@@ -17,12 +17,14 @@ class PublicLandingController extends Controller
         return Inertia::render('welcome', [
             'featuredActors' => Actor::query()
                 ->active()
+                ->visible()
                 ->latest()
                 ->limit(6)
                 ->get()
                 ->map(fn (Actor $actor): array => $this->actorSummary($actor))
                 ->all(),
             'featuredVideos' => YoutubeVideo::query()
+                ->where('is_public', true)
                 ->with('channel')
                 ->latest('created_at')
                 ->limit(6)

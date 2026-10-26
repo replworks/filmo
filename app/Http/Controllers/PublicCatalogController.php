@@ -18,12 +18,14 @@ class PublicCatalogController extends Controller
     {
         return Inertia::render('catalog/index', [
             'channels' => YoutubeChannel::query()
+                ->where('is_public', true)
                 ->withCount('videos')
                 ->orderBy('title')
                 ->get()
                 ->map(fn (YoutubeChannel $channel): array => $this->channelSummary($channel))
                 ->all(),
             'videos' => YoutubeVideo::query()
+                ->where('is_public', true)
                 ->with('channel')
                 ->orderByDesc('published_at')
                 ->limit(50)
@@ -32,6 +34,7 @@ class PublicCatalogController extends Controller
                 ->all(),
             'actors' => Actor::query()
                 ->active()
+                ->visible()
                 ->orderBy('name')
                 ->limit(100)
                 ->get()
@@ -42,8 +45,12 @@ class PublicCatalogController extends Controller
 
     public function channel(YoutubeChannel $channel): Response
     {
-        $channel->loadCount('videos')->load([
-            'videos' => fn ($query) => $query->with('channel')->orderByDesc('published_at'),
+        abort_unless($channel->is_public, 404);
+
+        $channel->loadCount([
+            'videos' => fn ($query) => $query->where('is_public', true),
+        ])->load([
+            'videos' => fn ($query) => $query->where('is_public', true)->with('channel')->orderByDesc('published_at'),
         ]);
 
         return Inertia::render('catalog/channel', [
@@ -53,9 +60,11 @@ class PublicCatalogController extends Controller
 
     public function video(Video $video): Response
     {
+        abort_unless($video->is_public, 404);
+
         $video->load([
             'channel',
-            'actors' => fn ($query) => $query->active()->orderBy('name'),
+            'actors' => fn ($query) => $query->active()->visible()->orderBy('name'),
         ]);
 
         return Inertia::render('catalog/video', [
@@ -65,11 +74,11 @@ class PublicCatalogController extends Controller
 
     public function actor(Actor $actor): Response
     {
-        abort_if($actor->isMerged(), 404);
+        abort_if($actor->isMerged() || ! $actor->is_public, 404);
 
         $actor->load([
             'referenceUrls',
-            'videos' => fn ($query) => $query->with('channel')->orderByDesc('published_at'),
+            'videos' => fn ($query) => $query->where('is_public', true)->with('channel')->orderByDesc('published_at'),
         ]);
 
         return Inertia::render('catalog/actor', [

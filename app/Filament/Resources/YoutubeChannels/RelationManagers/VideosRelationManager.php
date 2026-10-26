@@ -92,7 +92,11 @@ class VideosRelationManager extends RelationManager
                             ->numeric(),
                     ])
                     ->action(function (array $data): void {
-                        $this->getOwnerRecord()->videos()->create($data);
+                        $channel = $this->getOwnerRecord();
+                        $video = $channel->videos()->create($data);
+                        $video->user_id = $channel->user_id;
+                        $video->is_public = $channel->is_public;
+                        $video->save();
 
                         Notification::make()
                             ->success()

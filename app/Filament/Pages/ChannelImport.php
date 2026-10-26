@@ -3,8 +3,10 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Resources\YoutubeChannels\YoutubeChannelResource;
+use App\Support\CatalogOwner;
 use BackedEnum;
 use Cable8mm\Youtube\Imports\YoutubeChannelsImport;
+use Cable8mm\Youtube\Models\YoutubeChannel;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Pages\Page;
@@ -153,6 +155,15 @@ class ChannelImport extends Page
         }
 
         $this->results = $import->results();
+
+        if ($this->importError === null && $import->hasChannelColumn()) {
+            YoutubeChannel::query()
+                ->whereNull('user_id')
+                ->update([
+                    'user_id' => CatalogOwner::id(),
+                    'is_public' => true,
+                ]);
+        }
 
         if ($this->importError === null && ! $import->hasChannelColumn()) {
             $this->importError = 'The spreadsheet has no channel column.';

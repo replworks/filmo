@@ -11,7 +11,7 @@
 Terms:
 
 - Visitor: an unauthenticated person who views the public landing and catalog.
-- Contributor: a self-registered, non-administrator User who adds and edits Channels, Videos, and Actors.
+- Contributor: a self-registered, non-administrator User who submits Contributions for Channels, Videos, and Actors.
 - Operator: an administrator who uses the product to collect and maintain the catalog.
 - Channel: a YouTube channel registered by an Operator.
 - Video: a YouTube video published by a Channel.
@@ -20,6 +20,10 @@ Terms:
 - Actor Reference URL: a NamuWiki, Naver, or other reference URL supplied by an Operator for an Actor, stored as a separate actor_reference_urls record. An Actor may have none or many.
 - Actor Video Appearance: the association between one Actor and one Video.
 - Gemini Actor Extraction: an Operator-started operation that uses a Video to extract Actors and associate them with that Video.
+- Owner: the User who owns a catalog record. Catalog records are owned by an Administrator for now; Actor and agency ownership is deferred.
+- Contribution: a Contributor's pending proposal to create or change a Channel, Video, Actor, or Actor-Video association. A Contribution has a JSON payload, review status, reviewer, review time, and review note.
+- Public Record: a Channel, Video, or Actor that has been approved by an Administrator and has `is_public = true`.
+- Draft Record: a Contributor-created Channel, Video, or Actor that has not yet been approved and is hidden from the public catalog.
 - YouTube Channel Spreadsheet: an Excel file with a `channel` column containing YouTube channel identifiers, handles, or supported channel URLs.
 
 ## Problem
@@ -54,6 +58,10 @@ Terms:
 
 ## Inputs
 
+- Owner: the User who owns a catalog record. Catalog records are owned by an Administrator for now; Actor and agency ownership is deferred.
+- Contribution: a Contributor's pending proposal to create or change a Channel, Video, Actor, or Actor-Video association. A Contribution has a JSON payload, review status, reviewer, review time, and review note.
+- Public Record: a Channel, Video, or Actor that has been approved by an Administrator and has `is_public = true`.
+- Draft Record: a Contributor-created Channel, Video, or Actor that has not yet been approved and is hidden from the public catalog.
 - YouTube Channel Spreadsheet: an Excel file with extension `.xlsx`, `.xls`, or `.csv` and a `channel` column. Each value is a Channel ID, an `@handle`, or a URL whose path begins with `/channel/`, `/@`, or `/user/`.
 - Video source: a Video collected from a registered Channel.
 - Actor values: Name, Activity Name, Birth Date, Birthplace, Education, Debut, Agency, Nationality, Actor Reference URLs, and additional Profile Field name/value pairs.
@@ -154,6 +162,7 @@ Terms:
   - Activate EL-029 -> the product starts Gemini Actor Extraction for the selected Video and updates EL-030.
   - Register or collect a Video -> Gemini Actor Extraction does not start automatically.
   - A successful extraction -> each extracted Actor is associated with the selected Video.
+  - A Draft Record does not appear in SCR-005 or SCR-006 until an Administrator approves it.
 
 ### SCR-003 Actor Catalog
 
@@ -345,14 +354,42 @@ Terms:
 - Navigation:
   - Select EL-078 -> SCR-006.
 - Interactions:
-  - Activate EL-067 -> the product resolves the Channel reference, creates or updates the Channel, starts initial Video collection, and shows the result in EL-077.
-  - Activate EL-069 -> the product resolves the video URL, creates or updates the Video, associates it with its Channel, and shows the result in EL-077. Gemini Actor Extraction does not start.
-  - Activate EL-074 -> the product creates an Actor.
-  - Activate EL-075 -> the product saves any Actor's fields and reference URLs.
-  - Activate EL-070 or EL-071 -> the product saves any Channel's or Video's package fields.
-  - Activate EL-076 -> the product adds or removes the Actor-Video association.
-  - A Contributor cannot delete a record, merge Actors, start Gemini Actor Extraction, or manage Sync Errors in SCR-008.
-  - All Actor fields except Name may be empty and the Actor can still be saved.
+  - Activate EL-067 -> the product resolves the Channel and creates a pending Contribution plus a Draft Channel. Initial collection starts only after approval.
+  - Activate EL-069 -> the product resolves the video URL and creates a pending Contribution plus a Draft Video. Gemini Actor Extraction does not start.
+  - Activate EL-074 -> the product creates a pending Contribution plus a Draft Actor.
+  - Activate EL-075 -> the product creates a pending Contribution for the Actor; the canonical Actor is unchanged until approval.
+  - Activate EL-070 or EL-071 -> the product creates a pending Contribution for the Channel or Video; the canonical record is unchanged until approval.
+  - Activate EL-076 -> the product creates a pending Contribution for the Actor-Video association.
+  - A second pending Contribution for the same Contributor and record shows a conflict instead of replacing the existing pending Contribution.
+  - The Contributor can edit or delete their own pending Contribution.
+  - A Contributor cannot delete a canonical record, merge Actors, start Gemini Actor Extraction, or manage Sync Errors in SCR-008.
+  - All Actor fields except Name may be empty in a Contribution.
+
+### SCR-009 Contribution Review
+
+- ID: SCR-009
+- Purpose: lets an Administrator review pending Contributions and approve or reject them.
+- Elements:
+  - EL-079 Pending Contribution List: lists pending Contributions. User actions: select a Contribution.
+  - EL-080 Contribution Detail: shows the Contributor, affected record, JSON payload, and status. User actions: none.
+  - EL-081 Approve Contribution Control: approves the Contribution and applies the payload. User actions: activate.
+  - EL-082 Reject Contribution Control: rejects the Contribution. User actions: activate.
+  - EL-083 Review Note Input: records an optional note. User actions: edit.
+  - EL-084 Operation Result Display: shows the approval or rejection result. User actions: none.
+- Arrangement: EL-079 and EL-080 form the review list and detail. EL-081 through EL-084 appear with the selected Contribution.
+- States:
+  - Empty: EL-079 shows an empty list.
+  - Populated: EL-079 and EL-080 are shown.
+  - Saving: the active decision control is disabled and EL-084 shows progress.
+  - Error: EL-084 shows the failure while the selected Contribution remains pending.
+- Navigation:
+  - Select EL-079 -> EL-080 shows the Contribution.
+- Interactions:
+  - Approve -> the payload is applied to the canonical record, the record becomes public, and the Contribution is marked approved.
+  - Reject -> the canonical record is unchanged and the Contribution is marked rejected.
+  - Approving a Channel starts its initial Video collection.
+  - Approving a Video never starts Gemini Actor Extraction.
+  - The review page is an Administrator-only Filament page, not a resource.
 
 ## Functional Requirements
 
@@ -411,16 +448,28 @@ Public access and contribution
 - FR-043: A Visitor MUST be able to view SCR-005 and SCR-006 without authentication.
 - FR-044: A Visitor MUST be able to self-register in SCR-007. A registered User MUST be a non-administrator Contributor and MUST NOT gain access to the Operator interface.
 - FR-045: Email verification MUST NOT be required for a Contributor to use SCR-008.
-- FR-046: A Contributor MUST be able to add a Channel by Channel ID, `@handle`, or supported Channel URL. The product MUST resolve the reference through YouTube and MUST start the Channel's initial Video collection.
-- FR-047: A Contributor MUST be able to add a Video by YouTube video URL. The product MUST retrieve the available Video data and MUST associate the Video with its Channel. Adding a Video MUST NOT start Gemini Actor Extraction.
-- FR-048: A Contributor MUST be able to create an Actor with a Name and optional Activity Name, Birth Date, Birthplace, Education, Debut, Agency, Nationality, Actor Reference URLs, and Profile Fields.
-- FR-049: A Contributor MUST be able to edit any Channel, Video, or Actor record.
-- FR-050: A Contributor MUST be able to add and remove an Actor-Video association.
+- FR-046: A Contributor MUST be able to submit a Channel Contribution by Channel ID, `@handle`, or supported Channel URL. The product MUST resolve the reference through YouTube. The Channel MUST remain a Draft Record and initial collection MUST start only after Administrator approval.
+- FR-047: A Contributor MUST be able to submit a Video Contribution by YouTube video URL. The product MUST retrieve the available Video data, keep the Video as a Draft Record, and associate it with its Channel after approval. A Video Contribution MUST NOT start Gemini Actor Extraction.
+- FR-048: A Contributor MUST be able to submit an Actor Contribution with a Name and optional Activity Name, Birth Date, Birthplace, Education, Debut, Agency, Nationality, Actor Reference URLs, and Profile Fields. The Actor MUST remain a Draft Record until approval.
+- FR-049: A Contributor MUST be able to submit a Contribution to change any Channel, Video, or Actor record. The canonical record MUST remain unchanged until approval.
+- FR-050: A Contributor MUST be able to submit a Contribution to add or remove an Actor-Video association. The association MUST remain unchanged until approval.
 - FR-051: A Contributor MUST NOT delete a Channel, Video, Actor, or Sync Error; merge Actors; start Gemini Actor Extraction; or manage Users.
 - FR-052: SCR-006 MUST list Channels, Videos, and Actors and MUST show detail for a selected Channel, Video, or Actor.
 - FR-053: SCR-006 MUST NOT show Sync Errors, extraction errors, or Administrator controls.
 - FR-054: A merged Actor MUST NOT appear in SCR-006.
 - FR-055: A write request without the required access MUST be denied without changing stored data.
+
+Ownership and contributions
+
+- FR-056: Every Channel, Video, and Actor MUST have an Owner `user_id`. Existing records MUST be backfilled to an Administrator Owner.
+- FR-057: A Public Record MUST have `is_public = true`; a Draft Record MUST have `is_public = false` and MUST NOT appear in SCR-005 or SCR-006.
+- FR-058: A Contributor write MUST create a pending Contribution and MUST NOT directly change canonical catalog data.
+- FR-059: A Contribution MUST store its Contributor, polymorphic affected record, JSON payload, status, reviewer, review time, and review note.
+- FR-060: A Contributor MUST have at most one pending Contribution per affected record. A second submission MUST report a conflict and allow the Contributor to manage the existing pending Contribution.
+- FR-061: An Administrator MUST be able to approve or reject a pending Contribution with an optional review note.
+- FR-062: Approving a Contribution MUST apply its payload to the canonical record and make the record public. Rejecting MUST leave canonical data unchanged. Approving a Channel MUST start initial collection; approving a Video MUST NOT start Gemini Actor Extraction.
+- FR-063: Contributor names MUST NOT appear in SCR-005 or SCR-006.
+- FR-064: Existing catalog records MUST be backfilled to an Administrator Owner and `is_public = true`.
 
 ## User Flows
 
@@ -564,10 +613,18 @@ UF-010 Add and edit an Actor
 - AC-028: The administrator provisioning command creates a new administrator and promotes an existing User; it rejects an invalid email or a password shorter than eight characters (FR-042).
 - AC-029: A Visitor can view the service landing and the public catalog without signing in (FR-043, SCR-005, SCR-006).
 - AC-030: Self-registration creates a Contributor who can use SCR-008 and cannot access the Operator interface (FR-044, SCR-007).
-- AC-031: A Contributor can add a Channel by ID, handle, and URL, and initial collection starts (FR-046, SCR-008).
-- AC-032: A Contributor can add a Video by URL; the Video is associated with its Channel and no extraction starts (FR-047, SCR-008).
-- AC-033: A Contributor can create an Actor with only a Name and the Actor appears in the public catalog (FR-048, SCR-006).
-- AC-034: A Contributor can edit any Channel, Video, or Actor record (FR-049, SCR-008).
-- AC-035: A Contributor can add and remove an Actor-Video association (FR-050, SCR-008).
+- AC-031: A Contributor can submit a Channel Contribution by ID, handle, and URL, and initial collection starts only after approval (FR-046, FR-058, FR-062, SCR-008).
+- AC-032: A Contributor can submit a Video Contribution by URL; the Video is associated with its Channel after approval and no extraction starts (FR-047, FR-058, FR-062, SCR-008).
+- AC-033: A Contributor can submit an Actor Contribution with only a Name; the Actor appears in the public catalog only after approval (FR-048, FR-057, FR-062, SCR-006).
+- AC-034: A Contributor can submit a Contribution to change any Channel, Video, or Actor record; canonical data changes only after approval (FR-049, FR-058, FR-061, SCR-008).
+- AC-035: A Contributor can submit an Actor-Video association Contribution; the association changes only after approval (FR-050, FR-058, FR-062, SCR-008).
 - AC-036: A Contributor is offered no delete, merge, extraction, or Sync Error control, and a denied write request changes no data (FR-051, FR-055).
 - AC-037: SCR-006 shows Channel, Video, and Actor detail, hides merged Actors and Sync Errors, and shows no Administrator controls (FR-052, FR-053, FR-054).
+- AC-038: Existing records have an Administrator Owner and `is_public = true` (FR-056, FR-064).
+- AC-039: Draft Records and draft associations never appear in SCR-005 or SCR-006 (FR-057, SCR-005, SCR-006).
+- AC-040: A Contributor write creates a pending Contribution without changing canonical data (FR-058, SCR-008).
+- AC-041: A Contribution stores a polymorphic record, Contributor, JSON payload, status, reviewer, review time, and note (FR-059).
+- AC-042: A second pending Contribution for the same Contributor and record reports a conflict and preserves the existing pending Contribution (FR-060, SCR-008).
+- AC-043: An Administrator can approve a Contribution, applying its payload and publishing the record (FR-061, FR-062, SCR-009).
+- AC-044: An Administrator can reject a Contribution without changing canonical data (FR-061, SCR-009).
+- AC-045: Approving a Channel starts initial collection; approving a Video does not start Gemini Actor Extraction (FR-062, SCR-009).

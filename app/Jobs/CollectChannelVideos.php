@@ -158,7 +158,11 @@ class CollectChannelVideos implements ShouldQueue
             'like_count' => $item->statistics->likeCount ?? null,
             'comment_count' => $item->statistics->commentCount ?? null,
             'unavailable_at' => null,
-        ])->save();
+        ]);
+
+        $video->user_id = $channel->user_id;
+        $video->is_public = $channel->is_public;
+        $video->save();
 
         return $created;
     }
