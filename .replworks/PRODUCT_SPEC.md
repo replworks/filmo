@@ -5,9 +5,13 @@
 - The product enables an Operator to build a catalog of Actors who appear in Korean YouTube web-drama and sketch-comedy Videos.
 - The product enables an Operator to register YouTube Channels, collect their Videos, extract Actors from selected Videos, store Actor profile information, and see which Videos each Actor appears in.
 - The product retains Channel, Video, Actor, and appearance records across Operator sessions.
+- The product lets Visitors browse the public catalog without signing in.
+- The product lets Contributors add and edit Channels, Videos, and Actors after self-registration.
 
 Terms:
 
+- Visitor: an unauthenticated person who views the public landing and catalog.
+- Contributor: a self-registered, non-administrator User who adds and edits Channels, Videos, and Actors.
 - Operator: an administrator who uses the product to collect and maintain the catalog.
 - Channel: a YouTube channel registered by an Operator.
 - Video: a YouTube video published by a Channel.
@@ -22,9 +26,14 @@ Terms:
 
 - YouTube videos do not provide structured cast credits for the product's target videos.
 - The product needs a simple way for an Operator to accumulate Videos, extract Actors, and see which Videos each Actor appears in without reviewing a second layer of filmography records.
+- Catalog maintenance is limited to administrators, so people who watch these Videos cannot contribute Channel, Video, or Actor information.
+- The catalog is not presented to the public.
 
 ## Product Goals
 
+- Enable a Visitor to browse the public catalog without signing in.
+- Enable a Contributor to self-register and add or edit Channels, Videos, and Actors.
+- Present the product as a public service from the first screen.
 - Enable an Operator to register YouTube Channels from a YouTube Channel Spreadsheet.
 - Enable an Operator to see registered Channels and their collected Videos.
 - Enable an Operator to collect available Videos published by registered Channels.
@@ -36,9 +45,11 @@ Terms:
 
 ## Users
 
-- Administrator: a User with administrator access. Only Administrators may authenticate to the Operator interface. An Administrator can be created or promoted with the administrator provisioning command.
+- Visitor: an unauthenticated person who can view the public landing and catalog.
+- Contributor: a self-registered, non-administrator User who can add Channels, Videos, and Actors and edit any Channel, Video, or Actor record. A Contributor cannot delete records, merge Actors, run Gemini Actor Extraction, manage Sync Errors, or manage Users.
+- Administrator: a User with administrator access. Only Administrators may access the Operator interface. An Administrator can be created or promoted with the administrator provisioning command.
 - Operator: an Administrator who registers Channels, reviews collection results, edits Actors, links Videos, and merges duplicate Actors.
-- The current product has no Viewer interface.
+- Self-registration creates a Contributor. Email verification is deferred and is not required.
 - The current product has no Requester interface.
 
 ## Inputs
@@ -46,7 +57,9 @@ Terms:
 - YouTube Channel Spreadsheet: an Excel file with extension `.xlsx`, `.xls`, or `.csv` and a `channel` column. Each value is a Channel ID, an `@handle`, or a URL whose path begins with `/channel/`, `/@`, or `/user/`.
 - Video source: a Video collected from a registered Channel.
 - Actor values: Name, Activity Name, Birth Date, Birthplace, Education, Debut, Agency, Nationality, Actor Reference URLs, and additional Profile Field name/value pairs.
-- Actor Reference URLs: zero or more NamuWiki, Naver, or other reference URLs supplied by an Operator.
+- Actor Reference URLs: zero or more NamuWiki, Naver, or other reference URLs supplied by an Operator or Contributor.
+- Channel reference: a Channel ID, an `@handle`, or a supported Channel URL entered by a Contributor.
+- Video reference: a YouTube video URL entered by a Contributor.
 
 ## Outputs
 
@@ -56,6 +69,7 @@ Terms:
 - Actor records extracted from Videos or edited by an Operator.
 - Actor Video Appearance records linking Actors to Videos.
 - Actor merge results.
+- Contributor-created and Contributor-edited Channel, Video, and Actor records.
 
 ## Constraints
 
@@ -65,11 +79,11 @@ Terms:
 - Performance: None stated.
 - Accessibility: None stated.
 - Offline behavior: None stated.
-- Data retention: Channel, Video, Actor, and appearance records persist across Operator sessions.
+- Data retention: Channel, Video, Actor, and appearance records persist across Operator, Contributor, and Visitor sessions.
 
 ## External Systems
 
-- YouTube Data API: the product obtains Channel information and available Video information for registered Channels.
+- YouTube Data API: the product obtains Channel information and available Video information for registered Channels. The product also resolves Channel and Video references entered by a Contributor.
 - Gemini: the product submits collected Video information and obtains Actors appearing in that Video.
 - NamuWiki and Naver person information: the Operator supplies Actor Reference URLs. The product stores and opens each URL as a reference. The product does not automatically retrieve or process NamuWiki or Naver content.
 
@@ -216,6 +230,130 @@ Terms:
   - A later YouTube collection may overwrite edited package fields.
   - Deleting a Channel in SCR-002 deletes its Videos and their Actor-Video associations.
 
+### SCR-005 Service Landing
+
+- ID: SCR-005
+- Purpose: presents the service to a Visitor and routes the Visitor to the public catalog or account access.
+- Elements:
+  - EL-042 Service Introduction: describes the catalog service. User actions: none.
+  - EL-043 Featured Actor List: shows recently added Actors. User actions: select an Actor.
+  - EL-044 Featured Video List: shows recently collected Videos. User actions: select a Video.
+  - EL-045 Sign In Link: opens SCR-007. User actions: select.
+  - EL-046 Sign Up Link: opens SCR-007. User actions: select.
+  - EL-047 Contributor Workspace Link: opens SCR-008. User actions: select.
+- Arrangement: EL-042 appears first. EL-043 and EL-044 follow EL-042. EL-045 and EL-046 appear with EL-042. EL-047 appears only while a User is signed in.
+- States:
+  - Visitor: EL-042 through EL-046 are shown. EL-047 is not shown.
+  - Contributor signed in: EL-047 is shown.
+  - Empty: EL-043 or EL-044 shows an empty state when no matching record exists.
+  - Error: the affected list shows an error state.
+- Navigation:
+  - Select EL-043 or EL-044 -> SCR-006.
+  - Select EL-045 or EL-046 -> SCR-007.
+  - Select EL-047 -> SCR-008.
+- Interactions:
+  - Select EL-045 -> SCR-007 shows the sign-in form.
+  - Select EL-046 -> SCR-007 shows the sign-up form.
+
+### SCR-006 Public Catalog
+
+- ID: SCR-006
+- Purpose: lets a Visitor browse public Channels, Videos, and Actors without signing in.
+- Elements:
+  - EL-048 Public Channel List: lists Channels. User actions: select a Channel.
+  - EL-049 Public Channel Item: shows a Channel name, handle when recorded, and collected Video count. User actions: select.
+  - EL-050 Public Channel Detail: shows the selected Channel and its Videos. User actions: select a Video.
+  - EL-051 Public Video List: lists Videos. User actions: select a Video.
+  - EL-052 Public Video Item: shows a Video title, Channel name, published date, and YouTube video URL. User actions: select.
+  - EL-053 Public Video Detail: shows the selected Video's title, Channel, published date, YouTube video URL, and associated Actors. User actions: select an Actor.
+  - EL-054 Public Actor List: lists Actors. User actions: select an Actor.
+  - EL-055 Public Actor Item: shows an Actor's Name and Activity Name. User actions: select.
+  - EL-056 Public Actor Detail: shows the selected Actor's Name, Activity Name, Birth Date, Birthplace, Education, Debut, Agency, Nationality, Actor Reference URLs, and associated Videos. User actions: select a Video or open a reference URL.
+  - EL-057 Sign In Link: opens SCR-007. User actions: select.
+  - EL-058 Contributor Workspace Link: opens SCR-008. User actions: select.
+- Arrangement: EL-048, EL-051, and EL-054 form the Channel, Video, and Actor groups. EL-050 appears with the selected Channel. EL-053 appears with the selected Video. EL-056 appears with the selected Actor. EL-057 appears for a Visitor. EL-058 appears while a User is signed in.
+- States:
+  - Empty: the affected list shows an empty state.
+  - Populated: the affected list shows its items and the selected detail.
+  - Loading: the affected area shows a loading indicator.
+  - Error: the affected area shows an error state.
+- Navigation:
+  - Select EL-049 -> EL-050 shows the Channel and its Videos.
+  - Select EL-052 or a Video in EL-050 -> EL-053 shows the Video and its Actors.
+  - Select EL-055 or an Actor in EL-053 -> EL-056 shows the Actor and their Videos.
+  - Select EL-057 -> SCR-007.
+  - Select EL-058 -> SCR-008.
+  - An Actor Reference URL opens in a new browser tab.
+- Interactions:
+  - A merged Actor does not appear in EL-054.
+  - Sync Errors do not appear in SCR-006.
+  - Administrator controls do not appear in SCR-006.
+  - Package data may be read in SCR-006 but cannot be edited there.
+
+### SCR-007 Account Access
+
+- ID: SCR-007
+- Purpose: lets a Visitor create a Contributor account, sign in, or reset a password.
+- Elements:
+  - EL-059 Sign Up Form: accepts a name, an email address, and a password. User actions: edit values.
+  - EL-060 Sign Up Control: creates the account. User actions: activate.
+  - EL-061 Sign In Form: accepts an email address and a password. User actions: edit values.
+  - EL-062 Sign In Control: signs in. User actions: activate.
+  - EL-063 Password Reset Form: accepts an email address. User actions: edit values.
+  - EL-064 Password Reset Control: requests a password reset. User actions: activate.
+  - EL-065 Catalog Link: opens SCR-006. User actions: select.
+- Arrangement: EL-059 and EL-060 form the sign-up group. EL-061 and EL-062 form the sign-in group. EL-063 and EL-064 form the password reset group. EL-065 is a navigation control.
+- States:
+  - Initial: EL-059, EL-060, EL-061, EL-062, EL-063, EL-064, and EL-065 are shown.
+  - Submitting: the activated control is disabled and the result is shown.
+  - Error: the affected group shows the failure while entered values are retained.
+  - Signed in: EL-059 through EL-064 are not shown; EL-065 and a Contributor Workspace link are shown.
+- Navigation:
+  - Successful sign-up or sign-in -> SCR-005.
+  - Select EL-065 -> SCR-006.
+- Interactions:
+  - Activate EL-060 -> the product creates a non-administrator User and signs the User in.
+  - Activate EL-062 -> the product signs the User in.
+  - Activate EL-064 -> the product requests a password reset and shows the result.
+  - Email verification is not required after sign-up.
+  - A signed-in Contributor cannot access the Filament panel.
+
+### SCR-008 Contributor Workspace
+
+- ID: SCR-008
+- Purpose: lets a Contributor add Channels, Videos, and Actors and edit any Channel, Video, or Actor record.
+- Elements:
+  - EL-066 Channel Reference Input: accepts a Channel ID, an `@handle`, or a supported Channel URL. User actions: edit the value.
+  - EL-067 Add Channel Control: adds the referenced Channel. User actions: activate.
+  - EL-068 Video URL Input: accepts a YouTube video URL. User actions: edit the value.
+  - EL-069 Add Video Control: adds the referenced Video. User actions: activate.
+  - EL-070 Channel Edit Control: edits and saves a Channel's package fields. User actions: activate.
+  - EL-071 Video Edit Control: edits and saves a Video's package fields. User actions: activate.
+  - EL-072 Actor Form: accepts a Name and optional Activity Name, Birth Date, Birthplace, Education, Debut, Agency, Nationality, and Profile Field name/value rows. User actions: edit values, add or remove Profile Fields.
+  - EL-073 Actor Reference URL List: lists the Actor's reference URLs. User actions: add, edit, or remove a URL.
+  - EL-074 Add Actor Control: creates an Actor. User actions: activate.
+  - EL-075 Actor Edit Control: edits and saves an Actor. User actions: activate.
+  - EL-076 Actor Video Association Control: adds or removes the association between an Actor and a Video. User actions: activate.
+  - EL-077 Operation Result Display: shows add, edit, and association results. User actions: none.
+  - EL-078 Public Catalog Link: opens SCR-006. User actions: select.
+- Arrangement: EL-066 through EL-069 form the add records group. EL-070 and EL-071 appear with a selected Channel or Video. EL-072 through EL-075 form the Actor group. EL-076 appears with a selected Actor and Video. EL-077 follows the active operation. EL-078 is a navigation control.
+- States:
+  - Initial: the add controls are shown. Record edit controls appear after a record is selected.
+  - Submitting: the activated control is disabled and EL-077 shows progress.
+  - Completed: EL-077 shows the result and the affected record is updated.
+  - Error: EL-077 shows the failure while entered values are retained.
+- Navigation:
+  - Select EL-078 -> SCR-006.
+- Interactions:
+  - Activate EL-067 -> the product resolves the Channel reference, creates or updates the Channel, starts initial Video collection, and shows the result in EL-077.
+  - Activate EL-069 -> the product resolves the video URL, creates or updates the Video, associates it with its Channel, and shows the result in EL-077. Gemini Actor Extraction does not start.
+  - Activate EL-074 -> the product creates an Actor.
+  - Activate EL-075 -> the product saves any Actor's fields and reference URLs.
+  - Activate EL-070 or EL-071 -> the product saves any Channel's or Video's package fields.
+  - Activate EL-076 -> the product adds or removes the Actor-Video association.
+  - A Contributor cannot delete a record, merge Actors, start Gemini Actor Extraction, or manage Sync Errors in SCR-008.
+  - All Actor fields except Name may be empty and the Actor can still be saved.
+
 ## Functional Requirements
 
 Channel registration and video collection
@@ -268,6 +406,22 @@ Package data management
 - FR-041: Only Users with administrator access MUST be able to authenticate to and access the Operator interface. Non-administrator Users MUST be denied access.
 - FR-042: The product MUST provide a command-line administrator provisioning operation that creates a new administrator or grants administrator access to an existing User. A new administrator MUST have a name, a valid email address, and a password of at least eight characters.
 
+Public access and contribution
+
+- FR-043: A Visitor MUST be able to view SCR-005 and SCR-006 without authentication.
+- FR-044: A Visitor MUST be able to self-register in SCR-007. A registered User MUST be a non-administrator Contributor and MUST NOT gain access to the Operator interface.
+- FR-045: Email verification MUST NOT be required for a Contributor to use SCR-008.
+- FR-046: A Contributor MUST be able to add a Channel by Channel ID, `@handle`, or supported Channel URL. The product MUST resolve the reference through YouTube and MUST start the Channel's initial Video collection.
+- FR-047: A Contributor MUST be able to add a Video by YouTube video URL. The product MUST retrieve the available Video data and MUST associate the Video with its Channel. Adding a Video MUST NOT start Gemini Actor Extraction.
+- FR-048: A Contributor MUST be able to create an Actor with a Name and optional Activity Name, Birth Date, Birthplace, Education, Debut, Agency, Nationality, Actor Reference URLs, and Profile Fields.
+- FR-049: A Contributor MUST be able to edit any Channel, Video, or Actor record.
+- FR-050: A Contributor MUST be able to add and remove an Actor-Video association.
+- FR-051: A Contributor MUST NOT delete a Channel, Video, Actor, or Sync Error; merge Actors; start Gemini Actor Extraction; or manage Users.
+- FR-052: SCR-006 MUST list Channels, Videos, and Actors and MUST show detail for a selected Channel, Video, or Actor.
+- FR-053: SCR-006 MUST NOT show Sync Errors, extraction errors, or Administrator controls.
+- FR-054: A merged Actor MUST NOT appear in SCR-006.
+- FR-055: A write request without the required access MUST be denied without changing stored data.
+
 ## User Flows
 
 UF-001 Register Channels and collect Videos
@@ -315,6 +469,35 @@ UF-006 Edit or delete package data
 - Edit or delete the Sync Error -> the Sync Error record is updated or deleted.
 - Edit or delete a Channel in SCR-002 -> the Channel is updated or deleted with its Videos and Actor-Video associations.
 
+UF-007 Browse the public catalog
+
+- Open SCR-005 without signing in -> EL-042 and the featured lists are shown.
+- Open SCR-006 -> Channels, Videos, and Actors are listed.
+- Select an Actor -> EL-056 shows the Actor's fields, reference URLs, and Videos.
+- Select a Video -> EL-053 shows the Video's details and Actors.
+- Select a Channel -> EL-050 shows the Channel and its Videos.
+
+UF-008 Create a Contributor account
+
+- Select EL-046 in SCR-005 -> SCR-007 shows the sign-up form.
+- Enter a name, email address, and password, then activate EL-060 -> the product creates a Contributor account and signs the User in.
+- Return to SCR-005 -> EL-047 is shown.
+
+UF-009 Add a Channel and a Video
+
+- Open SCR-008 -> EL-066 and EL-068 are shown.
+- Enter a Channel reference and activate EL-067 -> the Channel is created or updated and initial collection starts.
+- Enter a YouTube video URL and activate EL-069 -> the Video is created or updated and associated with its Channel.
+- Gemini Actor Extraction does not start.
+
+UF-010 Add and edit an Actor
+
+- Open SCR-008 -> EL-072 is shown.
+- Enter a Name and optional fields, then activate EL-074 -> the Actor is created.
+- Select the Actor and activate EL-075 -> the Actor's fields and reference URLs are saved.
+- Activate EL-076 -> the Actor is associated with or dissociated from a Video.
+- Open SCR-006 -> the Actor appears in EL-054.
+
 ## Error Conditions
 
 - ERR-001: A spreadsheet row contains an unsupported Channel value -> EL-003 identifies the row and reports that it was not imported.
@@ -329,12 +512,18 @@ UF-006 Edit or delete package data
 - ERR-010: Saving or deleting a Channel fails -> SCR-002 shows the failure and leaves the Channel and its associations unchanged.
 - ERR-011: Creating a Channel or Video fails -> the affected screen shows the failure and retains the entered values.
 - ERR-012: Creating or deleting an Actor fails -> SCR-003 shows the failure and leaves the Actor and its associations unchanged.
+- ERR-013: A Channel reference cannot be resolved -> SCR-008 shows the failure and retains the entered reference.
+- ERR-014: A video URL cannot be resolved -> SCR-008 shows the failure and retains the entered URL.
+- ERR-015: Sign-up, sign-in, or a password reset request fails -> SCR-007 shows the failure and retains the entered values.
+- ERR-016: A write request lacks the required access -> the product changes no stored data and reports the failure.
 
 ## Non-Goals
 
-- Public Viewer search, Actor detail, and Video detail screens are deferred.
+- Public catalog search is deferred.
+- Email verification is deferred.
 - Correction Requests are excluded from the current product.
 - Opt-Out Requests are excluded from the current product.
+- Contributor deletion, Actor merging, Gemini Actor Extraction, Sync Error management, and User administration are excluded.
 - Separate Actor Candidate, Actor Identity, Filmography Candidate, Candidate Source, and Review Status records.
 - Approving or rejecting extracted records.
 - Automatic Actor merging based only on matching names.
@@ -371,5 +560,14 @@ UF-006 Edit or delete package data
 - AC-024: An Operator can create and delete an Actor; deleting it removes its Actor-Video associations (FR-038, SCR-003).
 - AC-025: An Operator can create a Video from a Channel's detail screen, and the Video is associated with that Channel (FR-039, SCR-002).
 - AC-026: An Operator can associate an existing Actor with a Video and remove the association from the Video's detail screen (FR-040, SCR-004).
-- AC-027: An Administrator can authenticate to and access the Operator interface; a non-administrator User is denied access (FR-041).
+- AC-027: An Administrator can authenticate to and access the Operator interface; a non-administrator User is denied access to the Operator interface (FR-041).
 - AC-028: The administrator provisioning command creates a new administrator and promotes an existing User; it rejects an invalid email or a password shorter than eight characters (FR-042).
+- AC-029: A Visitor can view the service landing and the public catalog without signing in (FR-043, SCR-005, SCR-006).
+- AC-030: Self-registration creates a Contributor who can use SCR-008 and cannot access the Operator interface (FR-044, SCR-007).
+- AC-031: A Contributor can add a Channel by ID, handle, and URL, and initial collection starts (FR-046, SCR-008).
+- AC-032: A Contributor can add a Video by URL; the Video is associated with its Channel and no extraction starts (FR-047, SCR-008).
+- AC-033: A Contributor can create an Actor with only a Name and the Actor appears in the public catalog (FR-048, SCR-006).
+- AC-034: A Contributor can edit any Channel, Video, or Actor record (FR-049, SCR-008).
+- AC-035: A Contributor can add and remove an Actor-Video association (FR-050, SCR-008).
+- AC-036: A Contributor is offered no delete, merge, extraction, or Sync Error control, and a denied write request changes no data (FR-051, FR-055).
+- AC-037: SCR-006 shows Channel, Video, and Actor detail, hides merged Actors and Sync Errors, and shows no Administrator controls (FR-052, FR-053, FR-054).

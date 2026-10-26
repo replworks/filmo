@@ -173,3 +173,43 @@
     - `filmo:create-admin` creates a new administrator with a name, email, and password of at least eight characters.
     - The command promotes an existing User, optionally updating the name and password, and rejects invalid input.
     - The local administrator seeder remains local/testing-only; tests pass.
+
+- [x] T-022 Adopt the Laravel React starter kit baseline
+  - Satisfies: TECH_STACK.md §§1–4, §7
+  - External boundary: no
+  - Acceptance criteria:
+    - Inertia, React, TypeScript, Tailwind, and Vite+ are installed from the starter kit baseline, and the build and TypeScript checks pass.
+    - Fortify provides registration, login, and password reset; email verification, two-factor authentication, passkeys, and password confirmation are disabled.
+    - Existing Filament administration, the existing test suite, and the starter kit authentication tests pass.
+
+- [ ] T-023 Present the public landing and catalog
+  - Satisfies: PRODUCT_SPEC.md §§SCR-005, SCR-006, Functional Requirements FR-043, FR-052–FR-054, Acceptance Criteria AC-029, AC-037
+  - External boundary: no
+  - Acceptance criteria:
+    - A Visitor can open the service landing and see the introduction, featured Actors, featured Videos, and account entry points.
+    - The public catalog lists Channels, Videos, and Actors and shows detail for a selected record.
+    - Merged Actors, Sync Errors, extraction errors, and Administrator controls do not appear; empty, loading, and error states are shown; tests pass.
+
+- [ ] T-024 Allow Contributor self-registration and access
+  - Satisfies: PRODUCT_SPEC.md §§SCR-007, Functional Requirements FR-044, FR-045, FR-051, FR-055, Acceptance Criteria AC-030, AC-036
+  - External boundary: no
+  - Acceptance criteria:
+    - A Visitor can register and is signed in as a non-administrator Contributor without email verification.
+    - A Contributor can open the Contributor workspace and cannot access the Operator interface.
+    - A write request without the required access changes no stored data and reports failure; tests pass.
+
+- [ ] T-025 Add Channels and Videos from the Contributor workspace
+  - Satisfies: PRODUCT_SPEC.md §§SCR-008, Functional Requirements FR-046, FR-047, Error Conditions ERR-013–ERR-014, Acceptance Criteria AC-031–AC-032
+  - External boundary: yes
+  - Acceptance criteria:
+    - A Contributor enters a Channel ID, handle, or URL and the live YouTube boundary resolves it; the Channel is created or updated and initial collection starts.
+    - A Contributor enters a live YouTube video URL and the Video is created or updated and associated with its Channel; Gemini Actor Extraction does not start.
+    - Live end-to-end tests pass for successful resolution and resolution failure; automated unit tests pass where applicable.
+
+- [ ] T-026 Edit catalog records from the Contributor workspace
+  - Satisfies: PRODUCT_SPEC.md §§SCR-008, Functional Requirements FR-048–FR-050, Error Condition ERR-016, Acceptance Criteria AC-033–AC-035
+  - External boundary: no
+  - Acceptance criteria:
+    - A Contributor can create an Actor with only a Name and edit any Channel, Video, or Actor record, including reference URLs and Profile Fields.
+    - A Contributor can add and remove an Actor-Video association.
+    - No delete, merge, extraction, or Sync Error control is offered, and failed saves retain entered values; tests pass.
