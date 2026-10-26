@@ -198,7 +198,7 @@
     - A Contributor can open the Contributor workspace and cannot access the Operator interface.
     - A write request without the required access changes no stored data and reports failure; tests pass.
 
-- [ ] T-025 Add Channels and Videos from the Contributor workspace
+- [x] T-025 Add Channels and Videos from the Contributor workspace
   - Satisfies: PRODUCT_SPEC.md §§SCR-008, Functional Requirements FR-046, FR-047, Error Conditions ERR-013–ERR-014, Acceptance Criteria AC-031–AC-032
   - External boundary: yes
   - Acceptance criteria:
