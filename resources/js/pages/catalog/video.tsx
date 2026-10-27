@@ -24,14 +24,18 @@ export default function CatalogVideo({ video }: Props) {
                     </h1>
                     <p className="mt-2 text-sm text-muted-foreground">
                         {video.channel ? (
-                            <Link
-                                href={`/catalog/channels/${video.channel.id}`}
-                                className="hover:text-foreground hover:underline"
-                            >
-                                {video.channel.title}
-                            </Link>
+                            video.channel.id !== null ? (
+                                <Link
+                                    href={`/catalog/channels/${video.channel.id}`}
+                                    className="hover:text-foreground hover:underline"
+                                >
+                                    {video.channel.title}
+                                </Link>
+                            ) : (
+                                video.channel.title
+                            )
                         ) : (
-                            '채널 정보 없음'
+                            '채널 미등록'
                         )}
                         {' · '}
                         {formatDate(video.published_at)}

@@ -16,12 +16,25 @@ type ContributionSummary = {
     review_note: string | null;
 };
 
+type ChannelRequestSummary = {
+    id: number;
+    input: string;
+    status: string;
+    created_at: string | null;
+    review_note: string | null;
+};
+
 type Props = {
     status?: string | null;
     contributions: ContributionSummary[];
+    channelRequests: ChannelRequestSummary[];
 };
 
-export default function ContributorWorkspace({ status, contributions }: Props) {
+export default function ContributorWorkspace({
+    status,
+    contributions,
+    channelRequests,
+}: Props) {
     const { auth } = usePage<{ auth: Auth }>().props;
     const { errors } = usePage<{ errors: { conflict?: string } }>().props;
     const user = auth.user;
@@ -65,16 +78,16 @@ export default function ContributorWorkspace({ status, contributions }: Props) {
                 )}
 
                 <section className="mt-10 rounded-xl border border-border/70 bg-card p-6">
-                    <h2 className="text-lg font-semibold">채널 기여</h2>
+                    <h2 className="text-lg font-semibold">채널 추가 요청</h2>
                     <p className="mt-1 text-sm text-muted-foreground">
-                        Channel ID, @handle, 또는 YouTube 채널 URL을 입력하세요.
+                        Channel ID, @handle, 또는 YouTube 채널 URL을 입력해 추가를 요청하세요. 운영자 승인 후 채널과 영상이 추가됩니다.
                     </p>
 
                     <form
                         className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end"
                         onSubmit={(event) => {
                             event.preventDefault();
-                            channelForm.post('/contributor/channels', {
+                            channelForm.post('/contributor/channel-requests', {
                                 preserveScroll: true,
                                 onSuccess: () => channelForm.reset(),
                             });
@@ -198,6 +211,36 @@ export default function ContributorWorkspace({ status, contributions }: Props) {
                             {actorForm.processing ? '제출 중…' : '배우 기여'}
                         </Button>
                     </form>
+                </section>
+
+                <section className="mt-10">
+                    <h2 className="text-xl font-semibold">내 채널 요청</h2>
+                    {channelRequests.length === 0 ? (
+                        <p className="mt-4 rounded-lg border border-dashed border-border/80 bg-muted/30 p-6 text-sm text-muted-foreground">
+                            아직 제출한 채널 요청이 없습니다.
+                        </p>
+                    ) : (
+                        <ul className="mt-4 divide-y rounded-lg border border-border/70 bg-card">
+                            {channelRequests.map((request) => (
+                                <li
+                                    key={request.id}
+                                    className="flex flex-col gap-2 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
+                                >
+                                    <div>
+                                        <p className="font-medium break-all">
+                                            {request.input}
+                                        </p>
+                                        <p className="mt-1 text-sm text-muted-foreground">
+                                            {statusLabel(request.status)}
+                                            {request.review_note
+                                                ? ` · ${request.review_note}`
+                                                : ''}
+                                        </p>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </section>
 
                 <section className="mt-10">

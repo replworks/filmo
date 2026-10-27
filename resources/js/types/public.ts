@@ -10,7 +10,7 @@ export type PublicVideoSummary = {
     published_at: string | null;
     youtube_url: string;
     channel: {
-        id: number;
+        id: number | null;
         title: string;
     } | null;
 };

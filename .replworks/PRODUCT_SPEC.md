@@ -20,6 +20,7 @@ Terms:
 - Actor Reference URL: a NamuWiki, Naver, or other reference URL supplied by an Operator for an Actor, stored as a separate actor_reference_urls record. An Actor may have none or many.
 - Actor Video Appearance: the association between one Actor and one Video.
 - Gemini Actor Extraction: an Operator-started operation that uses a Video to extract Actors and associate them with that Video.
+- Channel Request: a Contributor's pending request to add a Channel. It is not a Contribution and does not create a Channel until an Administrator approves it.
 - Owner: the User who owns a catalog record. Catalog records are owned by an Administrator for now; Actor and agency ownership is deferred.
 - Contribution: a Contributor's pending proposal to create or change a Channel, Video, Actor, or Actor-Video association. A Contribution has a JSON payload, review status, reviewer, review time, and review note.
 - Public Record: a Channel, Video, or Actor that has been approved by an Administrator and has `is_public = true`.
@@ -58,6 +59,7 @@ Terms:
 
 ## Inputs
 
+- Channel Request: a Contributor's pending request to add a Channel. It is not a Contribution and does not create a Channel until an Administrator approves it.
 - Owner: the User who owns a catalog record. Catalog records are owned by an Administrator for now; Actor and agency ownership is deferred.
 - Contribution: a Contributor's pending proposal to create or change a Channel, Video, Actor, or Actor-Video association. A Contribution has a JSON payload, review status, reviewer, review time, and review note.
 - Public Record: a Channel, Video, or Actor that has been approved by an Administrator and has `is_public = true`.
@@ -354,7 +356,7 @@ Terms:
 - Navigation:
   - Select EL-078 -> SCR-006.
 - Interactions:
-  - Activate EL-067 -> the product resolves the Channel and creates a pending Contribution plus a Draft Channel. Initial collection starts only after approval.
+  - Activate EL-067 -> the product creates a pending Channel Request. It does not create a Channel or start collection.
   - Activate EL-069 -> the product resolves the video URL and creates a pending Contribution plus a Draft Video. Gemini Actor Extraction does not start.
   - Activate EL-074 -> the product creates a pending Contribution plus a Draft Actor.
   - Activate EL-075 -> the product creates a pending Contribution for the Actor; the canonical Actor is unchanged until approval.
@@ -390,6 +392,27 @@ Terms:
   - Approving a Channel starts its initial Video collection.
   - Approving a Video never starts Gemini Actor Extraction.
   - The review page is an Administrator-only Filament page, not a resource.
+
+### SCR-010 Channel Request Review
+
+- ID: SCR-010
+- Purpose: lets an Administrator review pending Channel Requests.
+- Elements:
+  - EL-085 Channel Request List: lists pending Channel Requests. User actions: select.
+  - EL-086 Channel Request Detail: shows the requester and requested input. User actions: none.
+  - EL-087 Approve Channel Request Control: approves the request and adds the Channel. User actions: activate.
+  - EL-088 Reject Channel Request Control: rejects the request. User actions: activate.
+  - EL-089 Request Review Note Input: records an optional note. User actions: edit.
+- Arrangement: EL-085 and EL-086 form the request list and detail. EL-087 through EL-089 appear with the selected request.
+- States:
+  - Empty: EL-085 shows an empty list.
+  - Populated: EL-085 and EL-086 are shown.
+  - Saving: the active decision control is disabled.
+  - Error: the failure is shown and the request remains pending.
+- Interactions:
+  - Approve -> the Channel is resolved and published, matching Videos are linked by `channelid`, and initial collection starts.
+  - Reject -> no Channel is created and the request is marked rejected.
+  - The page is Administrator-only.
 
 ## Functional Requirements
 
@@ -470,6 +493,12 @@ Ownership and contributions
 - FR-062: Approving a Contribution MUST apply its payload to the canonical record and make the record public. Rejecting MUST leave canonical data unchanged. Approving a Channel MUST start initial collection; approving a Video MUST NOT start Gemini Actor Extraction.
 - FR-063: Contributor names MUST NOT appear in SCR-005 or SCR-006.
 - FR-064: Existing catalog records MUST be backfilled to an Administrator Owner and `is_public = true`.
+
+Channel requests and channel-less Videos
+
+- FR-065: A Contributor Channel submission MUST create a pending Channel Request and MUST NOT create a Channel or start collection.
+- FR-066: An Administrator MUST be able to approve or reject a Channel Request. Approving MUST resolve the Channel through YouTube, create or update and publish the Channel, link Videos whose `channelid` matches, and start initial collection.
+- FR-067: A Video MAY exist without a registered Channel. `youtube_videos.youtube_channel_id` MUST be nullable; `channelid` and `channel_title` MUST retain the YouTube channelId and channelTitle when present.
 
 ## User Flows
 
@@ -628,3 +657,6 @@ UF-010 Add and edit an Actor
 - AC-043: An Administrator can approve a Contribution, applying its payload and publishing the record (FR-061, FR-062, SCR-009).
 - AC-044: An Administrator can reject a Contribution without changing canonical data (FR-061, SCR-009).
 - AC-045: Approving a Channel starts initial collection; approving a Video does not start Gemini Actor Extraction (FR-062, SCR-009).
+- AC-046: A Contributor channel submission creates a pending Channel Request and no Channel (FR-065, SCR-008).
+- AC-047: An Administrator can approve a Channel Request; the Channel is published, matching Videos are linked, and initial collection starts (FR-066, SCR-010).
+- AC-048: Videos can be stored and read without a registered Channel using nullable `youtube_channel_id` and `channelid`/`channel_title` (FR-067).

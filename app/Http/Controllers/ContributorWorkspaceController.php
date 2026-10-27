@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Actor;
+use App\Models\ChannelRequest;
 use App\Models\Contribution;
 use App\Models\Video;
 use App\Services\Contribution\ContributionManager;
 use App\Support\CatalogOwner;
-use Cable8mm\Youtube\Exceptions\YoutubeApiException;
 use Cable8mm\Youtube\Models\YoutubeChannel;
 use Cable8mm\Youtube\Models\YoutubeVideo;
 use Cable8mm\Youtube\Support\UrlParser;
-use Cable8mm\Youtube\Sync\ChannelInputResolver;
 use Cable8mm\Youtube\Youtube;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
@@ -54,52 +53,39 @@ class ContributorWorkspaceController extends Controller
             })
             ->all();
 
+        $channelRequests = ChannelRequest::query()
+            ->where('user_id', $request->user()->id)
+            ->latest()
+            ->get()
+            ->map(fn (ChannelRequest $channelRequest): array => [
+                'id' => $channelRequest->id,
+                'input' => $channelRequest->input,
+                'status' => $channelRequest->status,
+                'created_at' => $channelRequest->created_at?->toIso8601String(),
+                'review_note' => $channelRequest->review_note,
+            ])
+            ->all();
+
         return Inertia::render('contributor/index', [
             'status' => $request->session()->get('status'),
             'contributions' => $contributions,
+            'channelRequests' => $channelRequests,
         ]);
     }
 
-    public function storeChannel(Request $request): RedirectResponse
+    public function storeChannelRequest(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'channel' => ['required', 'string', 'max:2048'],
         ]);
 
-        try {
-            $resolved = app(ChannelInputResolver::class)->resolve($data['channel']);
-        } catch (YoutubeApiException) {
-            return back()->withErrors(['channel' => 'YouTube에서 채널을 확인하지 못했습니다.'])->withInput();
-        }
+        ChannelRequest::create([
+            'user_id' => $request->user()->id,
+            'input' => $data['channel'],
+            'status' => ChannelRequest::STATUS_PENDING,
+        ]);
 
-        if (! is_object($resolved)) {
-            return back()->withErrors(['channel' => '채널을 찾을 수 없습니다.'])->withInput();
-        }
-
-        $channel = YoutubeChannel::firstOrNew(['channel_id' => $resolved->id]);
-
-        if (! $channel->exists) {
-            $channel->fill([
-                'handle' => $resolved->snippet->customUrl ?? null,
-                'title' => $resolved->snippet->title ?? $resolved->id,
-                'uploads_playlist_id' => $resolved->contentDetails->relatedPlaylists->uploads ?? null,
-                'is_active' => true,
-            ]);
-            $channel->user_id = CatalogOwner::id();
-            $channel->is_public = false;
-            $channel->save();
-        }
-
-        return $this->submitContribution(
-            $channel,
-            [
-                'title' => $resolved->snippet->title ?? $resolved->id,
-                'handle' => $resolved->snippet->customUrl ?? null,
-                'uploads_playlist_id' => $resolved->contentDetails->relatedPlaylists->uploads ?? null,
-                'is_active' => true,
-            ],
-            '채널 기여를 제출했습니다. 운영자 승인 후 공개됩니다.',
-        );
+        return back()->with('status', '채널 추가 요청을 제출했습니다. 운영자 승인 후 채널과 영상이 추가됩니다.');
     }
 
     public function storeVideo(Request $request): RedirectResponse
@@ -123,35 +109,17 @@ class ContributorWorkspaceController extends Controller
                 return back()->withErrors(['url' => '영상을 찾을 수 없습니다.'])->withInput();
             }
 
-            $channelItem = $youtube->getChannelById(
-                $item->snippet->channelId,
-                [],
-                ['id', 'snippet', 'contentDetails'],
-            );
-
-            if (! is_object($channelItem)) {
-                return back()->withErrors(['url' => '영상의 채널을 찾을 수 없습니다.'])->withInput();
-            }
-
-            $channel = YoutubeChannel::firstOrNew(['channel_id' => $channelItem->id]);
-
-            if (! $channel->exists) {
-                $channel->fill([
-                    'handle' => $channelItem->snippet->customUrl ?? null,
-                    'title' => $channelItem->snippet->title ?? $channelItem->id,
-                    'uploads_playlist_id' => $channelItem->contentDetails->relatedPlaylists->uploads ?? null,
-                    'is_active' => true,
-                ]);
-                $channel->user_id = CatalogOwner::id();
-                $channel->is_public = false;
-                $channel->save();
-            }
+            $channel = YoutubeChannel::query()
+                ->where('channel_id', $item->snippet->channelId)
+                ->first();
 
             $video = Video::firstOrNew(['video_id' => $item->id]);
 
             if (! $video->exists) {
                 $video->fill([
-                    'youtube_channel_id' => $channel->id,
+                    'youtube_channel_id' => $channel?->id,
+                    'channelid' => $item->snippet->channelId ?? null,
+                    'channel_title' => $item->snippet->channelTitle ?? null,
                     'title' => $item->snippet->title ?? $item->id,
                     'description' => $item->snippet->description ?? null,
                     'published_at' => Carbon::parse($item->snippet->publishedAt),
@@ -174,6 +142,8 @@ class ContributorWorkspaceController extends Controller
             $video,
             [
                 'title' => $item->snippet->title ?? $item->id,
+                'channelid' => $item->snippet->channelId ?? null,
+                'channel_title' => $item->snippet->channelTitle ?? null,
                 'description' => $item->snippet->description ?? null,
                 'published_at' => Carbon::parse($item->snippet->publishedAt)->toDateTimeString(),
                 'duration' => $item->contentDetails->duration ?? null,

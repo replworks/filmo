@@ -60,6 +60,7 @@
 - C-14 Account Access
 - C-15 Contribution Registry
 - C-16 Contribution Review
+- C-17 Channel Request Review
 
 ## 5. Component Responsibilities
 
@@ -175,6 +176,13 @@
 - Outputs: approved payload commands to C-04 and C-09; review state to C-15; review results to C-01.
 - Ownership boundary: owns review decisions; performs no Contributor submission and never starts Gemini Actor Extraction.
 
+### C-17 Channel Request Review
+
+- Responsibilities: accept Contributor Channel Requests; list pending requests for an Administrator; approve or reject with an optional note; on approval resolve the live Channel, create or update and publish it, link Videos by `channelid`, and start initial collection.
+- Inputs: Channel Requests from C-13; Administrator decisions from C-01; live resolution from C-03 and C-06.
+- Outputs: published Channel and Video link changes to C-04; collection requests to C-05; review results to C-01 and C-13.
+- Ownership boundary: owns Channel Request review; does not create Contributions or extract Actors.
+
 ## 6. Responsibility Boundaries
 
 - C-01 owns interaction and command delivery, while coordinators and managers own operation rules.
@@ -193,6 +201,8 @@
 - Creating or approving a Channel starts its initial Video collection.
 - Creating or approving a Video does not start Gemini Actor Extraction.
 - Every Channel, Video, and Actor has an owner (`user_id`) and a public visibility flag (`is_public`).
+- A Channel Request is not a Contribution; it creates no Channel before approval.
+- `youtube_videos.youtube_channel_id` is nullable; `channelid` and `channel_title` carry raw YouTube channel metadata without creating a Channel.
 - A Contributor write creates a pending Contribution; canonical data changes only when C-16 approves it.
 - There is no separate Actor Candidate, Actor Identity, Filmography Candidate, Candidate Source, or Review Status record.
 - NamuWiki and Naver references are stored as Actor Reference URL records and opened by the Operator, a Contributor, or a Visitor; no connector retrieves or parses them.
