@@ -4,11 +4,12 @@ namespace Tests\Feature;
 
 use App\Jobs\CollectChannelVideos;
 use App\Jobs\ExtractVideoActors;
+use App\Models\Actor;
 use App\Models\ChannelRequest;
 use App\Models\Contribution;
 use App\Models\User;
-use App\Models\Video;
 use App\Services\ChannelRequest\ChannelRequestManager;
+use App\Services\Contribution\ContributionManager;
 use Cable8mm\Youtube\Models\YoutubeVideo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
@@ -79,41 +80,45 @@ class ContributorAddRecordsLiveTest extends TestCase
         $this->assertDatabaseCount('youtube_channels', 1);
     }
 
-    public function test_a_contributor_adds_a_live_video_without_creating_a_channel_or_starting_extraction(): void
+    public function test_a_new_video_inside_an_actor_filmography_stays_channel_free(): void
     {
         $contributor = User::factory()->create();
+        $admin = User::factory()->admin()->create();
 
         $this->actingAs($contributor)
             ->from('/contributor')
-            ->post('/contributor/videos', [
-                'url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            ->post('/contributor/actors', [
+                'name' => '필모 배우',
+                'new_video_urls' => [
+                    'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                ],
             ])
             ->assertRedirect('/contributor')
             ->assertSessionHas('status');
 
+        $actor = Actor::where('name', '필모 배우')->firstOrFail();
         $video = YoutubeVideo::where('video_id', 'dQw4w9WgXcQ')->firstOrFail();
+        $contribution = Contribution::where('contributable_type', Actor::class)
+            ->where('contributable_id', $actor->id)
+            ->firstOrFail();
 
-        $this->assertNotSame('', $video->title);
+        $this->assertFalse($actor->is_public);
         $this->assertNull($video->youtube_channel_id);
         $this->assertNotNull($video->channelid);
         $this->assertNotNull($video->channel_title);
         $this->assertFalse((bool) $video->is_public);
-        $this->assertNull($video->extraction_status);
         $this->assertDatabaseCount('youtube_channels', 0);
+        $this->assertContains($video->id, $contribution->payload['videos']);
         Bus::assertNotDispatched(ExtractVideoActors::class);
-        $this->assertDatabaseHas('contributions', [
-            'user_id' => $contributor->id,
-            'contributable_type' => Video::class,
-            'contributable_id' => $video->id,
-            'status' => Contribution::STATUS_PENDING,
+
+        app(ContributionManager::class)->approve($contribution, $admin, '승인');
+
+        $this->assertTrue((bool) $actor->refresh()->is_public);
+        $this->assertTrue((bool) $video->refresh()->is_public);
+        $this->assertDatabaseHas('actor_video', [
+            'actor_id' => $actor->id,
+            'youtube_video_id' => $video->id,
         ]);
-
-        $this->actingAs($contributor)
-            ->post('/contributor/videos', [
-                'url' => 'https://www.youtube.com/watch?v=aaaaaaaaaaa',
-            ])
-            ->assertSessionHasErrors('url');
-
-        $this->assertDatabaseCount('youtube_videos', 1);
+        Bus::assertNotDispatched(ExtractVideoActors::class);
     }
 }

@@ -40,7 +40,6 @@ export default function ContributorWorkspace({
     const user = auth.user;
 
     const channelForm = useForm({ channel: '' });
-    const videoForm = useForm({ url: '' });
     const actorForm = useForm({ name: '', activity_name: '' });
 
     return (
@@ -120,51 +119,10 @@ export default function ContributorWorkspace({
                 </section>
 
                 <section className="mt-6 rounded-xl border border-border/70 bg-card p-6">
-                    <h2 className="text-lg font-semibold">영상 기여</h2>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                        YouTube 영상 URL을 입력하면 영상과 채널 정보를 가져와
-                        기여로 제출합니다.
-                    </p>
-
-                    <form
-                        className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end"
-                        onSubmit={(event) => {
-                            event.preventDefault();
-                            videoForm.post('/contributor/videos', {
-                                preserveScroll: true,
-                                onSuccess: () => videoForm.reset(),
-                            });
-                        }}
-                    >
-                        <div className="grid flex-1 gap-2">
-                            <Label htmlFor="url">YouTube URL</Label>
-                            <Input
-                                id="url"
-                                value={videoForm.data.url}
-                                onChange={(event) =>
-                                    videoForm.setData(
-                                        'url',
-                                        event.target.value,
-                                    )
-                                }
-                                placeholder="https://www.youtube.com/watch?v=..."
-                            />
-                            <InputError message={videoForm.errors.url} />
-                        </div>
-                        <Button
-                            type="submit"
-                            disabled={videoForm.processing}
-                        >
-                            {videoForm.processing ? '제출 중…' : '영상 기여'}
-                        </Button>
-                    </form>
-                </section>
-
-                <section className="mt-6 rounded-xl border border-border/70 bg-card p-6">
                     <h2 className="text-lg font-semibold">배우 기여</h2>
                     <p className="mt-1 text-sm text-muted-foreground">
-                        이름만으로 제출할 수 있습니다. 나머지 정보는 운영자
-                        승인 후 수정 기여로 보완할 수 있습니다.
+                        이름만으로 제출할 수 있습니다. 영상과 상세 정보는
+                        배우 편집 화면에서 함께 기여할 수 있습니다.
                     </p>
 
                     <form

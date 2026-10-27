@@ -15,15 +15,8 @@ Route::get('/catalog/actors/{actor}', [PublicCatalogController::class, 'actor'])
 Route::middleware('auth')->prefix('contributor')->name('contributor.')->group(function (): void {
     Route::get('/', [ContributorWorkspaceController::class, 'index'])->name('index');
     Route::post('/channel-requests', [ContributorWorkspaceController::class, 'storeChannelRequest'])->name('channel-requests.store');
-    Route::get('/channels/{channel}/edit', [ContributorWorkspaceController::class, 'editChannel'])->name('channels.edit');
-    Route::patch('/channels/{channel}', [ContributorWorkspaceController::class, 'updateChannel'])->name('channels.update');
-    Route::post('/videos', [ContributorWorkspaceController::class, 'storeVideo'])->name('videos.store');
-    Route::get('/videos/{video}/edit', [ContributorWorkspaceController::class, 'editVideo'])->name('videos.edit');
-    Route::patch('/videos/{video}', [ContributorWorkspaceController::class, 'updateVideo'])->name('videos.update');
     Route::post('/actors', [ContributorWorkspaceController::class, 'storeActor'])->name('actors.store');
-    Route::delete('/contributions/{contribution}', [ContributorWorkspaceController::class, 'destroyContribution'])->name('contributions.destroy');
     Route::get('/actors/{actor}/edit', [ContributorWorkspaceController::class, 'editActor'])->name('actors.edit');
     Route::patch('/actors/{actor}', [ContributorWorkspaceController::class, 'updateActor'])->name('actors.update');
-    Route::post('/actors/{actor}/videos', [ContributorWorkspaceController::class, 'attachVideo'])->name('actors.videos.store');
-    Route::delete('/actors/{actor}/videos/{video}', [ContributorWorkspaceController::class, 'detachVideo'])->name('actors.videos.destroy');
+    Route::delete('/contributions/{contribution}', [ContributorWorkspaceController::class, 'destroyContribution'])->name('contributions.destroy');
 });

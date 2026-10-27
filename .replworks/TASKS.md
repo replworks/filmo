@@ -247,7 +247,7 @@
     - Administrator approval resolves the live YouTube Channel, creates/publishes it, links existing Videos by `channelid`, and starts initial collection.
     - Videos can exist without a registered Channel using nullable `youtube_channel_id` plus `channelid` and `channel_title`; live tests pass.
 
-- [ ] T-031 Make Actor filmography the contribution unit
+- [x] T-031 Make Actor filmography the contribution unit
   - Satisfies: PRODUCT_SPEC.md §§SCR-008, Functional Requirements FR-068–FR-070, Acceptance Criteria AC-049–AC-051
   - External boundary: yes
   - Acceptance criteria:
@@ -255,7 +255,7 @@
     - Existing Actor profile edits use the same pending Contribution.
     - New Videos inside a Contribution do not create a Channel; Contributor and review flows use Actor payloads with Video entries.
 
-- [ ] T-032 Present channel-less Videos and Actors publicly
+- [x] T-032 Present channel-less Videos and Actors publicly
   - Satisfies: PRODUCT_SPEC.md §SCR-006, Functional Requirements FR-071–FR-072, Acceptance Criteria AC-052–AC-053
   - External boundary: no
   - Acceptance criteria:

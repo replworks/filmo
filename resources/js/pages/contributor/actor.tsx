@@ -1,4 +1,4 @@
-import { Head, Link, router, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -55,13 +55,9 @@ export default function ContributorActor({ status, actor, videos }: Props) {
             ? actor.reference_urls
             : [''],
         profile: actor.profile,
+        video_ids: actor.videos.map((video) => video.id),
+        new_video_urls: '',
     });
-
-    const videoForm = useForm({ video_id: '' });
-
-    const availableVideos = videos.filter(
-        (video) => !actor.videos.some((attached) => attached.id === video.id),
-    );
 
     const updateProfileRows = (rows: Row[]) => {
         setProfileRows(rows);
@@ -114,6 +110,10 @@ export default function ContributorActor({ status, actor, videos }: Props) {
                             reference_urls: data.reference_urls.filter(
                                 (url) => url.trim() !== '',
                             ),
+                            new_video_urls: data.new_video_urls
+                                .split('\n')
+                                .map((url) => url.trim())
+                                .filter((url) => url !== ''),
                         }));
 
                         form.patch(`/contributor/actors/${actor.id}`, {
@@ -327,97 +327,69 @@ export default function ContributorActor({ status, actor, videos }: Props) {
                         </Button>
                     </div>
 
+                    <div className="grid gap-3">
+                        <Label>필모그래피 영상</Label>
+                        <div className="grid max-h-64 gap-2 overflow-y-auto rounded-md border border-border/70 p-3">
+                            {videos.map((video) => (
+                                <label
+                                    key={video.id}
+                                    className="flex items-start gap-2 text-sm"
+                                >
+                                    <input
+                                        type="checkbox"
+                                        checked={form.data.video_ids.includes(
+                                            video.id,
+                                        )}
+                                        onChange={(event) => {
+                                            const videoIds = event.target
+                                                .checked
+                                                ? [
+                                                      ...form.data.video_ids,
+                                                      video.id,
+                                                  ]
+                                                : form.data.video_ids.filter(
+                                                      (id) =>
+                                                          id !== video.id,
+                                                  );
+                                            form.setData(
+                                                'video_ids',
+                                                videoIds,
+                                            );
+                                        }}
+                                        className="mt-1"
+                                    />
+                                    <span>
+                                        {video.title}
+                                        <span className="block text-xs text-muted-foreground">
+                                            {video.channel ?? '채널 미등록'}
+                                        </span>
+                                    </span>
+                                </label>
+                            ))}
+                        </div>
+                        <Label htmlFor="new-videos">
+                            새 영상 URL (한 줄에 하나)
+                        </Label>
+                        <textarea
+                            id="new-videos"
+                            className="min-h-20 rounded-md border border-input bg-transparent px-3 py-2 text-sm"
+                            value={form.data.new_video_urls}
+                            onChange={(event) =>
+                                form.setData(
+                                    'new_video_urls',
+                                    event.target.value,
+                                )
+                            }
+                            placeholder="https://www.youtube.com/watch?v=..."
+                        />
+                        <InputError message={form.errors.new_video_urls} />
+                    </div>
+
                     <Button type="submit" disabled={form.processing}>
                         {form.processing ? '저장 중…' : '저장'}
                     </Button>
                 </form>
 
-                <section className="mt-8 rounded-xl border border-border/70 bg-card p-6">
-                    <h2 className="text-lg font-semibold">출연 영상</h2>
-
-                    {actor.videos.length === 0 ? (
-                        <p className="mt-3 text-sm text-muted-foreground">
-                            아직 연결된 영상이 없습니다.
-                        </p>
-                    ) : (
-                        <ul className="mt-3 divide-y">
-                            {actor.videos.map((video) => (
-                                <li
-                                    key={video.id}
-                                    className="flex items-center justify-between gap-4 py-3"
-                                >
-                                    <div>
-                                        <p className="font-medium">
-                                            {video.title}
-                                        </p>
-                                        <p className="text-sm text-muted-foreground">
-                                            {video.channel ?? '채널 정보 없음'}
-                                        </p>
-                                    </div>
-                                    <Button
-                                        type="button"
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() =>
-                                            router.delete(
-                                                `/contributor/actors/${actor.id}/videos/${video.id}`,
-                                                { preserveScroll: true },
-                                            )
-                                        }
-                                    >
-                                        연결 해제
-                                    </Button>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-
-                    <form
-                        className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end"
-                        onSubmit={(event) => {
-                            event.preventDefault();
-                            videoForm.post(
-                                `/contributor/actors/${actor.id}/videos`,
-                                {
-                                    preserveScroll: true,
-                                    onSuccess: () => videoForm.reset(),
-                                },
-                            );
-                        }}
-                    >
-                        <div className="grid flex-1 gap-2">
-                            <Label htmlFor="video">영상 추가</Label>
-                            <select
-                                id="video"
-                                className="h-9 rounded-md border border-input bg-transparent px-3 text-sm"
-                                value={videoForm.data.video_id}
-                                onChange={(event) =>
-                                    videoForm.setData(
-                                        'video_id',
-                                        event.target.value,
-                                    )
-                                }
-                            >
-                                <option value="">영상 선택</option>
-                                {availableVideos.map((video) => (
-                                    <option
-                                        key={video.id}
-                                        value={video.id.toString()}
-                                    >
-                                        {video.title}
-                                    </option>
-                                ))}
-                            </select>
-                            <InputError message={videoForm.errors.video_id} />
-                        </div>
-                        <Button
-                            type="submit"
-                            disabled={videoForm.processing}
-                        >
-                            추가
-                        </Button>
-                    </form>
-                </section>
             </div>
         </>
     );
