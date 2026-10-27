@@ -91,6 +91,44 @@ class PublicCatalogTest extends TestCase
         $this->get('/catalog/actors/'.$merged->id)->assertNotFound();
     }
 
+    public function test_public_catalog_shows_videos_and_actors_without_a_registered_channel(): void
+    {
+        $video = Video::create([
+            'youtube_channel_id' => null,
+            'channelid' => 'UCunregisteredChannel123',
+            'channel_title' => '미등록 채널',
+            'video_id' => 'channel-less-video',
+            'title' => '채널 없는 영상',
+            'description' => 'Description',
+            'published_at' => Carbon::parse('2026-10-01T00:00:00Z'),
+            'duration' => 'PT10M',
+            'is_public' => true,
+        ]);
+        $actor = Actor::factory()->create([
+            'name' => '채널 없는 배우',
+            'is_public' => true,
+        ]);
+        $actor->videos()->attach($video->id);
+
+        $this->get('/catalog/videos/'.$video->id)
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('catalog/video')
+                ->where('video.channel.id', null)
+                ->where('video.channel.title', '미등록 채널')
+                ->has('video.actors', 1)
+                ->where('video.actors.0.name', '채널 없는 배우'));
+
+        $this->get('/catalog/actors/'.$actor->id)
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('catalog/actor')
+                ->where('actor.name', '채널 없는 배우')
+                ->has('actor.videos', 1)
+                ->where('actor.videos.0.channel.title', '미등록 채널')
+                ->where('actor.videos.0.channel.id', null));
+    }
+
     public function test_sync_errors_and_extraction_data_are_not_exposed(): void
     {
         $channel = $this->channel('오류 채널');

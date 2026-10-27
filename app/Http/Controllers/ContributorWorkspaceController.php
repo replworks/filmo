@@ -40,12 +40,7 @@ class ContributorWorkspaceController extends Controller
                     'status' => $contribution->status,
                     'type' => class_basename((string) $contribution->contributable_type),
                     'record_id' => $contribution->contributable_id,
-                    'record_title' => match (true) {
-                        $record instanceof YoutubeChannel => $record->title,
-                        $record instanceof Video => $record->title,
-                        $record instanceof Actor => $record->name,
-                        default => '—',
-                    },
+                    'record_title' => $record instanceof Actor ? $record->name : '—',
                     'payload' => $contribution->payload,
                     'created_at' => $contribution->created_at?->toIso8601String(),
                     'review_note' => $contribution->review_note,
@@ -88,141 +83,14 @@ class ContributorWorkspaceController extends Controller
         return back()->with('status', '채널 추가 요청을 제출했습니다. 운영자 승인 후 채널과 영상이 추가됩니다.');
     }
 
-    public function storeVideo(Request $request): RedirectResponse
-    {
-        $data = $request->validate([
-            'url' => ['required', 'string', 'max:2048'],
-        ]);
-
-        try {
-            $videoId = UrlParser::videoId($data['url']);
-        } catch (InvalidArgumentException) {
-            return back()->withErrors(['url' => 'YouTube 영상 URL을 확인해 주세요.'])->withInput();
-        }
-
-        try {
-            $youtube = app(Youtube::class);
-            $items = $youtube->getVideoInfo($videoId, ['id', 'snippet', 'contentDetails', 'statistics']);
-            $item = is_array($items) ? ($items[0] ?? null) : $items;
-
-            if (! is_object($item)) {
-                return back()->withErrors(['url' => '영상을 찾을 수 없습니다.'])->withInput();
-            }
-
-            $channel = YoutubeChannel::query()
-                ->where('channel_id', $item->snippet->channelId)
-                ->first();
-
-            $video = Video::firstOrNew(['video_id' => $item->id]);
-
-            if (! $video->exists) {
-                $video->fill([
-                    'youtube_channel_id' => $channel?->id,
-                    'channelid' => $item->snippet->channelId ?? null,
-                    'channel_title' => $item->snippet->channelTitle ?? null,
-                    'title' => $item->snippet->title ?? $item->id,
-                    'description' => $item->snippet->description ?? null,
-                    'published_at' => Carbon::parse($item->snippet->publishedAt),
-                    'duration' => $item->contentDetails->duration ?? null,
-                    'thumbnail_url' => $item->snippet->thumbnails->high->url ?? $item->snippet->thumbnails->default->url ?? null,
-                    'view_count' => $item->statistics->viewCount ?? null,
-                    'like_count' => $item->statistics->likeCount ?? null,
-                    'comment_count' => $item->statistics->commentCount ?? null,
-                    'unavailable_at' => null,
-                ]);
-                $video->user_id = CatalogOwner::id();
-                $video->is_public = false;
-                $video->save();
-            }
-        } catch (Throwable) {
-            return back()->withErrors(['url' => 'YouTube 영상을 확인하지 못했습니다.'])->withInput();
-        }
-
-        return $this->submitContribution(
-            $video,
-            [
-                'title' => $item->snippet->title ?? $item->id,
-                'channelid' => $item->snippet->channelId ?? null,
-                'channel_title' => $item->snippet->channelTitle ?? null,
-                'description' => $item->snippet->description ?? null,
-                'published_at' => Carbon::parse($item->snippet->publishedAt)->toDateTimeString(),
-                'duration' => $item->contentDetails->duration ?? null,
-                'thumbnail_url' => $item->snippet->thumbnails->high->url ?? $item->snippet->thumbnails->default->url ?? null,
-                'view_count' => $item->statistics->viewCount ?? null,
-                'like_count' => $item->statistics->likeCount ?? null,
-                'comment_count' => $item->statistics->commentCount ?? null,
-                'unavailable_at' => null,
-            ],
-            '영상 기여를 제출했습니다. 운영자 승인 후 공개됩니다.',
-        );
-    }
-
-    public function editChannel(YoutubeChannel $channel): Response
-    {
-        return Inertia::render('contributor/channel', [
-            'status' => session('status'),
-            'channel' => [
-                'id' => $channel->id,
-                'title' => $channel->title,
-                'handle' => $channel->handle,
-                'uploads_playlist_id' => $channel->uploads_playlist_id,
-                'is_active' => (bool) $channel->is_active,
-            ],
-        ]);
-    }
-
-    public function updateChannel(Request $request, YoutubeChannel $channel): RedirectResponse
-    {
-        $data = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'handle' => ['nullable', 'string', 'max:255'],
-            'uploads_playlist_id' => ['nullable', 'string', 'max:255'],
-            'is_active' => ['required', 'boolean'],
-        ]);
-
-        return $this->submitContribution($channel, $data, '채널 변경 기여를 제출했습니다.');
-    }
-
-    public function editVideo(Video $video): Response
-    {
-        return Inertia::render('contributor/video', [
-            'status' => session('status'),
-            'video' => [
-                'id' => $video->id,
-                'title' => $video->title,
-                'description' => $video->description,
-                'published_at' => $video->published_at?->format('Y-m-d\\TH:i'),
-                'duration' => $video->duration,
-                'thumbnail_url' => $video->thumbnail_url,
-                'view_count' => $video->view_count,
-                'like_count' => $video->like_count,
-                'comment_count' => $video->comment_count,
-                'unavailable_at' => $video->unavailable_at?->format('Y-m-d\\TH:i'),
-                'channel' => $video->channel?->title,
-            ],
-        ]);
-    }
-
-    public function updateVideo(Request $request, Video $video): RedirectResponse
-    {
-        $data = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'published_at' => ['required', 'date'],
-            'duration' => ['nullable', 'string', 'max:255'],
-            'thumbnail_url' => ['nullable', 'url', 'max:2048'],
-            'view_count' => ['nullable', 'integer', 'min:0'],
-            'like_count' => ['nullable', 'integer', 'min:0'],
-            'comment_count' => ['nullable', 'integer', 'min:0'],
-            'unavailable_at' => ['nullable', 'date'],
-        ]);
-
-        return $this->submitContribution($video, $data, '영상 변경 기여를 제출했습니다.');
-    }
-
     public function storeActor(Request $request): RedirectResponse
     {
         $data = $this->validateActor($request);
+        $videos = $this->resolveVideoPayload($request, $data);
+
+        if ($videos instanceof RedirectResponse) {
+            return $videos;
+        }
 
         $actor = Actor::create([
             ...$this->actorValues($data),
@@ -235,8 +103,9 @@ class ContributorWorkspaceController extends Controller
             [
                 ...$this->actorValues($data),
                 'reference_urls' => $data['reference_urls'] ?? [],
+                'videos' => $videos,
             ],
-            '배우 기여를 제출했습니다. 운영자 승인 후 공개됩니다.',
+            '배우 필모 기여를 제출했습니다. 운영자 승인 후 공개됩니다.',
         );
     }
 
@@ -273,7 +142,7 @@ class ContributorWorkspaceController extends Controller
                 ->map(fn (Video $video): array => [
                     'id' => $video->id,
                     'title' => $video->title,
-                    'channel' => $video->channel?->title,
+                    'channel' => $video->channel?->title ?? $video->channel_title,
                 ])
                 ->all(),
         ]);
@@ -282,36 +151,20 @@ class ContributorWorkspaceController extends Controller
     public function updateActor(Request $request, Actor $actor): RedirectResponse
     {
         $data = $this->validateActor($request);
+        $videos = $this->resolveVideoPayload($request, $data);
+
+        if ($videos instanceof RedirectResponse) {
+            return $videos;
+        }
 
         return $this->submitContribution(
             $actor,
             [
                 ...$this->actorValues($data),
                 'reference_urls' => $data['reference_urls'] ?? [],
+                'videos' => $videos,
             ],
-            '배우 변경 기여를 제출했습니다.',
-        );
-    }
-
-    public function attachVideo(Request $request, Actor $actor): RedirectResponse
-    {
-        $data = $request->validate([
-            'video_id' => ['required', 'integer', 'exists:youtube_videos,id'],
-        ]);
-
-        return $this->submitContribution(
-            $actor,
-            ['association' => 'attach', 'video_id' => (int) $data['video_id']],
-            '배우-영상 연결 기여를 제출했습니다.',
-        );
-    }
-
-    public function detachVideo(Actor $actor, Video $video): RedirectResponse
-    {
-        return $this->submitContribution(
-            $actor,
-            ['association' => 'detach', 'video_id' => $video->id],
-            '배우-영상 연결 해제 기여를 제출했습니다.',
+            '배우 필모 변경 기여를 제출했습니다.',
         );
     }
 
@@ -340,6 +193,62 @@ class ContributorWorkspaceController extends Controller
     }
 
     /**
+     * @param  array<string, mixed>  $data
+     * @return array<int, int>|RedirectResponse
+     */
+    private function resolveVideoPayload(Request $request, array $data): array|RedirectResponse
+    {
+        $existing = collect($data['video_ids'] ?? [])->map(fn ($id): int => (int) $id);
+        $newVideos = [];
+
+        foreach (collect($data['new_video_urls'] ?? [])->filter() as $url) {
+            try {
+                $videoId = UrlParser::videoId($url);
+                $items = app(Youtube::class)->getVideoInfo($videoId, ['id', 'snippet', 'contentDetails', 'statistics']);
+                $item = is_array($items) ? ($items[0] ?? null) : $items;
+
+                if (! is_object($item)) {
+                    return back()->withErrors(['new_video_urls' => '영상을 찾을 수 없습니다.'])->withInput();
+                }
+
+                $channel = YoutubeChannel::query()
+                    ->where('channel_id', $item->snippet->channelId)
+                    ->first();
+
+                $video = Video::firstOrNew(['video_id' => $item->id]);
+
+                if (! $video->exists) {
+                    $video->fill([
+                        'youtube_channel_id' => $channel?->id,
+                        'channelid' => $item->snippet->channelId ?? null,
+                        'channel_title' => $item->snippet->channelTitle ?? null,
+                        'title' => $item->snippet->title ?? $item->id,
+                        'description' => $item->snippet->description ?? null,
+                        'published_at' => Carbon::parse($item->snippet->publishedAt),
+                        'duration' => $item->contentDetails->duration ?? null,
+                        'thumbnail_url' => $item->snippet->thumbnails->high->url ?? $item->snippet->thumbnails->default->url ?? null,
+                        'view_count' => $item->statistics->viewCount ?? null,
+                        'like_count' => $item->statistics->likeCount ?? null,
+                        'comment_count' => $item->statistics->commentCount ?? null,
+                        'unavailable_at' => null,
+                    ]);
+                    $video->user_id = CatalogOwner::id();
+                    $video->is_public = false;
+                    $video->save();
+                }
+
+                $newVideos[] = $video->id;
+            } catch (InvalidArgumentException) {
+                return back()->withErrors(['new_video_urls' => 'YouTube 영상 URL을 확인해 주세요.'])->withInput();
+            } catch (Throwable) {
+                return back()->withErrors(['new_video_urls' => 'YouTube 영상을 확인하지 못했습니다.'])->withInput();
+            }
+        }
+
+        return $existing->merge($newVideos)->unique()->values()->all();
+    }
+
+    /**
      * @return array<string, mixed>
      */
     private function validateActor(Request $request): array
@@ -357,6 +266,10 @@ class ContributorWorkspaceController extends Controller
             'profile.*' => ['nullable', 'string'],
             'reference_urls' => ['nullable', 'array'],
             'reference_urls.*' => ['nullable', 'url', 'max:2048'],
+            'video_ids' => ['nullable', 'array'],
+            'video_ids.*' => ['integer', 'exists:youtube_videos,id'],
+            'new_video_urls' => ['nullable', 'array'],
+            'new_video_urls.*' => ['nullable', 'string', 'max:2048'],
         ]);
     }
 
@@ -369,7 +282,7 @@ class ContributorWorkspaceController extends Controller
         $profile = $data['profile'] ?? [];
 
         return [
-            ...Arr::except($data, ['profile', 'reference_urls']),
+            ...Arr::except($data, ['profile', 'reference_urls', 'video_ids', 'new_video_urls']),
             'profile' => $profile === [] ? null : $profile,
         ];
     }

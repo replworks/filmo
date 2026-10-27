@@ -37,35 +37,11 @@ class ContributorEditRecordsTest extends TestCase
         $this->get('/catalog/actors/'.$actor->id)->assertNotFound();
     }
 
-    public function test_edits_create_pending_contributions_without_changing_canonical_records(): void
+    public function test_an_actor_edit_with_videos_is_one_pending_contribution(): void
     {
         $contributor = User::factory()->create();
-        $channel = $this->channel();
-        $video = $this->video($channel);
+        $video = $this->video($this->channel());
         $actor = Actor::factory()->create(['name' => '수정 전 배우']);
-
-        $this->actingAs($contributor)
-            ->patch('/contributor/channels/'.$channel->id, [
-                'title' => '수정된 채널',
-                'handle' => '@edited',
-                'uploads_playlist_id' => 'UUedited',
-                'is_active' => true,
-            ])
-            ->assertSessionHasNoErrors();
-
-        $this->actingAs($contributor)
-            ->patch('/contributor/videos/'.$video->id, [
-                'title' => '수정된 영상',
-                'description' => '수정된 설명',
-                'published_at' => '2026-10-02 00:00:00',
-                'duration' => 'PT12M',
-                'thumbnail_url' => 'https://example.com/thumb.jpg',
-                'view_count' => 10,
-                'like_count' => 2,
-                'comment_count' => 1,
-                'unavailable_at' => null,
-            ])
-            ->assertSessionHasNoErrors();
 
         $this->actingAs($contributor)
             ->patch('/contributor/actors/'.$actor->id, [
@@ -82,24 +58,25 @@ class ContributorEditRecordsTest extends TestCase
                     'https://namu.wiki/w/actor',
                     'https://search.naver.com/actor',
                 ],
+                'video_ids' => [$video->id],
             ])
             ->assertSessionHasNoErrors();
 
-        $this->assertSame('기존 채널', $channel->refresh()->title);
-        $this->assertSame('기존 영상', $video->refresh()->title);
         $this->assertSame('수정 전 배우', $actor->refresh()->name);
-        $this->assertSame(3, Contribution::count());
-        $this->assertSame(3, Contribution::where('status', Contribution::STATUS_PENDING)->count());
+        $this->assertSame(1, Contribution::count());
 
-        $actorContribution = Contribution::where('contributable_type', Actor::class)
-            ->where('contributable_id', $actor->id)
-            ->firstOrFail();
+        $contribution = Contribution::firstOrFail();
 
-        $this->assertSame('수정된 배우', $actorContribution->payload['name']);
+        $this->assertSame('수정된 배우', $contribution->payload['name']);
+        $this->assertSame([$video->id], $contribution->payload['videos']);
         $this->assertSame(
             ['https://namu.wiki/w/actor', 'https://search.naver.com/actor'],
-            $actorContribution->payload['reference_urls'],
+            $contribution->payload['reference_urls'],
         );
+        $this->assertDatabaseMissing('actor_video', [
+            'actor_id' => $actor->id,
+            'youtube_video_id' => $video->id,
+        ]);
     }
 
     public function test_a_second_pending_contribution_for_the_same_record_is_a_conflict(): void
@@ -145,29 +122,6 @@ class ContributorEditRecordsTest extends TestCase
         $this->assertDatabaseMissing('contributions', ['id' => $contribution->id]);
     }
 
-    public function test_association_changes_are_pending_contributions(): void
-    {
-        $contributor = User::factory()->create();
-        $actor = Actor::factory()->create();
-        $video = $this->video($this->channel());
-
-        $this->actingAs($contributor)
-            ->post('/contributor/actors/'.$actor->id.'/videos', [
-                'video_id' => $video->id,
-            ])
-            ->assertSessionHasNoErrors();
-
-        $this->assertDatabaseMissing('actor_video', [
-            'actor_id' => $actor->id,
-            'youtube_video_id' => $video->id,
-        ]);
-
-        $contribution = Contribution::firstOrFail();
-
-        $this->assertSame('attach', $contribution->payload['association']);
-        $this->assertSame($video->id, $contribution->payload['video_id']);
-    }
-
     public function test_actor_edit_pages_render_for_a_contributor(): void
     {
         $contributor = User::factory()->create();
@@ -186,20 +140,13 @@ class ContributorEditRecordsTest extends TestCase
 
     public function test_a_guest_cannot_modify_contributor_records(): void
     {
-        $channel = $this->channel();
         $actor = Actor::factory()->create(['name' => '원래 배우']);
 
         $this->post('/contributor/actors', ['name' => '새 배우'])
             ->assertRedirect(route('login'));
 
-        $this->patch('/contributor/channels/'.$channel->id, [
-            'title' => '변경',
-            'is_active' => true,
-        ])->assertRedirect(route('login'));
-
         $this->assertDatabaseMissing('actors', ['name' => '새 배우']);
         $this->assertSame('원래 배우', $actor->refresh()->name);
-        $this->assertNotSame('변경', $channel->refresh()->title);
         $this->assertSame(0, Contribution::count());
     }
 

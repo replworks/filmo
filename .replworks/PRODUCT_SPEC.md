@@ -358,8 +358,8 @@ Terms:
 - Interactions:
   - Activate EL-067 -> the product creates a pending Channel Request. It does not create a Channel or start collection.
   - Activate EL-069 -> the product resolves the video URL and creates a pending Contribution plus a Draft Video. Gemini Actor Extraction does not start.
-  - Activate EL-074 -> the product creates a pending Contribution plus a Draft Actor.
-  - Activate EL-075 -> the product creates a pending Contribution for the Actor; the canonical Actor is unchanged until approval.
+  - Activate EL-074 -> the product creates a pending Actor Contribution with a Draft Actor and optional Video entries.
+  - Activate EL-075 -> the product creates one pending Contribution for the Actor, including profile changes and added existing or new Videos; the canonical Actor and associations are unchanged until approval.
   - Activate EL-070 or EL-071 -> the product creates a pending Contribution for the Channel or Video; the canonical record is unchanged until approval.
   - Activate EL-076 -> the product creates a pending Contribution for the Actor-Video association.
   - A second pending Contribution for the same Contributor and record shows a conflict instead of replacing the existing pending Contribution.
@@ -499,6 +499,11 @@ Channel requests and channel-less Videos
 - FR-065: A Contributor Channel submission MUST create a pending Channel Request and MUST NOT create a Channel or start collection.
 - FR-066: An Administrator MUST be able to approve or reject a Channel Request. Approving MUST resolve the Channel through YouTube, create or update and publish the Channel, link Videos whose `channelid` matches, and start initial collection.
 - FR-067: A Video MAY exist without a registered Channel. `youtube_videos.youtube_channel_id` MUST be nullable; `channelid` and `channel_title` MUST retain the YouTube channelId and channelTitle when present.
+- FR-068: A Contribution MUST target exactly one Actor and MAY add existing or new Video entries to that Actor's filmography.
+- FR-069: Existing Actor profile edits MUST use the same pending Contribution as filmography changes.
+- FR-070: A new Video entered in an Actor Contribution MUST be resolved from its YouTube URL and stored without creating a Channel.
+- FR-071: Public Video detail MUST use `channel_title` when no registered Channel is linked and MUST NOT render a Channel link in that case.
+- FR-072: Actors and Videos MUST remain publicly visible when their Video has no registered Channel.
 
 ## User Flows
 
@@ -660,3 +665,8 @@ UF-010 Add and edit an Actor
 - AC-046: A Contributor channel submission creates a pending Channel Request and no Channel (FR-065, SCR-008).
 - AC-047: An Administrator can approve a Channel Request; the Channel is published, matching Videos are linked, and initial collection starts (FR-066, SCR-010).
 - AC-048: Videos can be stored and read without a registered Channel using nullable `youtube_channel_id` and `channelid`/`channel_title` (FR-067).
+- AC-049: One Actor Contribution contains the Actor profile and its added Video entries (FR-068, SCR-008).
+- AC-050: Existing Actor profile edits and filmography changes create one pending Contribution (FR-069, SCR-008).
+- AC-051: A new Video URL inside an Actor Contribution is resolved and stored without creating a Channel (FR-070, SCR-008).
+- AC-052: Public Video detail uses `channel_title` and no Channel link when no registered Channel exists (FR-071, SCR-006).
+- AC-053: Actors and Videos with no registered Channel remain public (FR-072, SCR-006).

@@ -25,10 +25,14 @@ class ContributorAddRecordsTest extends TestCase
         $contributor = User::factory()->create();
 
         $this->actingAs($contributor)
-            ->post('/contributor/videos', ['url' => 'https://example.com/not-a-video'])
-            ->assertSessionHasErrors('url');
+            ->post('/contributor/actors', [
+                'name' => '새 배우',
+                'new_video_urls' => ['https://example.com/not-a-video'],
+            ])
+            ->assertSessionHasErrors('new_video_urls');
 
         $this->assertDatabaseCount('youtube_videos', 0);
+        $this->assertDatabaseCount('actors', 0);
     }
 
     public function test_a_contributor_can_submit_a_channel_request(): void

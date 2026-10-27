@@ -169,6 +169,17 @@ class ContributionManager
             $actor->referenceUrls()->firstOrCreate(['url' => $url]);
         }
 
+        foreach (collect($payload['videos'] ?? [])->map(fn ($id): int => (int) $id) as $videoId) {
+            $video = Video::find($videoId);
+
+            if ($video === null) {
+                continue;
+            }
+
+            $actor->videos()->syncWithoutDetaching([$videoId]);
+            $video->forceFill(['is_public' => true])->save();
+        }
+
         $actor->forceFill(['is_public' => true])->save();
     }
 }
