@@ -238,3 +238,27 @@
     - The Administrator can list pending contributions, inspect JSON payloads, and approve or reject them with an optional review note.
     - Approving applies the payload to the canonical record and publishes it; rejecting leaves the canonical record unchanged.
     - Channel initial collection starts only after approval; Video approval never starts Gemini Actor Extraction; tests pass.
+
+- [x] T-030 Separate Channel Requests and allow channel-less Videos
+  - Satisfies: PRODUCT_SPEC.md §§SCR-008, SCR-010, Functional Requirements FR-065–FR-067, Acceptance Criteria AC-046–AC-048
+  - External boundary: yes
+  - Acceptance criteria:
+    - Contributor channel submissions create pending Channel Requests without creating a Channel.
+    - Administrator approval resolves the live YouTube Channel, creates/publishes it, links existing Videos by `channelid`, and starts initial collection.
+    - Videos can exist without a registered Channel using nullable `youtube_channel_id` plus `channelid` and `channel_title`; live tests pass.
+
+- [ ] T-031 Make Actor filmography the contribution unit
+  - Satisfies: PRODUCT_SPEC.md §§SCR-008, Functional Requirements FR-068–FR-070, Acceptance Criteria AC-049–AC-051
+  - External boundary: yes
+  - Acceptance criteria:
+    - One Contribution targets one Actor and may add existing or new Video entries to that Actor's filmography.
+    - Existing Actor profile edits use the same pending Contribution.
+    - New Videos inside a Contribution do not create a Channel; Contributor and review flows use Actor payloads with Video entries.
+
+- [ ] T-032 Present channel-less Videos and Actors publicly
+  - Satisfies: PRODUCT_SPEC.md §SCR-006, Functional Requirements FR-071–FR-072, Acceptance Criteria AC-052–AC-053
+  - External boundary: no
+  - Acceptance criteria:
+    - Public Video detail shows the raw `channel_title` when no registered Channel is linked, and no Channel link is rendered.
+    - Actors and their Videos appear publicly even when a Video has no Channel.
+    - Tests pass.

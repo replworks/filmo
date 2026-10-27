@@ -31,10 +31,11 @@ trait PresentsPublicCatalog
             'title' => $video->title,
             'published_at' => $video->published_at?->toIso8601String(),
             'youtube_url' => $this->videoUrl($video),
-            'channel' => $video->channel === null ? null : [
-                'id' => $video->channel->id,
-                'title' => $video->channel->title,
-            ],
+            'channel' => $video->channel !== null
+                ? ['id' => $video->channel->id, 'title' => $video->channel->title]
+                : ($video->channel_title === null
+                    ? null
+                    : ['id' => null, 'title' => $video->channel_title]),
         ];
     }
 

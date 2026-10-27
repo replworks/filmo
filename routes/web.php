@@ -14,7 +14,7 @@ Route::get('/catalog/actors/{actor}', [PublicCatalogController::class, 'actor'])
 
 Route::middleware('auth')->prefix('contributor')->name('contributor.')->group(function (): void {
     Route::get('/', [ContributorWorkspaceController::class, 'index'])->name('index');
-    Route::post('/channels', [ContributorWorkspaceController::class, 'storeChannel'])->name('channels.store');
+    Route::post('/channel-requests', [ContributorWorkspaceController::class, 'storeChannelRequest'])->name('channel-requests.store');
     Route::get('/channels/{channel}/edit', [ContributorWorkspaceController::class, 'editChannel'])->name('channels.edit');
     Route::patch('/channels/{channel}', [ContributorWorkspaceController::class, 'updateChannel'])->name('channels.update');
     Route::post('/videos', [ContributorWorkspaceController::class, 'storeVideo'])->name('videos.store');

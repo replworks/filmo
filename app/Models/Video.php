@@ -13,6 +13,8 @@ class Video extends YoutubeVideo
 
     protected $fillable = [
         'youtube_channel_id',
+        'channelid',
+        'channel_title',
         'video_id',
         'title',
         'description',
